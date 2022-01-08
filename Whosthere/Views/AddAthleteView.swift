@@ -246,7 +246,7 @@ struct GenderButtons: View {
             //Gender
             Text("Gender")
                 .font(.body)
-                .foregroundColor(.textColor)
+                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
@@ -300,9 +300,17 @@ struct GenderButtons: View {
                     }
                 }
     }
-}//VSTAck
+}//VStack
         .padding()
     }
+    
+    func changeOpacity() -> Bool {
+        if  male || female || nonbinary == true {
+            return true
+        }
+        return false
+    }
+    
 }
 
 
