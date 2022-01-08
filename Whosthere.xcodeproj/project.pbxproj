@@ -32,7 +32,7 @@
 		BC3F255B2767C1F000465551 /* AthletesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesViewModel.swift; sourceTree = "<group>"; };
 		BC3F2572276C991300465551 /* BigAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigAddButton.swift; sourceTree = "<group>"; };
 		BC3F2576276C9A4700465551 /* AddAthleteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAthleteView.swift; sourceTree = "<group>"; };
-		BC409A5927493F980096CD12 /* Photopickertest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photopickertest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC409A5927493F980096CD12 /* Whosthere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whosthere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC409A5C27493F980096CD12 /* AthleteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteApp.swift; sourceTree = "<group>"; };
 		BC409A6027493F9B0096CD12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 		BC409A5027493F980096CD12 = {
 			isa = PBXGroup;
 			children = (
-				BC409A5B27493F980096CD12 /* Photopickertest */,
+				BC409A5B27493F980096CD12 /* Whosthere */,
 				BC3212FE2750F5C3001A689E /* Stylizing */,
 				BC3212FF2750F5EF001A689E /* Functionalities */,
 				BC409A5A27493F980096CD12 /* Products */,
@@ -101,12 +101,12 @@
 		BC409A5A27493F980096CD12 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BC409A5927493F980096CD12 /* Photopickertest.app */,
+				BC409A5927493F980096CD12 /* Whosthere.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BC409A5B27493F980096CD12 /* Photopickertest */ = {
+		BC409A5B27493F980096CD12 /* Whosthere */ = {
 			isa = PBXGroup;
 			children = (
 				BC409A5C27493F980096CD12 /* AthleteApp.swift */,
@@ -118,7 +118,7 @@
 				BC409A6527493F9B0096CD12 /* Info.plist */,
 				BC409A6227493F9B0096CD12 /* Preview Content */,
 			);
-			path = Photopickertest;
+			path = Whosthere;
 			sourceTree = "<group>";
 		};
 		BC409A6227493F9B0096CD12 /* Preview Content */ = {
@@ -161,9 +161,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BC409A5827493F980096CD12 /* Photopickertest */ = {
+		BC409A5827493F980096CD12 /* Whosthere */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BC409A6827493F9B0096CD12 /* Build configuration list for PBXNativeTarget "Photopickertest" */;
+			buildConfigurationList = BC409A6827493F9B0096CD12 /* Build configuration list for PBXNativeTarget "Whosthere" */;
 			buildPhases = (
 				BC409A5527493F980096CD12 /* Sources */,
 				BC409A5627493F980096CD12 /* Frameworks */,
@@ -173,9 +173,9 @@
 			);
 			dependencies = (
 			);
-			name = Photopickertest;
+			name = Whosthere;
 			productName = Photopickertest;
-			productReference = BC409A5927493F980096CD12 /* Photopickertest.app */;
+			productReference = BC409A5927493F980096CD12 /* Whosthere.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -192,7 +192,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BC409A5427493F980096CD12 /* Build configuration list for PBXProject "Photopickertest" */;
+			buildConfigurationList = BC409A5427493F980096CD12 /* Build configuration list for PBXProject "Whosthere" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -205,7 +205,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BC409A5827493F980096CD12 /* Photopickertest */,
+				BC409A5827493F980096CD12 /* Whosthere */,
 			);
 		};
 /* End PBXProject section */
@@ -368,16 +368,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Photopickertest/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Whosthere/Preview Content\"";
 				DEVELOPMENT_TEAM = P93T2Q3CH5;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Photopickertest/Info.plist;
+				INFOPLIST_FILE = Whosthere/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteairtime.Photopickertest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteairtime.Whosthere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -390,16 +390,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Photopickertest/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Whosthere/Preview Content\"";
 				DEVELOPMENT_TEAM = P93T2Q3CH5;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Photopickertest/Info.plist;
+				INFOPLIST_FILE = Whosthere/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteairtime.Photopickertest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.infiniteairtime.Whosthere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -409,7 +409,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BC409A5427493F980096CD12 /* Build configuration list for PBXProject "Photopickertest" */ = {
+		BC409A5427493F980096CD12 /* Build configuration list for PBXProject "Whosthere" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BC409A6627493F9B0096CD12 /* Debug */,
@@ -418,7 +418,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BC409A6827493F9B0096CD12 /* Build configuration list for PBXNativeTarget "Photopickertest" */ = {
+		BC409A6827493F9B0096CD12 /* Build configuration list for PBXNativeTarget "Whosthere" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BC409A6927493F9B0096CD12 /* Debug */,
