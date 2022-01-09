@@ -24,6 +24,7 @@ struct AddAthleteView: View {
     @State var female = false
     @State var nonbinary = false
 
+    @State var show: Bool = false
     
     //MARK: Body
     
@@ -36,40 +37,47 @@ struct AddAthleteView: View {
                 //header
                 addAthleteHeader
                 
-                VStack(spacing: 0) {
-                    //all that is in the screen body
-                    
-                    profilePicture
-                    
-                    LongTextField(textFieldDescription: "First Name",  firstNameTF: $firstNameTF)
-                    
-                    LongTextField(textFieldDescription: "Last Name", firstNameTF: $lastNameTF)
-                    
-                    HStack {
-                        BirthdayField(selectedDate: $birthDate)
-                        GenderButtons(male: $male, female: $female, nonbinary: $nonbinary)
-                    }
-                    
-                    
-                    //Spacer to define the body-sheets size
-//                    Spacer()
-//                        .frame(maxWidth: .infinity)
-                    
-                    Button(action: {
-                        if textIsAppropriate() {
-                            addAthletePressed()
+                ZStack {
+                    VStack(spacing: 0) {
+                        //all that is in the screen body
+                        
+                        profilePicture
+                        
+                        LongTextField(textFieldDescription: "First Name",  firstNameTF: $firstNameTF)
+                        
+                        LongTextField(textFieldDescription: "Last Name", firstNameTF: $lastNameTF)
+                        
+                        HStack {
+                            BirthdayField(show: $show, selectedDate: $birthDate)
+                            GenderButtons(male: $male, female: $female, nonbinary: $nonbinary)
                         }
-                    })      {
-                        BigAddButton(icon: "plus", description: "Add Athlete", textColor: .white, backgroundColor: Color.orangeAccentColor)
+                        
+                        
+                        //Spacer to define the body-sheets size
+    //                    Spacer()
+    //                        .frame(maxWidth: .infinity)
+                        
+                        Button(action: {
+                            if textIsAppropriate() {
+                                addAthletePressed()
+                            }
+                        })      {
+                            BigAddButton(icon: "plus", description: "Add Athlete", textColor: .white, backgroundColor: Color.orangeAccentColor)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                        
+                        
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-                    
-                    
-                }
-                .padding(.top, 20)
-                .background(Color.backgroundColor
-                                .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
+                    .padding(.top, 20)
+                    .background(Color.backgroundColor
+                                    .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
                                 .edgesIgnoringSafeArea(.bottom))
+                    
+                    if self.show{
+                        Popover(selectedDate: $birthDate)
+                        .offset(x: -30, y: -70)
+                    }
+                } //ZStack for Popover
                 
             }//VStack to seperate Header and ScreenBody/content
         }//ZStack End
@@ -188,10 +196,10 @@ struct LongTextField: View {
 
 struct BirthdayField: View {
     
-    @State var show: Bool = false
+    @Binding var show: Bool
     
     @Binding var selectedDate: Date
-    let endingDate: Date = Date()
+    
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -217,22 +225,17 @@ struct BirthdayField: View {
                     .background(Color.middlegroundColor)
                     .frame(height: 44)
                     .cornerRadius(10)
-                    .onTapGesture {
-                        show.toggle()
-                    }
-                    .fieldPopover(show: $show){
-                        DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
-                            .datePickerStyle(.graphical)
-                            .accentColor(.orangeAccentColor)
-                            .labelsHidden()
-                    }
                     
+                   
                 
                 Text(dateFormatter.string(from: selectedDate))
                     .font(.body)
                     .foregroundColor(Color.textColor)
                     .fontWeight(.semibold)
                 }
+            .onTapGesture {
+                show.toggle()
+            }
             .frame(height: 44)
         }
         .padding()
@@ -357,3 +360,24 @@ struct ContentView_Previews: PreviewProvider {
 
 
 
+
+struct Popover: View {
+    @Binding var selectedDate: Date
+    let endingDate: Date = Date()
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 15)
+                .foregroundColor(.middlegroundColor)
+                .frame(width: 300, height: 275, alignment: .bottom)
+            
+            DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
+                
+                .datePickerStyle(.graphical)
+                .accentColor(.orangeAccentColor)
+                .labelsHidden()
+                .padding(.horizontal, 50)
+                .offset(y: 10)
+               
+        }
+    }
+}
