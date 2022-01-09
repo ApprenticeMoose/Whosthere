@@ -17,8 +17,7 @@ extension View{
                 ZStack{
                     
                     if show.wrappedValue{
-                        
-                        ZStack {
+        
                             RoundedRectangle(cornerRadius: 15)
                                 .foregroundColor(.middlegroundColor)
                                 .frame(width: 300, height: 270, alignment: .bottom)
@@ -30,10 +29,13 @@ extension View{
                                 .offset(y: 20)
                                 
                             
-                        }
-                        .offset(x: 70, y: -165)
+                        
+                        
                     }
                 }
+                .offset(y: -10)
+                ,alignment: .bottomLeading
+                    
             )
     }
 }

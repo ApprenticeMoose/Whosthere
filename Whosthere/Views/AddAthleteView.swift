@@ -237,6 +237,11 @@ struct BirthdayField: View {
         }
         .padding()
     }
+    /*
+    func fieldEmpty() -> Bool {
+        if
+    }
+     */
     
     func changeOpacity() -> Bool {
         if selectedDate == Date() {
@@ -258,8 +263,8 @@ struct GenderButtons: View {
             //Gender
             Text("Gender")
                 .font(.body)
-                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
                 .fontWeight(.semibold)
+                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
             
