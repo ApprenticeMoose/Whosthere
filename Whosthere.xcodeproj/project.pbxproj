@@ -17,6 +17,7 @@
 		BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC409A5C27493F980096CD12 /* AthleteApp.swift */; };
 		BC409A6127493F9B0096CD12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6027493F9B0096CD12 /* Assets.xcassets */; };
 		BC409A6427493F9B0096CD12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */; };
+		BC798DB9278B85C70022881E /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC798DB8278B85C70022881E /* Popover.swift */; };
 		BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */; };
 		BCA3A786275BB752003D5F1C /* AthleteListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A785275BB752003D5F1C /* AthleteListRowView.swift */; };
 		BCA3A78F275E0496003D5F1C /* NavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A78E275E0496003D5F1C /* NavigationButton.swift */; };
@@ -36,6 +37,7 @@
 		BC409A6027493F9B0096CD12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BC409A6527493F9B0096CD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BC798DB8278B85C70022881E /* Popover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListView.swift; sourceTree = "<group>"; };
 		BCA3A785275BB752003D5F1C /* AthleteListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteListRowView.swift; sourceTree = "<group>"; };
 		BCA3A78E275E0496003D5F1C /* NavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButton.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				BC3F25552767B39E00465551 /* Models */,
 				BC3F255A2767C1C000465551 /* ViewModels */,
 				BCA3A77F275BB2C6003D5F1C /* Views */,
+				BC798DB7278B85AD0022881E /* Functionalities */,
 				BCA3A789275E034A003D5F1C /* Components */,
 				BC4DA004278A2CA80064A350 /* Stylizing */,
 				BC409A6027493F9B0096CD12 /* Assets.xcassets */,
@@ -126,6 +129,14 @@
 				BC3212F02750E989001A689E /* CustomShape.swift */,
 			);
 			path = Stylizing;
+			sourceTree = "<group>";
+		};
+		BC798DB7278B85AD0022881E /* Functionalities */ = {
+			isa = PBXGroup;
+			children = (
+				BC798DB8278B85C70022881E /* Popover.swift */,
+			);
+			path = Functionalities;
 			sourceTree = "<group>";
 		};
 		BCA3A77F275BB2C6003D5F1C /* Views */ = {
@@ -234,6 +245,7 @@
 				BC3F255C2767C1F000465551 /* AthletesViewModel.swift in Sources */,
 				BCA3A786275BB752003D5F1C /* AthleteListRowView.swift in Sources */,
 				BC3F25512760D1A800465551 /* FrameButton.swift in Sources */,
+				BC798DB9278B85C70022881E /* Popover.swift in Sources */,
 				BC3F2577276C9A4700465551 /* AddAthleteView.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 			);

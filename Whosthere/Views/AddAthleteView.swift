@@ -188,8 +188,15 @@ struct LongTextField: View {
 
 struct BirthdayField: View {
     
+    @State var show: Bool = false
+    
     @Binding var selectedDate: Date
     let endingDate: Date = Date()
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }
     
     var body: some View {
         VStack{
@@ -210,18 +217,23 @@ struct BirthdayField: View {
                     .background(Color.middlegroundColor)
                     .frame(height: 44)
                     .cornerRadius(10)
+                    .onTapGesture {
+                        show.toggle()
+                    }
+                    .fieldPopover(show: $show){
+                        DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
+                            .datePickerStyle(.graphical)
+                            .accentColor(.orangeAccentColor)
+                            .labelsHidden()
+                    }
                     
                 
-                
-                
-                    DatePicker("",selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
-                        .background(Color.middlegroundColor)
-                        .labelsHidden()
-                        .accentColor(.orangeAccentColor)
-                        .padding(.horizontal, 5)
-            }
-           
-            
+                Text(dateFormatter.string(from: selectedDate))
+                    .font(.body)
+                    .foregroundColor(Color.textColor)
+                    .fontWeight(.semibold)
+                }
+            .frame(height: 44)
         }
         .padding()
     }
@@ -242,7 +254,7 @@ struct GenderButtons: View {
     @Binding var nonbinary: Bool
     
     var body: some View{
-        VStack{
+        VStack(alignment: .leading){
             //Gender
             Text("Gender")
                 .font(.body)
@@ -323,6 +335,10 @@ struct ContentView_Previews: PreviewProvider {
             AddAthleteView()
                 .navigationBarHidden(true)
             AddAthleteView()
+                .preferredColorScheme(.dark)
+                .navigationBarHidden(true)
+            AddAthleteView()
+                .previewDevice("iPad Pro (12.9-inch) (5th generation)")
                 .preferredColorScheme(.dark)
                 .navigationBarHidden(true)
         }
