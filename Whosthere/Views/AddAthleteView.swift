@@ -29,6 +29,8 @@ struct AddAthleteView: View {
     //MARK: Body
     
     var body: some View {
+        //GeometryReader so the View doesnt move uppwards once the keyboard is actived
+        GeometryReader { _ in
         ZStack{
             
             Color.accentColor.edgesIgnoringSafeArea(.all)
@@ -80,7 +82,11 @@ struct AddAthleteView: View {
                 } //ZStack for Popover
                 
             }//VStack to seperate Header and ScreenBody/content
+            
+              
         }//ZStack End
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+    }
     }//Body End
     
     
@@ -146,6 +152,7 @@ struct AddAthleteView: View {
             }//Button
         }//HeaderHStackEnding
         .padding()
+        
     }
     
     
