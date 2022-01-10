@@ -34,7 +34,7 @@ struct AddAthleteView: View {
         ZStack{
             
             Color.accentColor.edgesIgnoringSafeArea(.all)
-            
+            ZStack{
             VStack{
                 //header
                 addAthleteHeader
@@ -75,14 +75,19 @@ struct AddAthleteView: View {
                                     .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
                                 .edgesIgnoringSafeArea(.bottom))
                     
-                    if self.show{
-                        Popover(selectedDate: $birthDate)
-                        .offset(x: -25, y: -90)
-                    }
+                    
                 } //ZStack for Popover
                 
             }//VStack to seperate Header and ScreenBody/content
-            
+                if self.show{
+                    Color.black.opacity(0.4).edgesIgnoringSafeArea(.all)
+                        .onTapGesture {
+                            show.toggle()
+                        }
+                    Popover(selectedDate: $birthDate)
+                    //.offset(x: -25, y: -90)
+                }
+            }//ZStackforpopover
               
         }//ZStack End
         .ignoresSafeArea(.keyboard, edges: .bottom)
@@ -93,6 +98,15 @@ struct AddAthleteView: View {
     
     // MARK: Functions
     
+    func getXCoordinates(geo: GeometryProxy) -> Double {
+        let xCoordinate = geo.frame(in: .global).midX
+        return xCoordinate
+    }
+    
+    func getYCoordinates(geo: GeometryProxy) -> Double {
+        let yCoordinate = geo.frame(in: .global).midY
+        return yCoordinate
+    }
     
     func textIsAppropriate() -> Bool {
         if firstNameTF.count >= 2 && lastNameTF.count >= 1 {
@@ -161,7 +175,23 @@ struct AddAthleteView: View {
 
     // MARK: Subviews
 
+struct GeometryGetter: View {
+    @Binding var rect: CGRect
+    
+    var body: some View {
+        return GeometryReader { geometry in
+            self.makeView(geometry: geometry)
+        }
+    }
+    
+    func makeView(geometry: GeometryProxy) -> some View {
+        DispatchQueue.main.async {
+            self.rect = geometry.frame(in: .global)
+        }
 
+        return Rectangle().fill(Color.clear)
+    }
+}
 
 struct LongTextField: View {
     
@@ -350,6 +380,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AddAthleteView()
+                .previewDevice("iPhone 11")
                 .navigationBarHidden(true)
             AddAthleteView()
                 .preferredColorScheme(.dark)
@@ -377,16 +408,41 @@ struct Popover: View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
                 .foregroundColor(.middlegroundColor)
-                .frame(width: 310, height: 300, alignment: .bottom)
+                .frame(width: .infinity, height: 360, alignment: .bottom)
+                .padding(.horizontal)
             
-            DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
+            VStack(spacing: 0) {
+//                Spacer()
+//                HStack{
+//                    Spacer()
+//
+//                    Text("Birthday")
+//                    .font(.body)
+//                    .fontWeight(.semibold)
+//                    .foregroundColor(Color.textColor)
+//
+//                    Spacer()
+//
+//                    Image(systemName: "checkmark")
+//
+//                    Spacer()
+//                }
+//                .padding()
+//                .padding(.vertical)
                 
-                .datePickerStyle(.graphical)
-                .accentColor(.orangeAccentColor)
-                .labelsHidden()
-                .padding(.horizontal, 50)
-                .offset(y: 10)
+                DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
+                    .datePickerStyle(.graphical)
+                    .accentColor(.orangeAccentColor)
+                    .labelsHidden()
+                    .padding(.horizontal, 30)
+                    //.offset(y: 10)
+                
+                //Add Toggle with label show years only...then switch datepicker to .wheel
+                //Add okay button to check out
+                //use ease in animation
+            }
                
         }
+        
     }
 }
