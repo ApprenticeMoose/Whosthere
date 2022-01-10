@@ -200,6 +200,8 @@ struct BirthdayField: View {
     
     @Binding var selectedDate: Date
     
+    
+    
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -247,10 +249,10 @@ struct BirthdayField: View {
      */
     
     func changeOpacity() -> Bool {
-        if selectedDate == Date() {
-            return true
+        if Calendar.current.isDateInToday(selectedDate) {
+            return false
         }
-        return false
+        return true
     }
 }
 
