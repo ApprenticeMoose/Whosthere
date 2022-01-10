@@ -24,7 +24,7 @@ struct AddAthleteView: View {
     @State var female = false
     @State var nonbinary = false
 
-    @State var show: Bool = true
+    @State var show: Bool = false
     
     //MARK: Body
     
