@@ -24,7 +24,7 @@ struct AddAthleteView: View {
     @State var female = false
     @State var nonbinary = false
 
-    @State var show: Bool = false
+    @State var show: Bool = true
     
     //MARK: Body
     
@@ -75,7 +75,7 @@ struct AddAthleteView: View {
                     
                     if self.show{
                         Popover(selectedDate: $birthDate)
-                        .offset(x: -30, y: -70)
+                        .offset(x: -25, y: -90)
                     }
                 } //ZStack for Popover
                 
@@ -368,7 +368,7 @@ struct Popover: View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
                 .foregroundColor(.middlegroundColor)
-                .frame(width: 300, height: 275, alignment: .bottom)
+                .frame(width: 310, height: 300, alignment: .bottom)
             
             DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
                 
