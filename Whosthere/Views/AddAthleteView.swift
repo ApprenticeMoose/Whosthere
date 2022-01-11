@@ -24,7 +24,7 @@ struct AddAthleteView: View {
     @State var female = false
     @State var nonbinary = false
 
-    @State var show: Bool = false
+    @State var show: Bool = true
     
     //MARK: Body
     
@@ -403,46 +403,59 @@ struct ContentView_Previews: PreviewProvider {
 
 struct Popover: View {
     @Binding var selectedDate: Date
+    @State var toggleIsOn: Bool = true
+    @State var selection = Date()
+    @State var currentYear = Calendar.current.component(.year, from: Date())
+    
     let endingDate: Date = Date()
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
                 .foregroundColor(.middlegroundColor)
-                .frame(width: .infinity, height: 360, alignment: .bottom)
+                .frame(maxWidth: .infinity)
+                .frame(height: 360, alignment: .bottom)
                 .padding(.horizontal)
             
             VStack(spacing: 0) {
-//                Spacer()
-//                HStack{
-//                    Spacer()
-//
-//                    Text("Birthday")
-//                    .font(.body)
-//                    .fontWeight(.semibold)
-//                    .foregroundColor(Color.textColor)
-//
-//                    Spacer()
-//
-//                    Image(systemName: "checkmark")
-//
-//                    Spacer()
-//                }
-//                .padding()
-//                .padding(.vertical)
                 
+                if self.toggleIsOn {
+                    Picker("", selection: $selection) {
+                        ForEach(currentYear...2020, id: \.self) {
+                                    Text(String($0))
+                                }
+                            }
+                            .pickerStyle(InlinePickerStyle())
+                        .labelsHidden()
+                        .padding(.horizontal, 30)
+                        .frame(height: 300)
+                }
+                else{
                 DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
                     .datePickerStyle(.graphical)
                     .accentColor(.orangeAccentColor)
                     .labelsHidden()
                     .padding(.horizontal, 30)
-                    //.offset(y: 10)
+                    .frame(height: 300)
+                }
                 
+                    Toggle(
+                        isOn: $toggleIsOn,
+                        label: {
+                            Text("Select year of birth only")
+                                   .font(.body)
+                                   .fontWeight(.semibold)
+                                    .foregroundColor(Color.textColor)
+                            })
+                        .padding(.horizontal)
+                        .padding(.horizontal)
+
                 //Add Toggle with label show years only...then switch datepicker to .wheel
                 //Add okay button to check out
                 //use ease in animation
             }
                
         }
+        
         
     }
 }
