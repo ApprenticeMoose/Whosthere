@@ -88,7 +88,7 @@ struct AddAthleteView: View {
                         .onTapGesture {
                             show.toggle()
                         }
-                    Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, selectedYear: $selectedYear)
+                    Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $selectedYear)
                     //.offset(x: -25, y: -90)
                 }
             }//ZStackforpopover
@@ -102,16 +102,7 @@ struct AddAthleteView: View {
     
     // MARK: Functions
     
-    func getXCoordinates(geo: GeometryProxy) -> Double {
-        let xCoordinate = geo.frame(in: .global).midX
-        return xCoordinate
-    }
-    
-    func getYCoordinates(geo: GeometryProxy) -> Double {
-        let yCoordinate = geo.frame(in: .global).midY
-        return yCoordinate
-    }
-    
+
     func textIsAppropriate() -> Bool {
         if firstNameTF.count >= 2 && lastNameTF.count >= 1 {
             return true
@@ -178,24 +169,6 @@ struct AddAthleteView: View {
 
 
     // MARK: Subviews
-
-struct GeometryGetter: View {
-    @Binding var rect: CGRect
-    
-    var body: some View {
-        return GeometryReader { geometry in
-            self.makeView(geometry: geometry)
-        }
-    }
-    
-    func makeView(geometry: GeometryProxy) -> some View {
-        DispatchQueue.main.async {
-            self.rect = geometry.frame(in: .global)
-        }
-
-        return Rectangle().fill(Color.clear)
-    }
-}
 
 struct LongTextField: View {
     
@@ -418,6 +391,7 @@ struct ContentView_Previews: PreviewProvider {
 struct Popover: View {
     @Binding var selectedDate: Date
     @Binding var toggleIsOn: Bool
+    @Binding var show: Bool
     @State var currentYear = Calendar.current.component(.year, from: Date())
     @Binding var selectedYear : Int
     
@@ -428,10 +402,12 @@ struct Popover: View {
             RoundedRectangle(cornerRadius: 15)
                 .foregroundColor(.middlegroundColor)
                 .frame(maxWidth: .infinity)
-                .frame(height: 360, alignment: .bottom)
+                .frame(height: 425, alignment: .center)
                 .padding(.horizontal)
             
-            VStack(spacing: 0) {
+            VStack(spacing: 10) {
+                
+               
                 
                 if self.toggleIsOn {
                     Picker("", selection: $selectedYear) {
@@ -450,6 +426,7 @@ struct Popover: View {
                     .accentColor(.orangeAccentColor)
                     .labelsHidden()
                     .padding(.horizontal, 30)
+                    .padding(.top, 20)
                     .frame(height: 300)
                 }
                 
@@ -463,11 +440,27 @@ struct Popover: View {
                             })
                         .padding(.horizontal)
                         .padding(.horizontal)
+                        .padding(.bottom, 8)
                         .toggleStyle(SwitchToggleStyle(tint: Color.orangeAccentColor))
-
-                //Change the displaymode of the textfield for mm//dd/yy to dd. month yy
+                
+                HStack{
+                    Image(systemName: "plus")
+                        .font(.system(size: 20))
+                    Text("Add now")
+                        .font(.headline)
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
+                .background(Color.orangeAccentColor)
+                .foregroundColor(Color.textUnchangedColor)
+                .cornerRadius(10)
+                .padding(.horizontal, 25)
+                .onTapGesture {
+                    show.toggle()
+                }
+                
+                
                 //Adjust the birthday text to also grey out if a year only has been selected
-                //Add okay button to check out
+               
                 //use ease in animation
             }
                
