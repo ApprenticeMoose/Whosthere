@@ -273,7 +273,7 @@ struct BirthdayField: View {
      */
     
     func changeOpacity() -> Bool {
-        if Calendar.current.isDateInToday(selectedDate) {
+        if Calendar.current.isDateInToday(selectedDate) && selectedYear == Calendar.current.component(.year, from: Date()) {
             return false
         }
         return true
@@ -460,7 +460,6 @@ struct Popover: View {
                 
                 
                 //Adjust the birthday text to also grey out if a year only has been selected
-               
                 //use ease in animation
             }
                
