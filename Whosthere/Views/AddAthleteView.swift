@@ -463,6 +463,7 @@ struct Popover: View {
                             })
                         .padding(.horizontal)
                         .padding(.horizontal)
+                        .toggleStyle(SwitchToggleStyle(tint: Color.orangeAccentColor))
 
                 //Change the displaymode of the textfield for mm//dd/yy to dd. month yy
                 //Adjust the birthday text to also grey out if a year only has been selected
