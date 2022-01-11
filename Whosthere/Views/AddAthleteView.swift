@@ -14,17 +14,21 @@ struct AddAthleteView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var athletesViewModel: AthletesViewModel
+    
+    //Variables
     @State var firstNameTF = ""
     @State var lastNameTF = ""
     @State var birthDate = Date()
-
-   
-//    @State var birthday = ""
+    @State var selectedYear = Calendar.current.component(.year, from: Date())
     @State var male = false
     @State var female = false
     @State var nonbinary = false
 
-    @State var show: Bool = true
+    //Toggle
+    @State var show: Bool = false
+    @State var toggleIsOn: Bool = false
+    
+    
     
     //MARK: Body
     
@@ -50,7 +54,7 @@ struct AddAthleteView: View {
                         LongTextField(textFieldDescription: "Last Name", firstNameTF: $lastNameTF)
                         
                         HStack {
-                            BirthdayField(show: $show, selectedDate: $birthDate)
+                            BirthdayField(show: $show, selectedDate: $birthDate, toggleIsOn: $toggleIsOn, selectedYear: $selectedYear)
                             GenderButtons(male: $male, female: $female, nonbinary: $nonbinary)
                         }
                         
@@ -84,7 +88,7 @@ struct AddAthleteView: View {
                         .onTapGesture {
                             show.toggle()
                         }
-                    Popover(selectedDate: $birthDate)
+                    Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, selectedYear: $selectedYear)
                     //.offset(x: -25, y: -90)
                 }
             }//ZStackforpopover
@@ -237,7 +241,9 @@ struct BirthdayField: View {
     
     @Binding var selectedDate: Date
     
+    @Binding var toggleIsOn: Bool
     
+    @Binding var selectedYear : Int
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -266,11 +272,19 @@ struct BirthdayField: View {
                     .cornerRadius(10)
                     
                    
-                
-                Text(dateFormatter.string(from: selectedDate))
-                    .font(.body)
-                    .foregroundColor(Color.textColor)
-                    .fontWeight(.semibold)
+                if self.toggleIsOn {
+                    Text(String(selectedYear))
+                        .font(.body)
+                        .foregroundColor(Color.textColor)
+                        .fontWeight(.semibold)
+                }
+                else{
+                    Text(dateFormatter.string(from: selectedDate))
+                        .font(.body)
+                        .foregroundColor(Color.textColor)
+                        .fontWeight(.semibold)
+                    
+                }
                 }
             .onTapGesture {
                 show.toggle()
@@ -403,9 +417,10 @@ struct ContentView_Previews: PreviewProvider {
 
 struct Popover: View {
     @Binding var selectedDate: Date
-    @State var toggleIsOn: Bool = true
-    @State var selection = Date()
+    @Binding var toggleIsOn: Bool
     @State var currentYear = Calendar.current.component(.year, from: Date())
+    @Binding var selectedYear : Int
+    
     
     let endingDate: Date = Date()
     var body: some View {
@@ -419,8 +434,8 @@ struct Popover: View {
             VStack(spacing: 0) {
                 
                 if self.toggleIsOn {
-                    Picker("", selection: $selection) {
-                        ForEach(currentYear...2020, id: \.self) {
+                    Picker("", selection: $selectedYear) {
+                        ForEach(currentYear-100...currentYear, id: \.self) {
                                     Text(String($0))
                                 }
                             }
@@ -449,7 +464,8 @@ struct Popover: View {
                         .padding(.horizontal)
                         .padding(.horizontal)
 
-                //Add Toggle with label show years only...then switch datepicker to .wheel
+                //Change the displaymode of the textfield for mm//dd/yy to dd. month yy
+                //Adjust the birthday text to also grey out if a year only has been selected
                 //Add okay button to check out
                 //use ease in animation
             }
