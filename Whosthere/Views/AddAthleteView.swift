@@ -247,7 +247,7 @@ struct BirthdayField: View {
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
+        formatter.dateStyle = .long
         return formatter
     }
     
