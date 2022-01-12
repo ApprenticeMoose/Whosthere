@@ -140,7 +140,7 @@ struct AddAthleteView: View {
         HStack{
             
             Button(action: {
-                //backbutton
+                presentationMode.wrappedValue.dismiss()
             }){
                 NavigationButton(iconName: "chevron.backward")
             }
@@ -459,8 +459,10 @@ struct Popover: View {
                 }
                 
                 
-                //Adjust the birthday text to also grey out if a year only has been selected
+                //make field clear if current date is shown (DateStyle = .none, or use Color.clear for Text field if it is the current date much like the opacity function
                 //use ease in animation
+                //add messege and detecting if first name is less then 2 characters and disable the add button
+                //workout MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
             }
                
         }
