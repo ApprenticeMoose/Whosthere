@@ -116,24 +116,36 @@ struct AddAthleteView: View {
     }
     
     var profilePicture: some View {
-                      ZStack {
-                          Rectangle()
-                              .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
-                              .foregroundColor(Color.textUnchangedColor)
-                              .clipShape(Circle())
-                              .padding()
-  
-                          Rectangle()
-                              .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
-                              .background(Color.accentColor)
-                              .clipShape(Circle())
-                              .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
-                              .padding()
-                          Image(systemName: "person.fill")
-                              .resizable()
-                              .frame(width: 42, height: 42, alignment: .center)
-                              .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
-                      }
+        ZStack {
+            ZStack {
+                              Rectangle()
+                                  .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
+                                  .foregroundColor(Color.textUnchangedColor)
+                                  .clipShape(Circle())
+                                  .padding()
+      
+                              Rectangle()
+                                  .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
+                                  .clipShape(Circle())
+                                  .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                                  .padding()
+                              Image(systemName: "person.fill")
+                                  .resizable()
+                                  .frame(width: 42, height: 42, alignment: .center)
+                                  .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+            }
+            ZStack{
+            Circle()
+                .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
+                .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
+                .frame(width: 34, height: 34)
+            Image("AddCameraIcon")
+                .resizable()
+                .frame(width: 17, height: 17, alignment: .center)
+                .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+            }
+            .offset(x: 40, y: -30)
+        }
               }
     
     var addAthleteHeader: some View {
@@ -248,13 +260,13 @@ struct BirthdayField: View {
                 if self.toggleIsOn {
                     Text(String(selectedYear))
                         .font(.body)
-                        .foregroundColor(Color.textColor)
+                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
                         .fontWeight(.semibold)
                 }
                 else{
                     Text(dateFormatter.string(from: selectedDate))
                         .font(.body)
-                        .foregroundColor(Color.textColor)
+                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
                         .fontWeight(.semibold)
                     
                 }
@@ -266,17 +278,22 @@ struct BirthdayField: View {
         }
         .padding()
     }
-    /*
-    func fieldEmpty() -> Bool {
-        if
-    }
-     */
     
+    //function to check if the selected date is not today so if another date is selected the birthday header can be grayed out with a tertiary statement in the foregroundcolor modifier
     func changeOpacity() -> Bool {
         if Calendar.current.isDateInToday(selectedDate) && selectedYear == Calendar.current.component(.year, from: Date()) {
             return false
         }
         return true
+    }
+    
+    
+    //function to check if the selected date is not today so the birthdayfield can be clear at the beginning
+    func makeClear() -> Bool {
+        if Calendar.current.isDateInToday(selectedDate) && selectedYear == Calendar.current.component(.year, from: Date()) {
+            return true
+        }
+        return false
     }
 }
 
@@ -367,13 +384,14 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AddAthleteView()
-                .previewDevice("iPhone 11")
+                .previewDevice("iPhone 12 Pro Max")
                 .navigationBarHidden(true)
             AddAthleteView()
+                .previewDevice("iPhone 12")
                 .preferredColorScheme(.dark)
                 .navigationBarHidden(true)
             AddAthleteView()
-                .previewDevice("iPad Pro (12.9-inch) (5th generation)")
+                .previewDevice("IPhone 8")
                 .preferredColorScheme(.dark)
                 .navigationBarHidden(true)
         }
@@ -459,8 +477,9 @@ struct Popover: View {
                 }
                 
                 
-                //make field clear if current date is shown (DateStyle = .none, or use Color.clear for Text field if it is the current date much like the opacity function
-                //use ease in animation
+                
+                //use ease in animation for datepicker popover
+                //create the photo button to add profile picture probably with ZStack and offset modifier
                 //add messege and detecting if first name is less then 2 characters and disable the add button
                 //workout MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
             }
