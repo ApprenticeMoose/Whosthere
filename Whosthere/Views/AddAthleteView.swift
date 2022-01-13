@@ -27,7 +27,8 @@ struct AddAthleteView: View {
     //Toggle
     @State var show: Bool = false
     @State var toggleIsOn: Bool = false
-    
+    @State var showPrompt: Bool = false
+    @State var buttonFarbe : Color = .orangeAccentColor
     
     
     //MARK: Body
@@ -63,15 +64,16 @@ struct AddAthleteView: View {
     //                    Spacer()
     //                        .frame(maxWidth: .infinity)
                         
-                        Button(action: {
-                            if textIsAppropriate() {
-                                addAthletePressed()
-                            }
-                        })      {
-                            BigAddButton(icon: "plus", description: "Add Athlete", textColor: .white, backgroundColor: Color.orangeAccentColor)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                        Spacer()
                         
+                        if self.showPrompt {
+                            Text("Please add first and last name to continue")
+                                .font(.body)
+                                .foregroundColor(Color.textColor)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        addButton
                         
                     }
                     .padding(.top, 20)
@@ -89,7 +91,6 @@ struct AddAthleteView: View {
                             show.toggle()
                         }
                     Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $selectedYear)
-                    //.offset(x: -25, y: -90)
                 }
             }//ZStackforpopover
               
@@ -110,9 +111,37 @@ struct AddAthleteView: View {
         return false
     }
     
+    var buttonDisabledColor: Color {
+        return colorScheme == .light ? .greyTwoColor : .darkModeDisabledButtonColor
+        }
+    
     func addAthletePressed() {
         athletesViewModel.addAthlete(firstName: firstNameTF, lastName: lastNameTF)
         presentationMode.wrappedValue.dismiss()
+    }
+    
+    var addButton: some View{
+        Button(action: {
+           if textIsAppropriate() {
+                addAthletePressed()
+            }
+        })      {
+            HStack{
+                Image(systemName: "plus")
+                    .font(.system(size: 20))
+                Text("Add Athlete")
+                    .font(.headline)
+            }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 55)
+            .background(textIsAppropriate() ? Color.orangeAccentColor : buttonDisabledColor)
+            .foregroundColor(.textUnchangedColor)
+            .cornerRadius(10)
+            .padding()
+                         
+//                                        backgroundColor: textIsAppropriate() ? Color.orangeAccentColor : colorScheme == .light ? .greyTwoColor : .greyOneColor)
+                //.disabled(textIsAppropriate())
+        }
+        .frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
     }
     
     var profilePicture: some View {
@@ -134,18 +163,20 @@ struct AddAthleteView: View {
                                   .frame(width: 42, height: 42, alignment: .center)
                                   .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
             }
-            ZStack{
-            Circle()
-                .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
-                .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
-                .frame(width: 34, height: 34)
-            Image("AddCameraIcon")
-                .resizable()
-                .frame(width: 17, height: 17, alignment: .center)
-                .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+            
+            
+                ZStack{
+                Circle()
+                    .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
+                    .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
+                    .frame(width: 34, height: 34)
+                Image("AddCameraIcon")
+                    .resizable()
+                    .frame(width: 17, height: 17, alignment: .center)
+                    .foregroundColor(.orangeAccentColor)
+                }
+                .offset(x: 40, y: -30)
             }
-            .offset(x: 40, y: -30)
-        }
               }
     
     var addAthleteHeader: some View {
@@ -479,8 +510,7 @@ struct Popover: View {
                 
                 
                 //use ease in animation for datepicker popover
-                //create the photo button to add profile picture probably with ZStack and offset modifier
-                //add messege and detecting if first name is less then 2 characters and disable the add button
+                //add messege and detecting if first name is less then 2 characters and disable the add button maybe sove it with just an timed animation that eases it in and eases it completly out 5seconds later
                 //workout MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
             }
                

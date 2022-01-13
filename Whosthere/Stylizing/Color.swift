@@ -16,5 +16,6 @@ extension Color {
     static let orangeAccentColor = Color("OrangeAccentColor")
     static let textColor = Color("TextColor")
     static let textUnchangedColor = Color("TextUnchangedColor")
+    static let darkModeDisabledButtonColor = Color("DarkModeDisabledButtonColor")
     
 }
