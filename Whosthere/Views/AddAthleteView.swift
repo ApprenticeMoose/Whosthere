@@ -66,13 +66,6 @@ struct AddAthleteView: View {
                         
                         Spacer()
                         
-                        if self.showPrompt {
-                            Text("Please add first and last name to continue")
-                                .font(.body)
-                                .foregroundColor(Color.textColor)
-                                .fontWeight(.semibold)
-                        }
-                        
                         addButton
                         
                     }
@@ -85,13 +78,24 @@ struct AddAthleteView: View {
                 } //ZStack for Popover
                 
             }//VStack to seperate Header and ScreenBody/content
-                if self.show{
-                    Color.black.opacity(0.4).edgesIgnoringSafeArea(.all)
+               
+                ZStack{
+                if self.show {
+                    Color.black
+                        .opacity(0.4)
+                        .edgesIgnoringSafeArea(.all)
                         .onTapGesture {
+                            //withAnimation(.easeOut(duration: 0.5)){
                             show.toggle()
+                            //}
                         }
+                   
                     Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $selectedYear)
+                
                 }
+                }
+                .opacity(self.show ? 1 : 0).animation(.easeIn)
+                
             }//ZStackforpopover
               
         }//ZStack End
@@ -303,7 +307,9 @@ struct BirthdayField: View {
                 }
                 }
             .onTapGesture {
+                //withAnimation(.default){
                 show.toggle()
+                //}
             }
             .frame(height: 44)
         }
@@ -468,6 +474,7 @@ struct Popover: View {
                         .labelsHidden()
                         .padding(.horizontal, 30)
                         .frame(height: 300)
+                        
                 }
                 else{
                 DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
@@ -504,13 +511,15 @@ struct Popover: View {
                 .cornerRadius(10)
                 .padding(.horizontal, 25)
                 .onTapGesture {
+                    //withAnimation(.easeOut(duration: 0.5)){
                     show.toggle()
+                  // }
                 }
                 
                 
-                
-                //use ease in animation for datepicker popover
-                //add messege and detecting if first name is less then 2 characters and disable the add button maybe sove it with just an timed animation that eases it in and eases it completly out 5seconds later
+                //on iphone se the keyboard covers the last name text field...move it up somehow?
+                //https://stackoverflow.com/questions/56491881/move-textfield-up-when-the-keyboard-has-appeared-in-swiftui
+                //fix that view doesnt get pushed out by the picker (use ease in animation for datepicker popover)
                 //workout MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
             }
                
