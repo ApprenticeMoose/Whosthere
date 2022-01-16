@@ -460,7 +460,7 @@ struct Popover: View {
                 .frame(height: 425, alignment: .center)
                 .padding(.horizontal)
             
-            VStack(spacing: 10) {
+            VStack(alignment: .leading ,spacing: 10) {
                 
                
                 
@@ -472,7 +472,7 @@ struct Popover: View {
                             }
                             .pickerStyle(InlinePickerStyle())
                         .labelsHidden()
-                        .padding(.horizontal, 30)
+                        .padding(.horizontal, 20)
                         .frame(height: 300)
                         
                 }
@@ -519,7 +519,6 @@ struct Popover: View {
                 
                 //on iphone se the keyboard covers the last name text field...move it up somehow?
                 //https://stackoverflow.com/questions/56491881/move-textfield-up-when-the-keyboard-has-appeared-in-swiftui
-                //fix that view doesnt get pushed out by the picker (use ease in animation for datepicker popover)
                 //workout MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
             }
                
