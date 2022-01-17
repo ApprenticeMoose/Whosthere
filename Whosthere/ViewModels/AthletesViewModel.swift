@@ -55,7 +55,7 @@ class AthletesViewModel: ObservableObject {
         }
     }
 
-    func deleteAthlete(indexSet: indexSet) {
+    func deleteAthlete(indexSet: IndexSet) {
         //adjust it so it is not always .first, incase there are more entities for example trainingsession entity later on
         guard let index = indexSet.first else {return}
         let entity = savedEntities[index]
