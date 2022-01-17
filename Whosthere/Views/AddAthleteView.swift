@@ -19,10 +19,9 @@ struct AddAthleteView: View {
     @State var firstNameTF = ""
     @State var lastNameTF = ""
     @State var birthDate = Date()
-    @State var selectedYear = Calendar.current.component(.year, from: Date())
-    @State var male = false
-    @State var female = false
-    @State var nonbinary = false
+    @State var birthYear = Calendar.current.component(.year, from: Date())
+    @State var gender = ""
+   
 
     //Toggle
     @State var show: Bool = false
@@ -55,8 +54,8 @@ struct AddAthleteView: View {
                         LongTextField(textFieldDescription: "Last Name", firstNameTF: $lastNameTF)
                         
                         HStack {
-                            BirthdayField(show: $show, selectedDate: $birthDate, toggleIsOn: $toggleIsOn, selectedYear: $selectedYear)
-                            GenderButtons(male: $male, female: $female, nonbinary: $nonbinary)
+                            BirthdayField(show: $show, selectedDate: $birthDate, toggleIsOn: $toggleIsOn, selectedYear: $birthYear)
+                            GenderButtons(gender: $gender)
                         }
                         
                         
@@ -90,7 +89,7 @@ struct AddAthleteView: View {
                             //}
                         }
                    
-                    Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $selectedYear)
+                    Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $birthYear)
                 
                 }
                 }
@@ -340,9 +339,10 @@ struct BirthdayField: View {
 
 struct GenderButtons: View {
     
-    @Binding var male: Bool
-    @Binding var female: Bool
-    @Binding var nonbinary: Bool
+    @Binding var gender : String
+    @State var male = false
+    @State var female = false
+    @State var nonbinary = false
     
     var body: some View{
         VStack(alignment: .leading){
@@ -359,6 +359,7 @@ struct GenderButtons: View {
             HStack {
                 //Buttons for gender
                 Button(action: {
+                    gender = "male"
                     male.toggle()
                     female = false
                     nonbinary = false
@@ -374,6 +375,7 @@ struct GenderButtons: View {
                 }
                 
                 Button(action: {
+                    gender = "female"
                     female.toggle()
                     male = false
                     nonbinary = false
@@ -389,6 +391,7 @@ struct GenderButtons: View {
                 }
                 
                 Button(action: {
+                    gender = "nonbinary"
                     nonbinary.toggle()
                     male = false
                     female = false
