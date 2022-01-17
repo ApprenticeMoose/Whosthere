@@ -233,6 +233,7 @@ struct LongTextField: View {
                 .padding(.horizontal, 10)
             
             TextField("", text: $firstNameTF)
+                .autocapitalization(.words)
                 .padding(.vertical, 10)
                 .padding(.horizontal)
                 .background(Color.middlegroundColor)
@@ -240,6 +241,8 @@ struct LongTextField: View {
                 .frame(height:44)
                 .cornerRadius(10)
                 .font(.headline)
+                
+                //.textInputAutocapitalization(.words)
         }
         .padding()
         .navigationBarHidden(true)
@@ -517,9 +520,7 @@ struct Popover: View {
                 }
                 
                 
-                //on iphone se the keyboard covers the last name text field...move it up somehow?
-                //https://stackoverflow.com/questions/56491881/move-textfield-up-when-the-keyboard-has-appeared-in-swiftui
-                //workout MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
+               
             }
                
         }
@@ -527,3 +528,15 @@ struct Popover: View {
         
     }
 }
+
+/*
+1. on iphone se the keyboard covers the last name text field...move it up somehow?
+ ->
+https://stackoverflow.com/questions/56491881/move-textfield-up-when-the-keyboard-has-appeared-in-swiftui
+ 
+2.Capitailze first letter of name for good
+ ->
+ https://stackoverflow.com/questions/34558515/trying-to-capitalize-the-first-letter-of-each-word-in-a-text-field-using-swift#34558603
+ 
+3. work out MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
+ */
