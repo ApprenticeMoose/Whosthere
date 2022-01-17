@@ -4,32 +4,62 @@
 //
 //  Created by Moose on 13.12.21.
 //
-
 import Foundation
+import CoreData
 
 class AthletesViewModel: ObservableObject {
+    
+    let container : NSPersistentContainer
+    @Published var savedEntities: [AthletesEntity] = []
     
     @Published var athletes: [AthletesModel] = []
     
     init() {
-       getAthletes()
+        container = NSPersistentContainer(name: "AthletesContainer")
+        container.loadPersistentStores { description, error in
+            if let error = error {
+                print("error loading coredata: \(error)")
+            }
+            else {
+                print("Successfully loaded core data")
+            }
+        }
+        fetchAthletes()
     }
     
-    func getAthletes() {
-        let newAthletes = [
-            AthletesModel(firstName: "Noah", lastName: "Martinez Berger"),
-            AthletesModel(firstName: "Asbat", lastName: "Ouro-Body"),
-            AthletesModel(firstName: "Viktor", lastName: "Kusmanow")
-        ]
-        athletes.append(contentsOf: newAthletes)
+    func fetchAthletes(){
+        let request = NSFetchRequest<AthletesEntity>(entityName: "AthletesEntity")
+        
+        do {
+            savedEntities = try container.viewContext.fetch(request)
+        } catch let error {
+            print("Error fetching \(error)")
+        }
     }
     
-    func deleteAthlete(indexSet: IndexSet) {
-        athletes.remove(atOffsets: indexSet)
+    func addAthlete(firstName: String, lastName: String, birthDate: Date, gender: String) {
+        let newAthlete = AthletesEntity(context: container.viewContext)
+        newAthlete.firstname = firstName
+        newAthlete.lastname = lastName
+        newAthlete.birthdate = birthDate
+        newAthlete.gender = gender
+        saveData()
     }
     
-    func addAthlete(firstName: String, lastName: String) {
-        let newAthlete = AthletesModel(firstName: firstName, lastName: lastName)
-        athletes.append(newAthlete)
+    func saveData() {
+        do {
+        try container.viewContext.save()
+            fetchAthletes()
+        } catch let error {
+            print("Error saving. \(error)")
+        }
+    }
+
+    func deleteAthlete(indexSet: indexSet) {
+        //adjust it so it is not always .first, incase there are more entities for example trainingsession entity later on
+        guard let index = indexSet.first else {return}
+        let entity = savedEntities[index]
+        container.viewContext.delete(entity)
     }
 }
+

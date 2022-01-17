@@ -13,6 +13,8 @@ struct AddAthleteView: View {
 
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    
+    
     @EnvironmentObject var athletesViewModel: AthletesViewModel
     
     //Variables
@@ -119,7 +121,7 @@ struct AddAthleteView: View {
         }
     
     func addAthletePressed() {
-        athletesViewModel.addAthlete(firstName: firstNameTF, lastName: lastNameTF)
+        athletesViewModel.addAthlete(firstName: firstNameTF, lastName: lastNameTF, birthDate: birthDate, gender: gender)
         presentationMode.wrappedValue.dismiss()
     }
     

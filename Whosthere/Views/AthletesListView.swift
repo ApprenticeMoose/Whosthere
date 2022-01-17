@@ -49,8 +49,8 @@ struct AthletesListView: View {
     
     var athletesList: some View {
         List{
-            ForEach(athletesViewModel.athletes) {athlete in
-               AthleteListRowView(athlete: athlete)
+            ForEach(athletesViewModel.savedEntities) {athlete in
+               ListRowView(athlete: athlete)
                     .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
                     .listRowBackground(Color.middlegroundColor)
                     //.listRowSeperator(.hidden)->need update
@@ -70,19 +70,39 @@ struct AthletesListView: View {
     
 }//Struct
 
-
-struct AthletesListView_Previews: PreviewProvider {
-    static var previews: some View {
-            Group{
-            AthletesListView()
-                .navigationBarHidden(true)
-            AthletesListView()
-                .navigationBarHidden(true)
-                .preferredColorScheme(.dark)
-            }
-        .environmentObject(AthletesViewModel())
+struct ListRowView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    let athlete: AthletesEntity
+    
+    var body: some View {
+        HStack {
+            emptyProfilePicture
+            
+            Text(athlete.firstname ?? "No Name")
+                .font(.title3)
+            Spacer()
+        }
+        .padding(.vertical, 5)
+    }
+    
+    
+    
+    var emptyProfilePicture: some View {
+        ZStack {
+            Circle()
+                .frame(width: 40, height: 40)
+                .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                .padding(.horizontal, 10)
+            Image(systemName: "person.fill")
+                .resizable()
+                .frame(width: 20, height: 20, alignment: .center)
+                .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+        }
     }
 }
+
 
 extension AthletesListView {
     
