@@ -121,7 +121,7 @@ struct AddAthleteView: View {
         }
     
     func addAthletePressed() {
-        athletesViewModel.addAthlete(firstName: firstNameTF, lastName: lastNameTF, birthDate: birthDate, gender: gender)
+        athletesViewModel.addAthlete(firstName: firstNameTF, lastName: lastNameTF, birthday: birthDate, birthyear: birthYear, gender: gender)
         presentationMode.wrappedValue.dismiss()
     }
     
@@ -521,6 +521,7 @@ struct Popover: View {
                 .onTapGesture {
                     //withAnimation(.easeOut(duration: 0.5)){
                     show.toggle()
+                    print(selectedDate)
                   // }
                 }
                 

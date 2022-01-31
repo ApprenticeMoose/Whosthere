@@ -11,8 +11,7 @@ struct AthletesModel: Identifiable {
     let id: String = UUID().uuidString
     let firstName: String
     let lastName: String
-//    let birthday: Date
-//    let male: Bool
-//    let female: Bool
-//    let nonbinary: Bool
+    let birthday: Date
+    let birthyear: Int
+    let gender: String
 }

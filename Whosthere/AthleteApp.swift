@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct AthleteApp: App {
     
-    @StateObject var athletesViewModel: AthletesViewModel = AthletesViewModel()
+    @StateObject private var athletesViewModel = AthletesViewModel()
     
     var body: some Scene {
         WindowGroup {

@@ -9,57 +9,74 @@ import CoreData
 
 class AthletesViewModel: ObservableObject {
     
-    let container : NSPersistentContainer
-    @Published var savedEntities: [AthletesEntity] = []
-    
-    @Published var athletes: [AthletesModel] = []
+    @Published var allAthletes: [AthletesModel] = []
     
     init() {
-        container = NSPersistentContainer(name: "AthletesContainer")
-        container.loadPersistentStores { description, error in
-            if let error = error {
-                print("error loading coredata: \(error)")
-            }
-            else {
-                print("Successfully loaded core data")
-            }
-        }
-        fetchAthletes()
+        getAthletes()
     }
     
-    func fetchAthletes(){
-        let request = NSFetchRequest<AthletesEntity>(entityName: "AthletesEntity")
-        
-        do {
-            savedEntities = try container.viewContext.fetch(request)
-        } catch let error {
-            print("Error fetching \(error)")
-        }
+    func getAthletes() {
+        let newAthlete = AthletesModel(firstName: "Mustafa", lastName: "Acar", birthday: .init(timeIntervalSince1970: 893796436), birthyear: 1998, gender: "male")
+        allAthletes.append(newAthlete)
     }
     
-    func addAthlete(firstName: String, lastName: String, birthDate: Date, gender: String) {
-        let newAthlete = AthletesEntity(context: container.viewContext)
-        newAthlete.firstname = firstName
-        newAthlete.lastname = lastName
-        newAthlete.birthdate = birthDate
-        newAthlete.gender = gender
-        saveData()
-    }
-    
-    func saveData() {
-        do {
-        try container.viewContext.save()
-            fetchAthletes()
-        } catch let error {
-            print("Error saving. \(error)")
-        }
-    }
-
-    func deleteAthlete(indexSet: IndexSet) {
-        //adjust it so it is not always .first, incase there are more entities for example trainingsession entity later on
-        guard let index = indexSet.first else {return}
-        let entity = savedEntities[index]
-        container.viewContext.delete(entity)
+    func addAthlete(firstName: String, lastName: String, birthday: Date, birthyear: Int, gender: String) {
+        let newAthlete = AthletesModel(firstName: firstName, lastName: lastName, birthday: birthday, birthyear: birthyear, gender: gender)
+        allAthletes.append(newAthlete)
     }
 }
 
+//old Coredata entity thing
+/*
+let container : NSPersistentContainer
+@Published var savedEntities: [AthletesEntity] = []
+
+@Published var athletes: [AthletesModel] = []
+
+init() {
+    container = NSPersistentContainer(name: "AthletesContainer")
+    container.loadPersistentStores { description, error in
+        if let error = error {
+            print("error loading coredata: \(error)")
+        }
+        else {
+            print("Successfully loaded core data")
+        }
+    }
+    fetchAthletes()
+}
+
+func fetchAthletes(){
+    let request = NSFetchRequest<AthletesEntity>(entityName: "AthletesEntity")
+    
+    do {
+        savedEntities = try container.viewContext.fetch(request)
+    } catch let error {
+        print("Error fetching \(error)")
+    }
+}
+
+func addAthlete(firstName: String, lastName: String, birthDate: Date, gender: String) {
+    let newAthlete = AthletesEntity(context: container.viewContext)
+    newAthlete.firstname = firstName
+    newAthlete.lastname = lastName
+    newAthlete.birthdate = birthDate
+    newAthlete.gender = gender
+    saveData()
+}
+
+func saveData() {
+    do {
+    try container.viewContext.save()
+        fetchAthletes()
+    } catch let error {
+        print("Error saving. \(error)")
+    }
+}
+
+func deleteAthlete(indexSet: IndexSet) {
+    //adjust it so it is not always .first, incase there are more entities for example trainingsession entity later on
+    guard let index = indexSet.first else {return}
+    let entity = savedEntities[index]
+    container.viewContext.delete(entity)
+}*/

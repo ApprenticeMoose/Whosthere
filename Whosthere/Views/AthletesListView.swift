@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AthletesListView: View {
     
-    @EnvironmentObject var athletesViewModel: AthletesViewModel
+    @EnvironmentObject private var vm: AthletesViewModel
     
     
     
@@ -49,12 +49,20 @@ struct AthletesListView: View {
     
     var athletesList: some View {
         List{
-            ForEach(athletesViewModel.savedEntities) {athlete in
-               ListRowView(athlete: athlete)
-                    .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
-                    .listRowBackground(Color.middlegroundColor)
-                    //.listRowSeperator(.hidden)->need update
+            ForEach(vm.allAthletes) { athlete in
+                NavigationLink {
+                    AthleteDetailView(athlete: athlete)
+                } label: {
+                    ListRowView(athlete: athlete)
+                            .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
+                            .listRowBackground(Color.middlegroundColor)
+                            //.listRowSeperator(.hidden)->need update
+                }
+
+               
             }
+            
+            
         }
         .listStyle(InsetGroupedListStyle())
        
@@ -74,13 +82,14 @@ struct ListRowView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    let athlete: AthletesEntity
+    //changes may be needed
+    let athlete: AthletesModel
     
     var body: some View {
         HStack {
             emptyProfilePicture
             
-            Text(athlete.firstname ?? "No Name")
+            Text(athlete.firstName)
                 .font(.title3)
             Spacer()
         }
@@ -143,3 +152,11 @@ extension AthletesListView {
     }
 }
 
+struct AthletesListView_Previews: PreviewProvider {
+    static var previews: some View {
+        AthletesListView()
+            .navigationBarHidden(true)
+            .environmentObject(dev.athletesVM)
+    }
+   
+}

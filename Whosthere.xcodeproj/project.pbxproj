@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BC3212F12750E989001A689E /* CustomShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3212F02750E989001A689E /* CustomShape.swift */; };
 		BC3212F62750EFA7001A689E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3212F52750EFA6001A689E /* Color.swift */; };
+		BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */; };
 		BC3F25512760D1A800465551 /* FrameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F25502760D1A800465551 /* FrameButton.swift */; };
 		BC3F25572767B3EC00465551 /* AthletesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F25562767B3EC00465551 /* AthletesModel.swift */; };
 		BC3F255C2767C1F000465551 /* AthletesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F255B2767C1F000465551 /* AthletesViewModel.swift */; };
@@ -17,16 +18,17 @@
 		BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC409A5C27493F980096CD12 /* AthleteApp.swift */; };
 		BC409A6127493F9B0096CD12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6027493F9B0096CD12 /* Assets.xcassets */; };
 		BC409A6427493F9B0096CD12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */; };
-		BC798DB9278B85C70022881E /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC798DB8278B85C70022881E /* Popover.swift */; };
 		BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */; };
 		BCA3A78F275E0496003D5F1C /* NavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A78E275E0496003D5F1C /* NavigationButton.swift */; };
 		BCA3A794275E1839003D5F1C /* ScreenHeaderTextOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A793275E1838003D5F1C /* ScreenHeaderTextOnly.swift */; };
 		BCACA6542795F65600B65314 /* AthletesContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BCACA6522795F65600B65314 /* AthletesContainer.xcdatamodeld */; };
+		BCBE870C279CA0E600748358 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBE870B279CA0E600748358 /* PreviewProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BC3212F02750E989001A689E /* CustomShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomShape.swift; sourceTree = "<group>"; };
 		BC3212F52750EFA6001A689E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailView.swift; sourceTree = "<group>"; };
 		BC3F25502760D1A800465551 /* FrameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameButton.swift; sourceTree = "<group>"; };
 		BC3F25562767B3EC00465551 /* AthletesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesModel.swift; sourceTree = "<group>"; };
 		BC3F255B2767C1F000465551 /* AthletesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesViewModel.swift; sourceTree = "<group>"; };
@@ -37,11 +39,11 @@
 		BC409A6027493F9B0096CD12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BC409A6527493F9B0096CD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BC798DB8278B85C70022881E /* Popover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListView.swift; sourceTree = "<group>"; };
 		BCA3A78E275E0496003D5F1C /* NavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButton.swift; sourceTree = "<group>"; };
 		BCA3A793275E1838003D5F1C /* ScreenHeaderTextOnly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeaderTextOnly.swift; sourceTree = "<group>"; };
 		BCACA6532795F65600B65314 /* AthletesContainer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AthletesContainer.xcdatamodel; sourceTree = "<group>"; };
+		BCBE870B279CA0E600748358 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +97,7 @@
 				BC3F25552767B39E00465551 /* Models */,
 				BC3F255A2767C1C000465551 /* ViewModels */,
 				BCA3A77F275BB2C6003D5F1C /* Views */,
-				BC798DB7278B85AD0022881E /* Functionalities */,
+				BC798DB7278B85AD0022881E /* Extensions */,
 				BCA3A789275E034A003D5F1C /* Components */,
 				BC4DA004278A2CA80064A350 /* Stylizing */,
 				BC409A6027493F9B0096CD12 /* Assets.xcassets */,
@@ -132,12 +134,12 @@
 			path = Stylizing;
 			sourceTree = "<group>";
 		};
-		BC798DB7278B85AD0022881E /* Functionalities */ = {
+		BC798DB7278B85AD0022881E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BC798DB8278B85C70022881E /* Popover.swift */,
+				BCBE870B279CA0E600748358 /* PreviewProvider.swift */,
 			);
-			path = Functionalities;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BCA3A77F275BB2C6003D5F1C /* Views */ = {
@@ -145,6 +147,7 @@
 			children = (
 				BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */,
 				BC3F2576276C9A4700465551 /* AddAthleteView.swift */,
+				BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -154,16 +157,8 @@
 			children = (
 				BCA3A793275E1838003D5F1C /* ScreenHeaderTextOnly.swift */,
 				BC4DA003278A265C0064A350 /* Buttons */,
-				BCA3A78A275E038D003D5F1C /* List */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		BCA3A78A275E038D003D5F1C /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,12 +237,13 @@
 				BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */,
 				BCA3A78F275E0496003D5F1C /* NavigationButton.swift in Sources */,
 				BC3F25572767B3EC00465551 /* AthletesModel.swift in Sources */,
+				BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */,
 				BC3F255C2767C1F000465551 /* AthletesViewModel.swift in Sources */,
 				BC3F25512760D1A800465551 /* FrameButton.swift in Sources */,
-				BC798DB9278B85C70022881E /* Popover.swift in Sources */,
 				BC3F2577276C9A4700465551 /* AddAthleteView.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 				BCACA6542795F65600B65314 /* AthletesContainer.xcdatamodeld in Sources */,
+				BCBE870C279CA0E600748358 /* PreviewProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
