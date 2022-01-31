@@ -11,7 +11,8 @@ struct AthletesListView: View {
     
     @EnvironmentObject private var vm: AthletesViewModel
     
-    
+    @State private var selectedAthlete: AthletesModel? = nil
+    @State private var showDetailView: Bool = false
     
     var body: some View {
         
@@ -42,6 +43,11 @@ struct AthletesListView: View {
                 
             }//VStack to seperate header and bodysheet
         }//ZStack for background
+        .background(
+            NavigationLink(destination: AthleteDetailLoadingView(athlete: $selectedAthlete),
+                           isActive: $showDetailView,
+                           label: { EmptyView() })
+        )
     }//Body
     
     
@@ -50,16 +56,13 @@ struct AthletesListView: View {
     var athletesList: some View {
         List{
             ForEach(vm.allAthletes) { athlete in
-                NavigationLink {
-                    AthleteDetailView(athlete: athlete)
-                } label: {
                     ListRowView(athlete: athlete)
                             .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
                             .listRowBackground(Color.middlegroundColor)
+                            .onTapGesture {
+                                segue(athlete: athlete)
+                            }
                             //.listRowSeperator(.hidden)->need update
-                }
-
-               
             }
             
             
@@ -68,6 +71,11 @@ struct AthletesListView: View {
        
         
     } //AthletesListView
+    
+    private func segue(athlete: AthletesModel) {
+        selectedAthlete = athlete
+        showDetailView.toggle()
+    }
     
     //initializer for adjusting List View
     init() {
@@ -94,6 +102,9 @@ struct ListRowView: View {
             Spacer()
         }
         .padding(.vertical, 5)
+        .background(
+            Color.white.opacity(0.001)
+        )
     }
     
     
