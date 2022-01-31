@@ -190,7 +190,7 @@ struct AddAthleteView: View {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }){
-                NavigationButton(iconName: "chevron.backward")
+                NavigationButtonSystemName(iconName: "chevron.backward")
             }
             
             Spacer(minLength: 0)
@@ -205,7 +205,7 @@ struct AddAthleteView: View {
             Button(action: {
                 addAthletePressed()
             }){
-                NavigationButton(iconName: "checkmark")
+                NavigationButtonSystemName(iconName: "checkmark")
             }//Button
         }//HeaderHStackEnding
         .padding()

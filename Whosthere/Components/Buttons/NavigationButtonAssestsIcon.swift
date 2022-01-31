@@ -1,18 +1,17 @@
 //
-//  NavigationButton.swift
-//  Photopickertest
+//  NavigationButtonAssestsIcon.swift
+//  Whosthere
 //
-//  Created by Moose on 06.12.21.
+//  Created by Moose on 31.01.22.
 //
 
 import SwiftUI
 
-struct NavigationButton: View {
-    
+struct NavigationButtonAssestsIcon: View {
     let iconName: String
     
     var body: some View {
-       Image(systemName: iconName)
+       Image(iconName)
         .font(.headline)
         .foregroundColor(.accentColor)
         .frame(width: 30, height: 30)
@@ -26,9 +25,9 @@ struct NavigationButton: View {
     }
 }
 
-struct NavigationButton_Previews: PreviewProvider {
+struct NavigationButtonAssestsIcon_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationButton(iconName: "plus")
+        NavigationButtonAssestsIcon(iconName: "PenIcon")
             .padding()
             .previewLayout(.sizeThatFits)
     }
