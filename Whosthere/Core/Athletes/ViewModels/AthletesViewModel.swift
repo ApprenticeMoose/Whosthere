@@ -11,20 +11,25 @@ class AthletesViewModel: ObservableObject {
     
     @Published var allAthletes: [AthletesModel] = []
     
+    
+    //Initializes the athlete when App is started/Screen is origanally loaded
     init() {
         getAthletes()
     }
     
+    //loads sample athlete into Athletes model array
     func getAthletes() {
         let newAthlete = AthletesModel(firstName: "Mustafa", lastName: "Acar", birthday: .init(timeIntervalSince1970: 893796436), birthyear: 1998, gender: "male")
         allAthletes.append(newAthlete)
     }
     
+    //appends athlete to Athletes Model Array
     func addAthlete(firstName: String, lastName: String, birthday: Date, birthyear: Int, gender: String) {
         let newAthlete = AthletesModel(firstName: firstName, lastName: lastName, birthday: birthday, birthyear: birthyear, gender: gender)
         allAthletes.append(newAthlete)
     }
-}
+    
+}//class end
 
 //old Coredata entity thing
 /*

@@ -120,6 +120,17 @@ struct AddAthleteView: View {
         return colorScheme == .light ? .greyTwoColor : .darkModeDisabledButtonColor
         }
     
+    
+    //function to adjust the year variable according to the selected birthdate variable->is called when add athlete button is pressed
+    func getBirthYear() -> Int {
+        if birthDate != Date()
+            {
+                birthYear = Calendar.current.component(.year, from: birthDate)
+            }
+        return birthYear
+    }
+    
+    //function that connects all the selected variables to the model via the viewmodel and closes view afterwards
     func addAthletePressed() {
         athletesViewModel.addAthlete(firstName: firstNameTF, lastName: lastNameTF, birthday: birthDate, birthyear: birthYear, gender: gender)
         presentationMode.wrappedValue.dismiss()
@@ -127,10 +138,12 @@ struct AddAthleteView: View {
     
     var addButton: some View{
         Button(action: {
-           if textIsAppropriate() {
+           if textIsAppropriate()
+            {
+                birthYear = getBirthYear()
                 addAthletePressed()
             }
-        })      {
+        }){
             HStack{
                 Image(systemName: "plus")
                     .font(.system(size: 20))
@@ -142,9 +155,6 @@ struct AddAthleteView: View {
             .foregroundColor(.textUnchangedColor)
             .cornerRadius(10)
             .padding()
-                         
-//                                        backgroundColor: textIsAppropriate() ? Color.orangeAccentColor : colorScheme == .light ? .greyTwoColor : .greyOneColor)
-                //.disabled(textIsAppropriate())
         }
         .frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
     }
@@ -152,25 +162,26 @@ struct AddAthleteView: View {
     var profilePicture: some View {
         ZStack {
             ZStack {
-                              Rectangle()
-                                  .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
-                                  .foregroundColor(Color.textUnchangedColor)
-                                  .clipShape(Circle())
-                                  .padding()
-      
-                              Rectangle()
-                                  .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
-                                  .clipShape(Circle())
-                                  .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
-                                  .padding()
-                              Image(systemName: "person.fill")
-                                  .resizable()
-                                  .frame(width: 42, height: 42, alignment: .center)
-                                  .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
-            }
+                Rectangle()
+                    .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
+                    .foregroundColor(Color.textUnchangedColor)
+                    .clipShape(Circle())
+                    .padding()
+                
+                Rectangle()
+                    .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
+                    .clipShape(Circle())
+                    .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                    .padding()
+                
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .frame(width: 42, height: 42, alignment: .center)
+                    .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+                }
             
             
-                ZStack{
+            ZStack{
                 Circle()
                     .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
                     .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
@@ -182,7 +193,7 @@ struct AddAthleteView: View {
                 }
                 .offset(x: 40, y: -30)
             }
-              }
+          }
     
     var addAthleteHeader: some View {
         HStack{
@@ -209,10 +220,7 @@ struct AddAthleteView: View {
             }//Button
         }//HeaderHStackEnding
         .padding()
-        
     }
-    
-    
 }//Struct End
 
 
@@ -303,11 +311,13 @@ struct BirthdayField: View {
                         .fontWeight(.semibold)
                 }
                 else{
+                    VStack{
                     Text(dateFormatter.string(from: selectedDate))
                         .font(.body)
                         .foregroundColor(makeClear() ? Color.clear : Color.textColor)
                         .fontWeight(.semibold)
-                    
+                    }
+//                    .onAppear(perform: selectedYear = Calendar.current.component(.year, from: selectedDate))
                 }
                 }
             .onTapGesture {
@@ -336,6 +346,18 @@ struct BirthdayField: View {
         }
         return false
     }
+    
+    func getBirthYear() -> Int {
+        if selectedDate != Date() {
+            selectedYear = Calendar.current.component(.year, from: selectedDate)
+        }
+        
+    return selectedYear
+    }
+//    func getBirthyear(dateOfBirth: Date) -> Int {
+//        let yearOfBirth:Int = Calendar.current.component(.year, from: dateOfBirth)
+//        return yearOfBirth
+//    }
 }
 
 
@@ -345,6 +367,7 @@ struct GenderButtons: View {
     @State var male = false
     @State var female = false
     @State var nonbinary = false
+
     
     var body: some View{
         VStack(alignment: .leading){
@@ -419,6 +442,7 @@ struct GenderButtons: View {
         return false
     }
     
+
 }
 
 

@@ -12,6 +12,8 @@ struct AthleteDetailLoadingView: View {
     
     @Binding var athlete: AthletesModel?
     
+  
+    
     var body: some View {
         ZStack{
             if let athlete = athlete {
@@ -26,6 +28,12 @@ struct AthleteDetailView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    
+    @State private var birthToggle: Bool = false
+    @State private var opacity: Double = 1
+    
+    @State private var selectedAthlete: AthletesModel? = nil
+    @State private var showDetailView: Bool = false
     
     let athlete: AthletesModel
     
@@ -45,58 +53,62 @@ struct AthleteDetailView: View {
         ZStack{
             Color.backgroundColor.edgesIgnoringSafeArea(.all)
             
-        VStack{
-            //Header
-            ZStack(alignment: .top){
-                Color.accentColor
-                    .cornerRadius(20)
-                    .ignoresSafeArea()
-                VStack (spacing: UIScreen.main.bounds.height/25){
-                    ZStack(alignment:.top){
+            VStack{
+                //Header
+                VStack{
                     AthleteDetailHeaderButtons
+                        .padding(.bottom, -10)
                     profilePicture
-                            .offset(y: UIScreen.main.bounds.height/30)
-                    }
-                    
-                    VStack(spacing: UIScreen.main.bounds.height/35){
-                        HStack {
-                            Text(athlete.firstName)
-                            Text(athlete.lastName)
-                        }
-                        .font(.title3)
-                        .foregroundColor(Color.textUnchangedColor)
-                        
-                        Text(dateFormatter.string(from: athlete.birthday))
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(Color.textUnchangedColor)
-                    }
-                    Spacer().frame(height:15)
+                        .padding(.top, -20)
+                        .padding(.bottom, -10)
+                
+                    nameAndBirthday
+                
                 }
-                .padding(0)
-                
-                
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: UIScreen.main.bounds.height/3.6)
-            
-            Spacer()
-            
-           
-                
-                
-            
-            Spacer()
-            
-            }
-            
-            
-            
-            
-            
+                .background(Color.accentColor
+                                .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
+                                .edgesIgnoringSafeArea(.top))
+                Spacer()
         }
-            }
+            
+            }//end of ZStack for Color
+        .background(
+            NavigationLink(destination: EditAthleteLoadingView(athlete: $selectedAthlete),
+                           isActive: $showDetailView,
+                           label: { EmptyView() }))
+        .navigationBarHidden(true)
+        }//end of Body
     
+            
+       
+    
+    
+    
+    var nameAndBirthday: some View {
+        VStack(spacing: UIScreen.main.bounds.height/70){
+            HStack {
+                Text(athlete.firstName)
+                    .font(.title3)
+                    .fontWeight(.bold)
+                Text(athlete.lastName)
+                    .font(.title3)
+                    .fontWeight(.bold)
+            }
+
+            .foregroundColor(Color.textUnchangedColor)
+            
+            Text(birthToggle == false ? "\(String(describing: athlete.birthyear))" : dateFormatter.string(from: athlete.birthday))
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(Color.textUnchangedColor)
+                .onTapGesture {
+                   withAnimation(.easeOut){
+                    birthToggle.toggle()
+                }
+        }
+        .padding(.bottom, 15)
+    }
+    }
     
     var AthleteDetailHeaderButtons: some View {
         HStack(){
@@ -112,27 +124,37 @@ struct AthleteDetailView: View {
             
             Spacer(minLength: 0)
             
+            
             Button(action: {
-                
+                segue(athlete: athlete)
             }){
                 NavigationButtonAssestsIcon(iconName: "PenIcon")
-            }//Button
+            }
+                    
+                
+                                
+           
         }//HeaderHStackEnding
         .padding()
         
+    }
+    
+    private func segue(athlete: AthletesModel) {
+        selectedAthlete = athlete
+        showDetailView.toggle()
     }
     
     var profilePicture: some View {
         
         ZStack {
             Rectangle()
-                .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
+                .frame(minWidth: 120, maxWidth: 120, minHeight: 120, maxHeight: 120)
                 .foregroundColor(Color.textUnchangedColor)
                 .clipShape(Circle())
                 .padding()
             
             Rectangle()
-                .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
+                .frame(minWidth: 0, maxWidth: 114, minHeight: 0, maxHeight: 114)
                 .clipShape(Circle())
                 .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
                 .padding()
@@ -152,14 +174,7 @@ struct AthleteDetailView_Previews: PreviewProvider {
             AthleteDetailView(athlete: dev.athlete)
                 .previewDevice("iPhone 12 Pro Max")
                 .navigationBarHidden(true)
-            AthleteDetailView(athlete: dev.athlete)
-                .previewDevice("iPhone 12")
-                .preferredColorScheme(.dark)
-                .navigationBarHidden(true)
-            AthleteDetailView(athlete: dev.athlete)
-                .previewDevice("IPhone 8")
-                .preferredColorScheme(.dark)
-                .navigationBarHidden(true)
+          
             
         }
         
