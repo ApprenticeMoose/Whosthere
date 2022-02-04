@@ -97,6 +97,25 @@ struct AthleteDetailView: View {
 
             .foregroundColor(Color.textUnchangedColor)
             
+            if Calendar.current.component(.year, from: Date()) == athlete.birthyear {
+                HStack{
+                    Text("Add birthday")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.textUnchangedColor)
+                        .opacity(0.7)
+
+                    Image("PenIcon")
+                        .foregroundColor(Color.textUnchangedColor)
+                        .opacity(0.7)
+                        .padding(.horizontal, -3)
+                }
+                    .onTapGesture {
+                        segue(athlete: athlete)
+            }
+            .padding(.bottom, 15)
+            }
+            else if Calendar.current.component(.year, from: athlete.birthday) == athlete.birthyear {
             Text(birthToggle == false ? "\(String(describing: athlete.birthyear))" : dateFormatter.string(from: athlete.birthday))
                 .font(.subheadline)
                 .fontWeight(.semibold)
@@ -107,7 +126,19 @@ struct AthleteDetailView: View {
                 }
         }
         .padding(.bottom, 15)
-    }
+            } else {
+                Text("\(String(describing: athlete.birthyear))")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color.textUnchangedColor)
+                    .onTapGesture {
+                       withAnimation(.easeOut){
+                        birthToggle.toggle()
+                    }
+            }
+            .padding(.bottom, 15)
+            }
+        }
     }
     
     var AthleteDetailHeaderButtons: some View {
