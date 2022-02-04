@@ -29,6 +29,10 @@ class AthletesViewModel: ObservableObject {
         allAthletes.append(newAthlete)
     }
     
+    func deleteAthlete(indexSet: IndexSet){
+        allAthletes.remove(atOffsets: indexSet)
+    }
+    
 }//class end
 
 //old Coredata entity thing

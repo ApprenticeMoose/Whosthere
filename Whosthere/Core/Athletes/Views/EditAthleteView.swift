@@ -41,6 +41,9 @@ struct EditAthleteView: View {
     @State var birthDate:Date
     @State var birthYear:Int
     @State var gender:String
+    @State var male = false
+    @State var female = false
+    @State var nonbinary = false
    
 
     init(athlete: AthletesModel) {
@@ -50,6 +53,15 @@ struct EditAthleteView: View {
         self._birthDate = State(wrappedValue: athlete.birthday)
         self._birthYear = State(wrappedValue: athlete.birthyear)
         self._gender = State(wrappedValue: athlete.gender)
+        
+        if gender.contains("male") {
+            self._male = State(wrappedValue: true)
+           print("male is included")
+        } else if gender.contains("female") {
+            self._female = State(wrappedValue: true)
+        } else if gender.contains("nonbinary") {
+            self._nonbinary = State(wrappedValue: true)
+        }
         print("Initializing Edit View for: \(String(describing: athlete.firstName))")
     }
     
@@ -85,15 +97,20 @@ struct EditAthleteView: View {
                         
                         HStack {
                             BirthdayField(show: $show, selectedDate: $birthDate, toggleIsOn: $toggleIsOn, selectedYear: $birthYear)
-                            EditGenderButtons(gender: $gender)
+                            EditGenderButtons(gender: $gender, male: $male, female: $female, nonbinary: $nonbinary)
                         }
                         
+                        Spacer()
+                        Spacer()
+                        
+                        archiveButton
+                        deleteButton
                         
                         //Spacer to define the body-sheets size
     //                    Spacer()
     //                        .frame(maxWidth: .infinity)
                         
-                        Spacer()
+                        Spacer(minLength: 25)
                         
                         
                         
@@ -196,6 +213,60 @@ struct EditAthleteView: View {
         
     }
     
+    var deleteButton: some View{
+        Button(action: {
+           //add delete function
+        }){
+            HStack{
+                HStack{
+                Image(systemName: "trash")
+                    .font(.system(size: 20))
+                    .padding(.horizontal, 5)
+                Text("Delete")
+                    .font(.headline)
+                }.padding(.horizontal)
+                Spacer()
+            }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
+            .background(Color.middlegroundColor)
+            .foregroundColor(.red)
+            .cornerRadius(10)
+            .padding(.horizontal)
+            .padding(.vertical, 10)
+        }
+        .frame(maxWidth: .infinity, alignment: .bottom)
+    }
+    
+    var archiveButton: some View{
+        Button(action: {
+           //add delete function
+        }){
+            HStack{
+                HStack{
+                Image(systemName: "archivebox")
+                    .font(.system(size: 20))
+                    .padding(.horizontal, 5)
+                Text("Archive")
+                    .font(.headline)
+                }.padding(.horizontal)
+                Spacer()
+            }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
+            .background(Color.middlegroundColor)
+            .foregroundColor(.blue)
+            .cornerRadius(10)
+            .padding(.horizontal)
+            .padding(.vertical, 10)
+        }
+        .frame(maxWidth: .infinity, alignment: .bottom)
+        
+    }
+    
+    
+//    func deleteAthletePressed(athlete: AthletesModel) {
+//        athletesViewModel.deleteAthlete(indexSet: athlete)
+//        presentationMode.wrappedValue.dismiss()
+//    }
 }
 
 struct EditAthleteView_Previews: PreviewProvider {
@@ -208,14 +279,14 @@ struct EditAthleteView_Previews: PreviewProvider {
 struct EditGenderButtons: View {
     
     @Binding var gender : String
-    @State var male = false
-    @State var female = false
-    @State var nonbinary = false
+    @Binding var male : Bool
+    @Binding var female : Bool
+    @Binding var nonbinary : Bool
     let maleString = "male"
     
 //    init(gender: String){
 //        self._gender = gender
-//        if (gender.contains(maleString)) {
+//        if (gender.contains("male")) {
 //            male = true
 //        } else if gender.contains("female") {
 //            female = true

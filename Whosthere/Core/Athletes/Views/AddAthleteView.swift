@@ -140,7 +140,9 @@ struct AddAthleteView: View {
         Button(action: {
            if textIsAppropriate()
             {
+               if toggleIsOn == false {
                 birthYear = getBirthYear()
+               }
                 addAthletePressed()
             }
         }){
