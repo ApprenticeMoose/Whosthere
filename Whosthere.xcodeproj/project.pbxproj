@@ -21,6 +21,7 @@
 		BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC525F4627AA995F0032B99F /* EditAthleteView.swift */; };
 		BC525F4B27AADAEF0032B99F /* ListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC525F4A27AADAEF0032B99F /* ListRowView.swift */; };
 		BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */; };
+		BC88920427B14F6200A00047 /* MediumButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC88920327B14F6200A00047 /* MediumButton.swift */; };
 		BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */; };
 		BCA3A78F275E0496003D5F1C /* NavigationButtonSystemName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */; };
 		BCA3A794275E1839003D5F1C /* ScreenHeaderTextOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A793275E1838003D5F1C /* ScreenHeaderTextOnly.swift */; };
@@ -45,6 +46,7 @@
 		BC525F4627AA995F0032B99F /* EditAthleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteView.swift; sourceTree = "<group>"; };
 		BC525F4A27AADAEF0032B99F /* ListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowView.swift; sourceTree = "<group>"; };
 		BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonAssestsIcon.swift; sourceTree = "<group>"; };
+		BC88920327B14F6200A00047 /* MediumButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumButton.swift; sourceTree = "<group>"; };
 		BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListView.swift; sourceTree = "<group>"; };
 		BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonSystemName.swift; sourceTree = "<group>"; };
 		BCA3A793275E1838003D5F1C /* ScreenHeaderTextOnly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeaderTextOnly.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */,
 				BC3F25502760D1A800465551 /* FrameButton.swift */,
 				BC3F2572276C991300465551 /* BigAddButton.swift */,
+				BC88920327B14F6200A00047 /* MediumButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC88920427B14F6200A00047 /* MediumButton.swift in Sources */,
 				BC3212F12750E989001A689E /* CustomShape.swift in Sources */,
 				BCA3A794275E1839003D5F1C /* ScreenHeaderTextOnly.swift in Sources */,
 				BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */,

@@ -37,6 +37,7 @@ struct EditAthleteView: View {
     
     //Variables
     let athlete: AthletesModel
+    //Passing this varible in from the athleteslistview so Edit & Detai View can be dismissed simultaniously when athletes deleted and user returns to the list view
     @Binding var showDetailView: Bool
     
     @State var firstNameTF:String

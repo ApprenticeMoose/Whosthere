@@ -10,6 +10,7 @@ import SwiftUI
 struct AthletesListView: View {
     
     //MARK: Properties
+    @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject private var vm: AthletesViewModel
     
@@ -32,9 +33,28 @@ struct AthletesListView: View {
                 VStack(spacing: 0) {
                     
                     athleteListButtonRow
-                  
-                    athletesList
                     
+                    if vm.allAthletes.isEmpty {
+                        Spacer()
+                        Image("Seeding")
+                            .resizable()
+                            .frame(height: 230)
+                            .frame(width: 230)
+                            .padding()
+                            .padding(.bottom, 15)
+                            //.foregroundColor(colorScheme == .light ? .black : .black)
+                        Text("Start growing your team")
+                            .padding(.bottom, 15)
+                        NavigationLink(
+                            destination: AddAthleteView(),
+                            label: {
+                                MediumButton(icon: "plus", description: "Add athlete now", textColor: .textColor, backgroundColor: .middlegroundColor)
+                            })
+                        Spacer()
+                        Spacer()
+                    } else {
+                    athletesList
+                    }
                     //Spacer to define the body-sheets size:
                     //Spacer().frame(maxWidth: .infinity)
                 }
@@ -56,6 +76,7 @@ struct AthletesListView: View {
     //MARK: Outsourced Components
     
     var athletesList: some View {
+       
         List{
             ForEach(vm.allAthletes) { athlete in
                     ListRowView(athlete: athlete)
@@ -70,6 +91,7 @@ struct AthletesListView: View {
             
         }
         .listStyle(InsetGroupedListStyle())
+        
     } //AthletesListView
     
     
