@@ -281,10 +281,10 @@ struct EditAthleteView: View {
         athletesViewModel.deleteAthlete(athlete: athlete)
       
         DispatchQueue.main.async {
+            showDetailView = false
+            DispatchQueue.main.async {
             presentationMode.wrappedValue.dismiss()
-                
-                        showDetailView = false
-                                                
+            }
                                                     }
         
     }
