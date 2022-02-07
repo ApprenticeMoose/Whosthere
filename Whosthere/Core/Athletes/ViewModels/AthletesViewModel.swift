@@ -29,8 +29,11 @@ class AthletesViewModel: ObservableObject {
         allAthletes.append(newAthlete)
     }
     
-    func deleteAthlete(indexSet: IndexSet){
-        allAthletes.remove(atOffsets: indexSet)
+    func deleteAthlete(athlete: AthletesModel){
+        self.allAthletes.removeAll {
+            $0.id == athlete.id
+        }
+        
     }
     
 }//class end

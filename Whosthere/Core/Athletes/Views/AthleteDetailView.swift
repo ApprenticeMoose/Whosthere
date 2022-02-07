@@ -11,13 +11,14 @@ import SwiftUI
 struct AthleteDetailLoadingView: View {
     
     @Binding var athlete: AthletesModel?
+    @Binding var showDetailView: Bool
     
   
     
     var body: some View {
         ZStack{
             if let athlete = athlete {
-                AthleteDetailView(athlete: athlete)
+                AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)
             }
         }
     }
@@ -33,7 +34,8 @@ struct AthleteDetailView: View {
     @State private var opacity: Double = 1
     
     @State private var selectedAthlete: AthletesModel? = nil
-    @State private var showDetailView: Bool = false
+    @State private var showEditView: Bool = false
+    @Binding var showDetailView: Bool
     
     let athlete: AthletesModel
     
@@ -43,8 +45,9 @@ struct AthleteDetailView: View {
         return formatter
     }
     
-    init(athlete: AthletesModel) {
+    init(athlete: AthletesModel, showDetailView: Binding<Bool>) {
         self.athlete = athlete
+        self._showDetailView = showDetailView
         print("Initializing Detail View for: \(String(describing: athlete.firstName))")
     }
     
@@ -73,8 +76,8 @@ struct AthleteDetailView: View {
             
             }//end of ZStack for Color
         .background(
-            NavigationLink(destination: EditAthleteLoadingView(athlete: $selectedAthlete),
-                           isActive: $showDetailView,
+            NavigationLink(destination: EditAthleteLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
+                           isActive: $showEditView,
                            label: { EmptyView() }))
         .navigationBarHidden(true)
         }//end of Body
@@ -172,7 +175,7 @@ struct AthleteDetailView: View {
     
     private func segue(athlete: AthletesModel) {
         selectedAthlete = athlete
-        showDetailView.toggle()
+        showEditView.toggle()
     }
     
     var profilePicture: some View {
@@ -199,15 +202,15 @@ struct AthleteDetailView: View {
         
 }
 
-struct AthleteDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group{
-            AthleteDetailView(athlete: dev.athlete)
-                .previewDevice("iPhone 12 Pro Max")
-                .navigationBarHidden(true)
-          
-            
-        }
-        
-    }
-}
+//struct AthleteDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group{
+//            AthleteDetailView(athlete: dev.athlete)
+//                .previewDevice("iPhone 12 Pro Max")
+//                .navigationBarHidden(true)
+//
+//
+//        }
+//
+//    }
+//}

@@ -12,11 +12,12 @@ import SwiftUI
 struct EditAthleteLoadingView: View {
     
     @Binding var athlete: AthletesModel?
+    @Binding var showDetailView: Bool
     
     var body: some View {
         ZStack{
             if let athlete = athlete {
-                EditAthleteView(athlete: athlete)
+                EditAthleteView(athlete: athlete, showDetailView: $showDetailView)
             }
         }
     }
@@ -33,8 +34,10 @@ struct EditAthleteView: View {
     
     @EnvironmentObject var athletesViewModel: AthletesViewModel
     
+    
     //Variables
     let athlete: AthletesModel
+    @Binding var showDetailView: Bool
     
     @State var firstNameTF:String
     @State var lastNameTF:String
@@ -46,8 +49,9 @@ struct EditAthleteView: View {
     @State var nonbinary = false
    
 
-    init(athlete: AthletesModel) {
+    init(athlete: AthletesModel, showDetailView: Binding<Bool>) {
         self.athlete = athlete
+        self._showDetailView = showDetailView
         self._firstNameTF = State(wrappedValue: athlete.firstName)
         self._lastNameTF = State(wrappedValue: athlete.lastName)
         self._birthDate = State(wrappedValue: athlete.birthday)
@@ -63,6 +67,7 @@ struct EditAthleteView: View {
             self._nonbinary = State(wrappedValue: true)
         }
         print("Initializing Edit View for: \(String(describing: athlete.firstName))")
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .systemBlue
     }
     
     //Toggle
@@ -70,6 +75,7 @@ struct EditAthleteView: View {
     @State var toggleIsOn: Bool = false
     @State var showPrompt: Bool = false
     @State var buttonFarbe : Color = .orangeAccentColor
+    @State var showAlert: Bool = false
     
     
    
@@ -215,7 +221,7 @@ struct EditAthleteView: View {
     
     var deleteButton: some View{
         Button(action: {
-           //add delete function
+            showAlert.toggle()
         }){
             HStack{
                 HStack{
@@ -233,6 +239,14 @@ struct EditAthleteView: View {
             .cornerRadius(10)
             .padding(.horizontal)
             .padding(.vertical, 10)
+            .alert(isPresented: $showAlert, content: {
+                Alert(title: Text("Are you sure you want to delete this profile?"),
+                      message: Text("This action cannot be undone!"),
+                      primaryButton: .destructive(Text("Delete"), action: {
+                    deleteAthletePressed(athlete: athlete)
+                }),
+                      secondaryButton: .cancel())
+            })
         }
         .frame(maxWidth: .infinity, alignment: .bottom)
     }
@@ -263,17 +277,24 @@ struct EditAthleteView: View {
     }
     
     
-//    func deleteAthletePressed(athlete: AthletesModel) {
-//        athletesViewModel.deleteAthlete(indexSet: athlete)
-//        presentationMode.wrappedValue.dismiss()
-//    }
-}
-
-struct EditAthleteView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditAthleteView(athlete: dev.athlete)
+    func deleteAthletePressed(athlete: AthletesModel) {
+        athletesViewModel.deleteAthlete(athlete: athlete)
+      
+        DispatchQueue.main.async {
+            presentationMode.wrappedValue.dismiss()
+                
+                        showDetailView = false
+                                                
+                                                    }
+        
     }
 }
+
+//struct EditAthleteView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        EditAthleteView(athlete: dev.athlete, showDetailView: false)
+//    }
+//}
 
 
 struct EditGenderButtons: View {
@@ -284,16 +305,7 @@ struct EditGenderButtons: View {
     @Binding var nonbinary : Bool
     let maleString = "male"
     
-//    init(gender: String){
-//        self._gender = gender
-//        if (gender.contains("male")) {
-//            male = true
-//        } else if gender.contains("female") {
-//            female = true
-//        } else if gender.contains("nonbinary") {
-//            nonbinary = true
-//        }
-//    }
+
     
     var body: some View{
         VStack(alignment: .leading){

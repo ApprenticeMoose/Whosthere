@@ -46,7 +46,7 @@ struct AthletesListView: View {
             }//VStack to seperate header and bodysheet
         }//ZStack for background
         .background(
-            NavigationLink(destination: AthleteDetailLoadingView(athlete: $selectedAthlete),
+            NavigationLink(destination: AthleteDetailLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
                            isActive: $showDetailView,
                            label: { EmptyView() })
         )   //->NavigationLink in the background with empty view for lazy loading of detail view in List
