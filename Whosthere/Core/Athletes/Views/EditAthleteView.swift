@@ -211,13 +211,18 @@ struct EditAthleteView: View {
             Spacer(minLength: 0)
             
             Button(action: {
-                //addAthletePressed()
+                editAthletePressed()
             }){
                 NavigationButtonSystemName(iconName: "checkmark")
             }//Button
         }//HeaderHStackEnding
         .padding()
         
+    }
+    
+    func editAthletePressed() {
+        athletesViewModel.updateAthlete(athlete: athlete, firstName: firstNameTF, lastName: lastNameTF, birthday: birthDate, birthyear: birthYear, gender: gender)
+        presentationMode.wrappedValue.dismiss()
     }
     
     var deleteButton: some View{

@@ -33,7 +33,13 @@ class AthletesViewModel: ObservableObject {
         self.allAthletes.removeAll {
             $0.id == athlete.id
         }
+    }
+    
+    func updateAthlete(athlete: AthletesModel, firstName: String, lastName: String, birthday: Date, birthyear: Int, gender: String){
         
+        if let index = allAthletes.firstIndex (where: { $0.id == athlete.id }) {
+            allAthletes[index] = athlete.updateModel(firstName: firstName, lastName: lastName, birthday: birthday, birthyear: birthyear, gender: gender)
+        }
     }
     
 }//class end
