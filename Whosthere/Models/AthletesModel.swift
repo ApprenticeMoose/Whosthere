@@ -24,6 +24,12 @@ struct AthletesModel: Identifiable {
         self.gender = gender
     }
     
+    static var sampleData: [AthletesModel] {
+        [
+            AthletesModel(firstName: "Mustafa", lastName: "Acar", birthday: .init(timeIntervalSince1970: 893796436), birthyear: 1998, gender: "male")
+        ]
+    }
+    
     func updateModel(firstName: String, lastName: String, birthday: Date, birthyear: Int, gender: String) -> AthletesModel {
         return AthletesModel(id: id, firstName: firstName, lastName: lastName, birthday: birthday, birthyear: birthyear, gender: gender)
     }

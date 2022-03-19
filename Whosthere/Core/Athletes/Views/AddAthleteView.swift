@@ -16,15 +16,9 @@ struct AddAthleteView: View {
     
     
     @EnvironmentObject var athletesViewModel: AthletesViewModel
-    
-    //Variables
-    @State var firstNameTF = ""
-    @State var lastNameTF = ""
-    @State var birthDate = Date()
-    @State var birthYear = Calendar.current.component(.year, from: Date())
-    @State var gender = ""
-   
+    @ObservedObject var addVM: AddAthleteViewModel
 
+    
     //Toggle
     @State var show: Bool = false
     @State var toggleIsOn: Bool = false
@@ -40,126 +34,105 @@ struct AddAthleteView: View {
         ZStack{
             
             Color.accentColor.edgesIgnoringSafeArea(.all)
+            
             ZStack{
-            VStack{
-                //header
-                addAthleteHeader
-                
-                ZStack {
-                    VStack(spacing: 0) {
-                        //all that is in the screen body
-                        
-                        profilePicture
-                        
-                        LongTextField(textFieldDescription: "First Name",  firstNameTF: $firstNameTF)
-                        
-                        LongTextField(textFieldDescription: "Last Name", firstNameTF: $lastNameTF)
-                        
-                        HStack {
-                            BirthdayField(show: $show, selectedDate: $birthDate, toggleIsOn: $toggleIsOn, selectedYear: $birthYear)
-                            GenderButtons(gender: $gender)
+                VStack{
+                    //header
+                    addAthleteHeader
+                    
+                    ZStack {
+                        VStack(spacing: 0) {
+                            //all that is in the screen body
+                            
+                            profilePicture
+                            
+                            LongTextField(textFieldDescription: "First Name",  firstNameTF: $addVM.firstName)
+                            
+                            LongTextField(textFieldDescription: "Last Name", firstNameTF: $addVM.lastName)
+                            
+                            HStack {
+                                BirthdayField(show: $show, selectedDate: $addVM.birthDate, toggleIsOn: $toggleIsOn, selectedYear: $addVM.birthYear)
+                                GenderButtons(gender: $addVM.gender)
+                            }
+                            
+//Spacer to define the body-sheets size
+//                      Spacer().frame(maxWidth: .infinity)
+                            
+                            Spacer()
+                            
+                            addButton
                         }
-                        
-                        
-                        //Spacer to define the body-sheets size
-    //                    Spacer()
-    //                        .frame(maxWidth: .infinity)
-                        
-                        Spacer()
-                        
-                        addButton
-                        
-                    }
-                    .padding(.top, 20)
-                    .background(Color.backgroundColor
-                                    .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
-                                .edgesIgnoringSafeArea(.bottom))
-                    
-                    
-                } //ZStack for Popover
-                
-            }//VStack to seperate Header and ScreenBody/content
+                        .padding(.top, 20)
+                        .background(Color.backgroundColor
+                                        .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
+                                        .edgesIgnoringSafeArea(.bottom))
+                    } //ZStack for Popover
+                }//VStack to seperate Header and ScreenBody/content
                
                 ZStack{
-                if self.show {
-                    Color.black
-                        .opacity(0.4)
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            //withAnimation(.easeOut(duration: 0.5)){
-                            show.toggle()
-                            //}
+                    if self.show {
+                        Color.black
+                            .opacity(0.4)
+                            .edgesIgnoringSafeArea(.all)
+                            .onTapGesture { show.toggle() }
+                       
+                        Popover(selectedDate: $addVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $addVM.birthYear)
                         }
-                   
-                    Popover(selectedDate: $birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $birthYear)
-                
-                }
-                }
-                .opacity(self.show ? 1 : 0).animation(.easeIn)
-                
+                    }
+                    .opacity(self.show ? 1 : 0).animation(.easeIn)
             }//ZStackforpopover
-              
         }//ZStack End
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
-    }//Body End
+}//Body End
     
     
     
     // MARK: Functions
     
-
-    func textIsAppropriate() -> Bool {
-        if firstNameTF.count >= 2 && lastNameTF.count >= 1 {
-            return true
-        }
-        return false
-    }
-    
-    var buttonDisabledColor: Color {
-        return colorScheme == .light ? .greyTwoColor : .darkModeDisabledButtonColor
-        }
-    
-    
     //function to adjust the year variable according to the selected birthdate variable->is called when add athlete button is pressed
     func getBirthYear() -> Int {
-        if birthDate != Date()
+        if addVM.birthDate != Date()
             {
-                birthYear = Calendar.current.component(.year, from: birthDate)
+            addVM.birthYear = Calendar.current.component(.year, from: addVM.birthDate)
             }
-        return birthYear
+        return addVM.birthYear
     }
     
     //function that connects all the selected variables to the model via the viewmodel and closes view afterwards
-    func addAthletePressed() {
-        athletesViewModel.addAthlete(firstName: firstNameTF, lastName: lastNameTF, birthday: birthDate, birthyear: birthYear, gender: gender)
+    func addAthlete() {
+        let athlete = AthletesModel(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, birthyear: addVM.birthYear, gender: addVM.gender)
+        athletesViewModel.addAthlete(athlete)
         presentationMode.wrappedValue.dismiss()
     }
     
+    
+    //MARK: Outsourced components
+    
     var addButton: some View{
-        Button(action: {
-           if textIsAppropriate()
-            {
-               if toggleIsOn == false {
-                birthYear = getBirthYear()
-               }
-                addAthletePressed()
+    Button(action: {
+        if addVM.textIsAppropriate()
+        {
+            if toggleIsOn == false {
+                addVM.birthYear = getBirthYear()
             }
-        }){
-            HStack{
-                Image(systemName: "plus")
-                    .font(.system(size: 20))
-                Text("Add Athlete")
-                    .font(.headline)
-            }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 55)
-            .background(textIsAppropriate() ? Color.orangeAccentColor : buttonDisabledColor)
-            .foregroundColor(.textUnchangedColor)
-            .cornerRadius(10)
-            .padding()
+            addAthlete()
         }
-        .frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
+    }){
+        HStack{
+            Image(systemName: "plus")
+                .font(.system(size: 20))
+            Text("Add Athlete")
+                .font(.headline)
+        }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 55)
+        .background(addVM.textIsAppropriate() ? Color.orangeAccentColor : buttonDisabledColor)
+        .foregroundColor(.textUnchangedColor)
+        .cornerRadius(10)
+        .padding()
     }
+    .frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
+}
     
     var profilePicture: some View {
         ZStack {
@@ -195,11 +168,10 @@ struct AddAthleteView: View {
                 }
                 .offset(x: 40, y: -30)
             }
-          }
+}
     
     var addAthleteHeader: some View {
         HStack{
-            
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }){
@@ -216,13 +188,18 @@ struct AddAthleteView: View {
             Spacer(minLength: 0)
             
             Button(action: {
-                addAthletePressed()
+                addAthlete()
             }){
                 NavigationButtonSystemName(iconName: "checkmark")
             }//Button
         }//HeaderHStackEnding
         .padding()
-    }
+}
+    
+    var buttonDisabledColor: Color {
+        return colorScheme == .light ? .greyTwoColor : .darkModeDisabledButtonColor
+        }
+    
 }//Struct End
 
 
@@ -265,9 +242,7 @@ struct LongTextField: View {
         }
         return false
     }
-    
 }
-
 
 struct BirthdayField: View {
     
@@ -321,11 +296,9 @@ struct BirthdayField: View {
                     }
 //                    .onAppear(perform: selectedYear = Calendar.current.component(.year, from: selectedDate))
                 }
-                }
+            }
             .onTapGesture {
-                //withAnimation(.default){
                 show.toggle()
-                //}
             }
             .frame(height: 44)
         }
@@ -353,15 +326,9 @@ struct BirthdayField: View {
         if selectedDate != Date() {
             selectedYear = Calendar.current.component(.year, from: selectedDate)
         }
-        
-    return selectedYear
+        return selectedYear
     }
-//    func getBirthyear(dateOfBirth: Date) -> Int {
-//        let yearOfBirth:Int = Calendar.current.component(.year, from: dateOfBirth)
-//        return yearOfBirth
-//    }
 }
-
 
 struct GenderButtons: View {
     
@@ -380,8 +347,6 @@ struct GenderButtons: View {
                 .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
-            
-            
             
             HStack {
                 //Buttons for gender
@@ -432,8 +397,8 @@ struct GenderButtons: View {
                             .foregroundColor(nonbinary ? Color.textUnchangedColor: Color.textColor)
                     }
                 }
-    }
-}//VStack
+            }
+        }//VStack
         .padding()
     }
     
@@ -443,39 +408,7 @@ struct GenderButtons: View {
         }
         return false
     }
-    
-
 }
-
-
-
-
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            AddAthleteView()
-                .previewDevice("iPhone 12 Pro Max")
-                .navigationBarHidden(true)
-            AddAthleteView()
-                .previewDevice("iPhone 12")
-                .preferredColorScheme(.dark)
-                .navigationBarHidden(true)
-            AddAthleteView()
-                .previewDevice("IPhone 8")
-                .preferredColorScheme(.dark)
-                .navigationBarHidden(true)
-        }
-        .environmentObject(AthletesViewModel())
-    }
-}
-
-    
-
-
-
-
-
 
 struct Popover: View {
     @Binding var selectedDate: Date
@@ -486,6 +419,7 @@ struct Popover: View {
     
     
     let endingDate: Date = Date()
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
@@ -495,9 +429,7 @@ struct Popover: View {
                 .padding(.horizontal)
             
             VStack(alignment: .leading ,spacing: 10) {
-                
-               
-                
+            
                 if self.toggleIsOn {
                     Picker("", selection: $selectedYear) {
                         ForEach(currentYear-100...currentYear, id: \.self) {
@@ -505,19 +437,17 @@ struct Popover: View {
                                 }
                             }
                             .pickerStyle(InlinePickerStyle())
+                            .labelsHidden()
+                            .padding(.horizontal, 20)
+                            .frame(height: 300)
+                } else {
+                    DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
+                        .datePickerStyle(.graphical)
+                        .accentColor(.orangeAccentColor)
                         .labelsHidden()
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, 30)
+                        .padding(.top, 20)
                         .frame(height: 300)
-                        
-                }
-                else{
-                DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
-                    .datePickerStyle(.graphical)
-                    .accentColor(.orangeAccentColor)
-                    .labelsHidden()
-                    .padding(.horizontal, 30)
-                    .padding(.top, 20)
-                    .frame(height: 300)
                 }
                 
                     Toggle(
@@ -527,7 +457,7 @@ struct Popover: View {
                                    .font(.body)
                                    .fontWeight(.semibold)
                                     .foregroundColor(Color.textColor)
-                            })
+                        })
                         .padding(.horizontal)
                         .padding(.horizontal)
                         .padding(.bottom, 8)
@@ -545,22 +475,38 @@ struct Popover: View {
                 .cornerRadius(10)
                 .padding(.horizontal, 25)
                 .onTapGesture {
-                    //withAnimation(.easeOut(duration: 0.5)){
                     show.toggle()
                     print(selectedDate)
-                  // }
                 }
-                
-                
-               
             }
-               
         }
-        
-        
     }
 }
 
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            AddAthleteView(addVM: AddAthleteViewModel())
+                .previewDevice("iPhone 12 Pro Max")
+                .navigationBarHidden(true)
+            AddAthleteView(addVM: AddAthleteViewModel())
+                .previewDevice("iPhone 12")
+                .preferredColorScheme(.dark)
+                .navigationBarHidden(true)
+            AddAthleteView(addVM: AddAthleteViewModel())
+                .previewDevice("IPhone 8")
+                .preferredColorScheme(.dark)
+                .navigationBarHidden(true)
+        }
+        .environmentObject(AthletesViewModel())
+    }
+}
+
+
+
+
+    //MARK: Notes
 /*
 1. on iphone se the keyboard covers the last name text field...move it up somehow?
  ->

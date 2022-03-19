@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct AthleteApp: App {
     
-    @StateObject private var athletesViewModel = AthletesViewModel()
+    //@StateObject private var athletesViewModel = AthletesViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -18,7 +18,7 @@ struct AthleteApp: App {
             AthletesListView()
                 .navigationBarHidden(true)
             }
-            .environmentObject(athletesViewModel)
+            .environmentObject(AthletesViewModel())
         }
     }
 }
