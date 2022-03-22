@@ -66,6 +66,8 @@ struct AthleteDetailView: View {
                     
                     AthleteDetailHeaderButtons
                         .padding(.bottom, -10)
+                        .fullScreenCover(isPresented: $showEditView,
+                                         content: {EditAthleteView(athlete: athlete, showDetailView: $showDetailView)})
                     
                     profilePicture
                         .padding(.top, -20)
@@ -82,10 +84,10 @@ struct AthleteDetailView: View {
                 }
             
             }//end of ZStack for Color
-            .background(
-                NavigationLink(destination: EditAthleteLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
-                               isActive: $showEditView,
-                               label: { EmptyView() }))
+//            .background(
+//                NavigationLink(destination: EditAthleteLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
+//                               isActive: $showEditView,
+//                               label: { EmptyView() }))
             .navigationBarHidden(true)
         }//end of Body
     
@@ -178,8 +180,7 @@ struct AthleteDetailView: View {
         
         
         Button(action: {
-            //showEditView.toggle()
-            segue(athlete: athlete)
+            showEditView.toggle()
         }){
             NavigationButtonAssestsIcon(iconName: "PenIcon")
         }

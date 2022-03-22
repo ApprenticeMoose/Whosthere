@@ -17,6 +17,7 @@ struct AthletesListView: View {
     
     @State private var selectedAthlete: AthletesModel? = nil
     @State private var showDetailView: Bool = false
+    @State private var showAddSheet: Bool = false
     
     
     //MARK: -Body
@@ -34,6 +35,9 @@ struct AthletesListView: View {
                 VStack(spacing: 0) {
                     
                     athleteListButtonRow
+                        .fullScreenCover(isPresented: $showAddSheet,
+                                         content: {AddAthleteView(addVM: AddAthleteViewModel())})
+                        
                     
 //Shows picture when list is empty
                     if vm.allAthletes.isEmpty {
@@ -56,20 +60,12 @@ struct AthletesListView: View {
                 
             }//VStack to seperate header and bodysheet
         }//ZStack for background
-//        .background(
-//            NavigationLink(destination: AthleteDetailLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
-//                           isActive: $showDetailView,
-//                           label: { EmptyView() })
-//        )   //->NavigationLink in the background with empty view for lazy loading of detail view in List
     }//Body
     
     
     //MARK: -Functions
     
-    private func segue(athlete: AthletesModel) {
-        selectedAthlete = athlete
-        showDetailView.toggle()
-    }
+
     
     //MARK: -Outsourced Components
     
@@ -141,11 +137,12 @@ struct AthletesListView: View {
         }
         
         // Add Athlete Button
-        NavigationLink(
-            destination: AddAthleteView(addVM: AddAthleteViewModel()),
-            label: {
-                FrameButton(iconName: "AddAthleteIcon", iconColor: .textColor)
-            })
+        Button(action: {
+            showAddSheet.toggle()
+        }){
+            FrameButton(iconName: "AddAthleteIcon", iconColor: .textColor)
+        }
+        
     }//HStackButtonsEnd
     .padding(.horizontal, 22)
     .padding(.vertical, 20)
@@ -233,9 +230,8 @@ struct ScreenHeaderTextOnly: View {
     }
 }
 
-
 struct RowView: View {
-    
+    //so the detail view can observe the model and can update immediately
     @ObservedObject var athlete: AthletesModel
     
     var body: some View {
