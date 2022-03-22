@@ -102,7 +102,7 @@ struct AddAthleteView: View {
     //function that connects all the selected variables to the model via the viewmodel and closes view afterwards
     func addAthlete() {
         let athlete = AthletesModel(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, birthyear: addVM.birthYear, gender: addVM.gender)
-        athletesViewModel.addAthlete(athlete)
+        athletesViewModel.addAthlete.send(athlete)
         presentationMode.wrappedValue.dismiss()
     }
     

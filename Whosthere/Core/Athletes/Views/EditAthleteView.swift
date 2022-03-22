@@ -145,13 +145,13 @@ struct EditAthleteView: View {
     
     func editAthlete() {
         let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender)
-        athletesViewModel.updateAthlete(athlete)
+        athletesViewModel.updateAthlete.send(athlete)
         presentationMode.wrappedValue.dismiss()
     }
     
     func deleteAthletePressed(athlete: AthletesModel) {
         
-        athletesViewModel.deleteAthlete(athlete: athlete)
+        athletesViewModel.deleteAthlete.send(athlete)
             
         //to double dismiss and get back to ListView
         DispatchQueue.main.async {

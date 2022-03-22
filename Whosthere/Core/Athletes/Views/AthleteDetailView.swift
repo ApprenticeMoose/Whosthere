@@ -28,6 +28,7 @@ struct AthleteDetailView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var vm: AthletesViewModel
     
     // variable to switch between displaying birthdate and birthyear
     @State private var birthToggle: Bool = false
