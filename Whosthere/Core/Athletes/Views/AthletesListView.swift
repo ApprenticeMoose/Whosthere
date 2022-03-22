@@ -56,11 +56,11 @@ struct AthletesListView: View {
                 
             }//VStack to seperate header and bodysheet
         }//ZStack for background
-        .background(
-            NavigationLink(destination: AthleteDetailLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
-                           isActive: $showDetailView,
-                           label: { EmptyView() })
-        )   //->NavigationLink in the background with empty view for lazy loading of detail view in List
+//        .background(
+//            NavigationLink(destination: AthleteDetailLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
+//                           isActive: $showDetailView,
+//                           label: { EmptyView() })
+//        )   //->NavigationLink in the background with empty view for lazy loading of detail view in List
     }//Body
     
     
@@ -104,18 +104,18 @@ struct AthletesListView: View {
     
     var athletesList: some View {
     
-    List{
-        ForEach(vm.allAthletes) { athlete in
-            
-                ListRowView(athlete: athlete)
-                        .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
-                        .listRowBackground(Color.middlegroundColor)
-                        .onTapGesture {
-                            segue(athlete: athlete) //->
-                        }
+        List(vm.allAthletes) { athlete in
+        //ForEach(vm.allAthletes) { athlete in
+            NavigationLink(destination: AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)) {
+                RowView(athlete: athlete)
+                    
+            }
+            .listRowBackground(Color.middlegroundColor)
+//                        .onTapGesture {
+//                            segue(athlete: athlete) //->
+//                        }
                         //.listRowSeperator(.hidden)->need update
                 }
-    }
     .listStyle(InsetGroupedListStyle())
     
 }
@@ -192,6 +192,7 @@ struct ListRowView: View {
         .background(
             Color.white.opacity(0.001)
         )
+        
     }
     
     
@@ -230,4 +231,17 @@ struct ScreenHeaderTextOnly: View {
         }
         .padding()
     }
+}
+
+
+struct RowView: View {
+    
+    @ObservedObject var athlete: AthletesModel
+    
+    var body: some View {
+        ListRowView(athlete: athlete)
+                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
+                .listRowBackground(Color.middlegroundColor)
+    }
+    
 }

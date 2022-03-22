@@ -8,19 +8,19 @@
 import SwiftUI
 
 //Is for lazyloading and checks if athlete is valid, then passses it to actual DetailView, and displays DetailView
-struct AthleteDetailLoadingView: View {
-    
-    @Binding var athlete: AthletesModel?
-    @Binding var showDetailView: Bool
-    
-    var body: some View {
-        ZStack{
-            if let athlete = athlete {
-                AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)
-            }
-        }
-    }
-}
+//struct AthleteDetailLoadingView: View {
+//
+//    @Binding var athlete: AthletesModel?
+//    @Binding var showDetailView: Bool
+//
+//    var body: some View {
+//        ZStack{
+//            if let athlete = athlete {
+//                AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)
+//            }
+//        }
+//    }
+//}
 
 struct AthleteDetailView: View {
     
