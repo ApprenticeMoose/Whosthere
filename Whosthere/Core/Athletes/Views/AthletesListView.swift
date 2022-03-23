@@ -20,6 +20,7 @@ struct AthletesListView: View {
     @State private var showAddSheet: Bool = false
     
     
+    
     //MARK: -Body
     
     var body: some View {
@@ -102,7 +103,7 @@ struct AthletesListView: View {
     
         List(vm.allAthletes) { athlete in
         //ForEach(vm.allAthletes) { athlete in
-            NavigationLink(destination: AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)) {
+            NavigationLink(destination: AthleteDetailView(athlete: athlete, showDetailView: $showDetailView),isActive: $showDetailView) {
                 RowView(athlete: athlete)
                     
             }

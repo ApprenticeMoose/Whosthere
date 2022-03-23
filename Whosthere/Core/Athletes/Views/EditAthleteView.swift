@@ -9,19 +9,19 @@ import SwiftUI
 
 //MARK: LoadingView for Lazy Loading of EditView below
 
-struct EditAthleteLoadingView: View {
-
-    @Binding var athlete: AthletesModel?
-    @Binding var showDetailView: Bool
-
-    var body: some View {
-        ZStack{
-            if let athlete = athlete {
-                EditAthleteView(athlete: athlete, showDetailView: $showDetailView)
-            }
-        }
-    }
-}
+//struct EditAthleteLoadingView: View {
+//
+//    @Binding var athlete: AthletesModel?
+//    @Binding var showDetailView: Bool
+//
+//    var body: some View {
+//        ZStack{
+//            if let athlete = athlete {
+//                EditAthleteView(athlete: athlete, showDetailView: $showDetailView)
+//            }
+//        }
+//    }
+//}
 
 struct EditAthleteView: View {
 
@@ -39,6 +39,7 @@ struct EditAthleteView: View {
     
     //Passing this varible in from the athleteslistview so Edit & Detai View can be dismissed simultaniously when athletes deleted and user returns to the list view
     @Binding var showDetailView: Bool
+    
 
 
     @State var male = false
@@ -152,7 +153,7 @@ struct EditAthleteView: View {
     func deleteAthletePressed(athlete: AthletesModel) {
         
         athletesViewModel.deleteAthlete.send(athlete)
-            
+       
         //to double dismiss and get back to ListView
         DispatchQueue.main.async {
             showDetailView = false

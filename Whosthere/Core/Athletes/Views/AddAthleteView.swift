@@ -29,7 +29,7 @@ struct AddAthleteView: View {
     //MARK: Body
     
     var body: some View {
-        //GeometryReader so the View doesnt move uppwards once the keyboard is actived
+        //GeometryReader so the View doesnt move upwards once the keyboard is actived
         GeometryReader { _ in
         ZStack{
             

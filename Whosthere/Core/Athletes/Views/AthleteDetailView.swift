@@ -67,6 +67,7 @@ struct AthleteDetailView: View {
                     AthleteDetailHeaderButtons
                         .padding(.bottom, -10)
                         .fullScreenCover(isPresented: $showEditView,
+                                         
                                          content: {EditAthleteView(athlete: athlete, showDetailView: $showDetailView)})
                     
                     profilePicture
