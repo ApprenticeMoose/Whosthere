@@ -14,6 +14,7 @@ class EditAthleteViewModel: ObservableObject {
     @Published var birthDate = Date()
     @Published var birthYear = Calendar.current.component(.year, from: Date())
     @Published var gender = ""
+    @Published var showYear = false
     var id: String
     
     

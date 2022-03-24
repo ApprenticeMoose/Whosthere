@@ -21,7 +21,6 @@ struct AddAthleteView: View {
     
     //Toggle
     @State var show: Bool = false
-    @State var toggleIsOn: Bool = false
     @State var showPrompt: Bool = false
     @State var buttonFarbe : Color = .orangeAccentColor
     
@@ -51,7 +50,7 @@ struct AddAthleteView: View {
                             LongTextField(textFieldDescription: "Last Name", firstNameTF: $addVM.lastName)
                             
                             HStack {
-                                BirthdayField(show: $show, selectedDate: $addVM.birthDate, toggleIsOn: $toggleIsOn, selectedYear: $addVM.birthYear)
+                                BirthdayField(show: $show, selectedDate: $addVM.birthDate, /*selectedYear: $addVM.birthYear,*/ showYear: $addVM.showYear)
                                 GenderButtons(gender: $addVM.gender)
                             }
                             
@@ -76,7 +75,7 @@ struct AddAthleteView: View {
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture { show.toggle() }
                        
-                        Popover(selectedDate: $addVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $addVM.birthYear)
+                        Popover(selectedDate: $addVM.birthDate, show: $show, selectedYear: $addVM.birthYear, showYear: $addVM.showYear)
                         }
                     }
                     .opacity(self.show ? 1 : 0).animation(.easeIn)
@@ -101,7 +100,7 @@ struct AddAthleteView: View {
     
     //function that connects all the selected variables to the model via the viewmodel and closes view afterwards
     func addAthlete() {
-        let athlete = AthletesModel(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, birthyear: addVM.birthYear, gender: addVM.gender)
+        let athlete = AthletesModel(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, birthyear: addVM.birthYear, gender: addVM.gender, showYear: addVM.showYear)
         athletesViewModel.addAthlete.send(athlete)
         presentationMode.wrappedValue.dismiss()
     }
@@ -113,7 +112,7 @@ struct AddAthleteView: View {
     Button(action: {
         if addVM.textIsAppropriate()
         {
-            if toggleIsOn == false {
+            if addVM.showYear == false {
                 addVM.birthYear = getBirthYear()
             }
             addAthlete()
@@ -198,7 +197,7 @@ struct AddAthleteView: View {
     
     var buttonDisabledColor: Color {
         return colorScheme == .light ? .greyTwoColor : .darkModeDisabledButtonColor
-        }
+}
     
 }//Struct End
 
@@ -250,9 +249,9 @@ struct BirthdayField: View {
     
     @Binding var selectedDate: Date
     
-    @Binding var toggleIsOn: Bool
+    //@Binding var selectedYear : Int
     
-    @Binding var selectedYear : Int
+    @Binding var showYear: Bool
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -265,7 +264,7 @@ struct BirthdayField: View {
             
             Text("Birthday")
                 .font(.body)
-                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
+                .foregroundColor(/*changeOpacity() ? Color.textColor.opacity(0.30) :*/ Color.textColor)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
@@ -281,17 +280,17 @@ struct BirthdayField: View {
                     .cornerRadius(10)
                     
                    
-                if self.toggleIsOn {
-                    Text(String(selectedYear))
-                        .font(.body)
-                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
-                        .fontWeight(.semibold)
+                if self.showYear {
+//                    Text(String(selectedYear))
+//                        .font(.body)
+//                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
+//                        .fontWeight(.semibold)
                 }
                 else{
                     VStack{
                     Text(dateFormatter.string(from: selectedDate))
                         .font(.body)
-                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
+                        .foregroundColor(/*makeClear() ? Color.clear :*/ Color.textColor)
                         .fontWeight(.semibold)
                     }
 //                    .onAppear(perform: selectedYear = Calendar.current.component(.year, from: selectedDate))
@@ -306,6 +305,7 @@ struct BirthdayField: View {
     }
     
     //function to check if the selected date is not today so if another date is selected the birthday header can be grayed out with a tertiary statement in the foregroundcolor modifier
+   /*
     func changeOpacity() -> Bool {
         if Calendar.current.isDateInToday(selectedDate) && selectedYear == Calendar.current.component(.year, from: Date()) {
             return false
@@ -314,7 +314,7 @@ struct BirthdayField: View {
     }
     
     
-    //function to check if the selected date is not today so the birthdayfield can be clear at the beginning
+    function to check if the selected date is not today so the birthdayfield can be clear at the beginning
     func makeClear() -> Bool {
         if Calendar.current.isDateInToday(selectedDate) && selectedYear == Calendar.current.component(.year, from: Date()) {
             return true
@@ -328,7 +328,9 @@ struct BirthdayField: View {
         }
         return selectedYear
     }
+    */
 }
+    
 
 struct GenderButtons: View {
     
@@ -410,12 +412,56 @@ struct GenderButtons: View {
     }
 }
 
+//class Component: ObservableObject {
+//    @Binding var selectedDate: Date
+//
+//    lazy var component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
+//}
+
+protocol Year {
+    var year: Binding<Int> { mutating get
+        mutating set
+    }
+}
+
 struct Popover: View {
     @Binding var selectedDate: Date
-    @Binding var toggleIsOn: Bool
+    //@Binding var toggleIsOn: Bool
     @Binding var show: Bool
     @State var currentYear = Calendar.current.component(.year, from: Date())
     @Binding var selectedYear : Int
+    @Binding var showYear: Bool
+    
+//    init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>) {
+//        self._selectedDate = selectedDate
+//        self._show = show
+//        self._selectedYear = selectedYear
+//        self._showYear = showYear
+//    }
+
+     lazy var component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
+    
+//    func setYear(newYear: Int) -> Date {
+//        component.year = newYear
+//
+//    }
+    
+    private var year: Binding<Int> { Binding (
+        get: {Calendar.current.component(.year, from: selectedDate)},
+        set:  {_ in
+//            component.year = year.wrappedValue
+//            selectedDate = Calendar.current.date(from: component) ?? selectedDate
+        }
+        //Set the selectedDate to datecomponents.year = year
+    )
+ }
+    
+    
+    /* //For checking the date
+     component.year = year
+     Calendar.current.date(from: component)
+     */
+    
     
     
     let endingDate: Date = Date()
@@ -430,8 +476,8 @@ struct Popover: View {
             
             VStack(alignment: .leading ,spacing: 10) {
             
-                if self.toggleIsOn {
-                    Picker("", selection: $selectedYear) {
+                if self.showYear {
+                    Picker("", selection: year) {
                         ForEach(currentYear-100...currentYear, id: \.self) {
                                     Text(String($0))
                                 }
@@ -451,7 +497,7 @@ struct Popover: View {
                 }
                 
                     Toggle(
-                        isOn: $toggleIsOn,
+                        isOn: $showYear,
                         label: {
                             Text("Select year of birth only")
                                    .font(.body)

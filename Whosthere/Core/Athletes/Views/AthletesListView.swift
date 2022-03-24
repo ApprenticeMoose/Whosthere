@@ -103,10 +103,11 @@ struct AthletesListView: View {
     
         List(vm.allAthletes) { athlete in
         //ForEach(vm.allAthletes) { athlete in
-            NavigationLink(destination: AthleteDetailView(athlete: athlete, showDetailView: $showDetailView),isActive: $showDetailView) {
+            NavigationLink(destination: AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)) {
                 RowView(athlete: athlete)
                     
             }
+            .navigationViewStyle(StackNavigationViewStyle())
             .listRowBackground(Color.middlegroundColor)
 //                        .onTapGesture {
 //                            segue(athlete: athlete) //->

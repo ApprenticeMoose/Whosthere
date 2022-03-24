@@ -97,7 +97,7 @@ struct EditAthleteView: View {
                             LongTextField(textFieldDescription: "Last Name", firstNameTF: $editVM.lastName)
 
                             HStack {
-                                BirthdayField(show: $show, selectedDate: $editVM.birthDate, toggleIsOn: $toggleIsOn, selectedYear: $editVM.birthYear)
+                                BirthdayField(show: $show, selectedDate: $editVM.birthDate, /*selectedYear: $editVM.birthYear,*/ showYear: $editVM.showYear)
                                 EditGenderButtons(gender: $editVM.gender, male: $male, female: $female, nonbinary: $nonbinary)
                             }
 
@@ -129,7 +129,7 @@ struct EditAthleteView: View {
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture { show.toggle() }
 
-                        Popover(selectedDate: $editVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $editVM.birthYear)
+//                        Popover(selectedDate: $editVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $editVM.birthYear)
 
                         }
                     }
@@ -145,7 +145,7 @@ struct EditAthleteView: View {
     //MARK: -Functions
     
     func editAthlete() {
-        let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender)
+        let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender, showYear: editVM.showYear)
         athletesViewModel.updateAthlete.send(athlete)
         presentationMode.wrappedValue.dismiss()
     }

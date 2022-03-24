@@ -18,6 +18,7 @@ struct AthleteApp: App {
             AthletesListView()
                 .navigationBarHidden(true)
             }
+            .navigationViewStyle(StackNavigationViewStyle())
             .environmentObject(AthletesViewModel())
         }
     }
