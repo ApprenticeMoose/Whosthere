@@ -265,7 +265,7 @@ struct BirthdayField: View {
             
             Text("Birthday")
                 .font(.body)
-                .foregroundColor(/*changeOpacity() ? Color.textColor.opacity(0.30) :*/ Color.textColor)
+                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
@@ -282,16 +282,16 @@ struct BirthdayField: View {
                     
                    
                 if self.showYear {
-//                    Text(String(selectedYear))
-//                        .font(.body)
-//                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
-//                        .fontWeight(.semibold)
+                    Text(String(Calendar.current.component(.year, from: selectedDate)))
+                        .font(.body)
+                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
+                        .fontWeight(.semibold)
                 }
                 else{
                     VStack{
                     Text(dateFormatter.string(from: selectedDate))
                         .font(.body)
-                        .foregroundColor(/*makeClear() ? Color.clear :*/ Color.textColor)
+                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
                         .fontWeight(.semibold)
                     }
 //                    .onAppear(perform: selectedYear = Calendar.current.component(.year, from: selectedDate))
@@ -306,30 +306,23 @@ struct BirthdayField: View {
     }
     
     //function to check if the selected date is not today so if another date is selected the birthday header can be grayed out with a tertiary statement in the foregroundcolor modifier
-   /*
+   
     func changeOpacity() -> Bool {
-        if Calendar.current.isDateInToday(selectedDate) && selectedYear == Calendar.current.component(.year, from: Date()) {
+        if Calendar.current.isDateInToday(selectedDate) {
             return false
         }
         return true
     }
     
     
-    function to check if the selected date is not today so the birthdayfield can be clear at the beginning
+    //function to check if the selected date is not today so the birthdayfield can be clear at the beginning
     func makeClear() -> Bool {
-        if Calendar.current.isDateInToday(selectedDate) && selectedYear == Calendar.current.component(.year, from: Date()) {
+        if Calendar.current.isDateInToday(selectedDate) {
             return true
         }
         return false
     }
     
-    func getBirthYear() -> Int {
-        if selectedDate != Date() {
-            selectedYear = Calendar.current.component(.year, from: selectedDate)
-        }
-        return selectedYear
-    }
-    */
 }
     
 
@@ -507,8 +500,8 @@ struct Popover: View {
                 .cornerRadius(10)
                 .padding(.horizontal, 25)
                 .onTapGesture {
+                    selectedDate = adjustYear(year: year, date: selectedDate)
                     show.toggle()
-                    print(selectedDate)
                 }
             }
         }
