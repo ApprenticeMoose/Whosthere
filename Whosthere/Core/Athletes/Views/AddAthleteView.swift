@@ -23,6 +23,7 @@ struct AddAthleteView: View {
     @State var show: Bool = false
     @State var showPrompt: Bool = false
     @State var buttonFarbe : Color = .orangeAccentColor
+   
     
     
     //MARK: Body
@@ -412,17 +413,7 @@ struct GenderButtons: View {
     }
 }
 
-//class Component: ObservableObject {
-//    @Binding var selectedDate: Date
-//
-//    lazy var component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
-//}
 
-protocol Year {
-    var year: Binding<Int> { mutating get
-        mutating set
-    }
-}
 
 struct Popover: View {
     @Binding var selectedDate: Date
@@ -431,40 +422,28 @@ struct Popover: View {
     @State var currentYear = Calendar.current.component(.year, from: Date())
     @Binding var selectedYear : Int
     @Binding var showYear: Bool
-    
-//    init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>) {
-//        self._selectedDate = selectedDate
-//        self._show = show
-//        self._selectedYear = selectedYear
-//        self._showYear = showYear
-//    }
-
-     lazy var component = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
-    
-//    func setYear(newYear: Int) -> Date {
-//        component.year = newYear
-//
-//    }
-    
-    private var year: Binding<Int> { Binding (
-        get: {Calendar.current.component(.year, from: selectedDate)},
-        set:  {_ in
-//            component.year = year.wrappedValue
-//            selectedDate = Calendar.current.date(from: component) ?? selectedDate
-        }
-        //Set the selectedDate to datecomponents.year = year
-    )
- }
-    
-    
-    /* //For checking the date
-     component.year = year
-     Calendar.current.date(from: component)
-     */
-    
-    
+    @State var year: Int
     
     let endingDate: Date = Date()
+    
+    
+    init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>) {
+        self._selectedDate = selectedDate
+        self._show = show
+        self._selectedYear = selectedYear
+        self._showYear = showYear
+        let startYear = Calendar.current.component(.year, from: selectedDate.wrappedValue)
+        self._year = State<Int>(initialValue: startYear)
+    }
+
+    
+    func adjustYear(year: Int, date: Date) -> Date {
+        var j = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
+        j.year = year
+        selectedDate = Calendar.current.date(from: j) ?? selectedDate
+        return selectedDate
+    }
+    
     
     var body: some View {
         ZStack {
@@ -477,7 +456,7 @@ struct Popover: View {
             VStack(alignment: .leading ,spacing: 10) {
             
                 if self.showYear {
-                    Picker("", selection: year) {
+                    Picker("", selection: $year) {
                         ForEach(currentYear-100...currentYear, id: \.self) {
                                     Text(String($0))
                                 }
@@ -486,6 +465,10 @@ struct Popover: View {
                             .labelsHidden()
                             .padding(.horizontal, 20)
                             .frame(height: 300)
+                            .onAppear{
+                                year = Calendar.current.component(.year, from: selectedDate)
+                            }
+                    
                 } else {
                     DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
                         .datePickerStyle(.graphical)
@@ -494,6 +477,9 @@ struct Popover: View {
                         .padding(.horizontal, 30)
                         .padding(.top, 20)
                         .frame(height: 300)
+                        .onAppear{
+                            selectedDate = adjustYear(year: year, date: selectedDate)
+                        }
                 }
                 
                     Toggle(
