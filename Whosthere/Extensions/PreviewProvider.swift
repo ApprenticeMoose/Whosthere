@@ -23,6 +23,6 @@ class DeveloperPreview {
 
     let athletesVM = AthletesViewModel()
     
-    let athlete = AthletesModel(firstName: "Mustafa", lastName: "Acar", birthday: .init(timeIntervalSince1970: 893796436), birthyear: 1998, gender: "male", showYear: false)
+    let athlete = AthletesModel(firstName: "Mustafa", lastName: "Acar", birthday: .init(timeIntervalSince1970: 893796436), birthyear: 1998, gender: "male", showYear: false, noYear: false)
 }
 

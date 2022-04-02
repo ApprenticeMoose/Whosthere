@@ -116,7 +116,7 @@ struct AthleteDetailView: View {
             }
             .foregroundColor(Color.textUnchangedColor)
         
-        if Calendar.current.component(.year, from: Date()) == athlete.birthyear {
+        if athlete.noYear {
             
             HStack{
                 Text("Add birthday")
@@ -135,22 +135,11 @@ struct AthleteDetailView: View {
                     segue(athlete: athlete)
                 }
         }
-        else if Calendar.current.component(.year, from: athlete.birthday) == athlete.birthyear {
+        else if athlete.showYear {
             
-                Text(birthToggle == false ? "\(String(describing: athlete.birthyear))" : dateFormatter.string(from: athlete.birthday))
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(Color.textUnchangedColor)
-                        .onTapGesture {
-                            withAnimation(.easeOut){
-                            birthToggle.toggle()
-                            }
-                        }
-                        .padding(.bottom, 15)
-        }
-        else {
+                
             
-            Text("\(String(describing: athlete.birthyear))")
+            Text("\(String(describing: Calendar.current.component(.year, from: athlete.birthday)))")
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .foregroundColor(Color.textUnchangedColor)
@@ -160,6 +149,19 @@ struct AthleteDetailView: View {
                 }
         }
         .padding(.bottom, 15)
+        }
+        else {
+            Text(birthToggle == false ? "\(String(describing: Calendar.current.component(.year, from: athlete.birthday)))" : dateFormatter.string(from: athlete.birthday))
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color.textUnchangedColor)
+                    .onTapGesture {
+                        withAnimation(.easeOut){
+                        birthToggle.toggle()
+                        }
+                    }
+                    .padding(.bottom, 15)
+           
         }
     }
 }

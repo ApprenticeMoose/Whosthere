@@ -129,7 +129,8 @@ struct EditAthleteView: View {
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture { show.toggle() }
 
-//                        Popover(selectedDate: $editVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $editVM.birthYear)
+                        Popover(selectedDate: $editVM.birthDate, show: $show, selectedYear: $editVM.birthYear, showYear: $editVM.showYear)
+//  Popover(selectedDate: $editVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $editVM.birthYear)
 
                         }
                     }
@@ -145,7 +146,7 @@ struct EditAthleteView: View {
     //MARK: -Functions
     
     func editAthlete() {
-        let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender, showYear: editVM.showYear)
+        let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender, showYear: editVM.showYear, noYear: editVM.noYear)
         athletesViewModel.updateAthlete.send(athlete)
         presentationMode.wrappedValue.dismiss()
     }
@@ -384,4 +385,107 @@ func changeOpacity() -> Bool {
     }
 }
     
+    struct Popover: View {
+        @Binding var selectedDate: Date
+        //@Binding var toggleIsOn: Bool
+        @Binding var show: Bool
+        @State var currentYear = Calendar.current.component(.year, from: Date())
+        @Binding var selectedYear : Int
+        @Binding var showYear: Bool
+        @State var year: Int
+        
+        let endingDate: Date = Date()
+        
+        
+        init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>) {
+            self._selectedDate = selectedDate
+            self._show = show
+            self._selectedYear = selectedYear
+            self._showYear = showYear
+            let startYear = Calendar.current.component(.year, from: selectedDate.wrappedValue)
+            self._year = State<Int>(initialValue: startYear)
+        }
+
+        
+        func adjustYear(year: Int, date: Date) -> Date {
+            var j = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
+            j.year = year
+            selectedDate = Calendar.current.date(from: j) ?? selectedDate
+            return selectedDate
+        }
+        
+        
+        var body: some View {
+            ZStack {
+                RoundedRectangle(cornerRadius: 15)
+                    .foregroundColor(.middlegroundColor)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 425, alignment: .center)
+                    .padding(.horizontal)
+                
+                VStack(alignment: .leading ,spacing: 10) {
+                
+                    if self.showYear {
+                        Picker("", selection: $year) {
+                            ForEach(currentYear-100...currentYear, id: \.self) {
+                                        Text(String($0))
+                                    }
+                                }
+                                .pickerStyle(InlinePickerStyle())
+                                .labelsHidden()
+                                .padding(.horizontal, 20)
+                                .frame(height: 300)
+                                .onAppear{
+                                    year = Calendar.current.component(.year, from: selectedDate)
+                                }
+                        
+                    } else {
+                        DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
+                            .datePickerStyle(.graphical)
+                            .accentColor(.orangeAccentColor)
+                            .labelsHidden()
+                            .padding(.horizontal, 30)
+                            .padding(.top, 20)
+                            .frame(height: 300)
+                            .onAppear{
+                                selectedDate = adjustYear(year: year, date: selectedDate)
+                            }
+                    }
+                    
+                        Toggle(
+                            isOn: $showYear,
+                            label: {
+                                Text("Select year of birth only")
+                                       .font(.body)
+                                       .fontWeight(.semibold)
+                                        .foregroundColor(Color.textColor)
+                            })
+                            .padding(.horizontal)
+                            .padding(.horizontal)
+                            .padding(.bottom, 8)
+                            .toggleStyle(SwitchToggleStyle(tint: Color.orangeAccentColor))
+                    
+                    HStack{
+                        Image(systemName: "plus")
+                            .font(.system(size: 20))
+                        Text("Add now")
+                            .font(.headline)
+                    }
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
+                    .background(Color.orangeAccentColor)
+                    .foregroundColor(Color.textUnchangedColor)
+                    .cornerRadius(10)
+                    .padding(.horizontal, 25)
+                    .onTapGesture {
+                        if self.showYear {
+                        selectedDate = adjustYear(year: year, date: selectedDate)
+                            show.toggle()
+                        } else {
+                            show.toggle()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
