@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class AddAthleteViewModel: ObservableObject {
     
@@ -16,7 +17,20 @@ class AddAthleteViewModel: ObservableObject {
     @Published var gender = ""
     @Published var showYear = false
     
+    @Published var image: UIImage?
+    @Published var showPicker: Bool = false
+    @Published var showActionSheet: Bool = false
+    @Published var source: PicturePicker.Source = .library
     
+    func showPhotoPicker() {
+        if source == .camera {
+            if !PicturePicker.checkPermissions() {
+                print("There is no camera on this device")
+                return
+            }
+        }
+        showPicker = true
+    }
     
     func textIsAppropriate() -> Bool {
         if firstName.count >= 2 && lastName.count >= 1 {

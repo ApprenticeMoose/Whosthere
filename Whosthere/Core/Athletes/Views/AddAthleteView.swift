@@ -136,7 +136,25 @@ struct AddAthleteView: View {
     
     var profilePicture: some View {
         ZStack {
+            if let image = addVM.image {
+                ZStack{
+                    Rectangle()
+                        .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
+                        .foregroundColor(Color.textUnchangedColor)
+                        .clipShape(Circle())
+                        .padding()
+                    
+                    Image(uiImage: image)
+                        .resizable()S
+                        .scaledToFill()
+                        .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
+                        .clipShape(Circle())
+                        .padding()
+                    }
+            } else {
+                
             ZStack {
+                
                 Rectangle()
                     .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
                     .foregroundColor(Color.textUnchangedColor)
@@ -154,21 +172,60 @@ struct AddAthleteView: View {
                     .frame(width: 42, height: 42, alignment: .center)
                     .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
                 }
-            
-            
-            ZStack{
-                Circle()
-                    .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
-                    .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
-                    .frame(width: 34, height: 34)
-                Image("AddCameraIcon")
-                    .resizable()
-                    .frame(width: 17, height: 17, alignment: .center)
-                    .foregroundColor(.orangeAccentColor)
-                }
-                .offset(x: 40, y: -30)
+                
             }
+            
+            
+                
+            
+                ZStack{
+                    Circle()
+                        .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
+                        .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
+                        .frame(width: 34, height: 34)
+                    Image("AddCameraIcon")
+                        .resizable()
+                        .frame(width: 17, height: 17, alignment: .center)
+                        .foregroundColor(.orangeAccentColor)
+                    }
+                    .offset(x: 40, y: -30)
+                
+            }
+        .onTapGesture {
+            addVM.showActionSheet.toggle()
+        }
+        .actionSheet(isPresented: $addVM.showActionSheet, content: getActionSheet)
+        .sheet(isPresented: $addVM.showPicker) {
+            ImagePicker(sourceType: addVM.source == .library ? .photoLibrary : .camera, selectedImage: $addVM.image)
+                .ignoresSafeArea()
+        }
+//        .confirmationDialog("", isPresented: $addVM.showActionSheet, titleVisibility: .hidden) {
+//                         Button("Camera") {
+//                         }
+//                         Button("Library") {
+//                         }
+//                         Button("Cancel", role: .cancel) {
+//                         }
+//                    }
+        
+        
 }
+    
+    func getActionSheet() -> ActionSheet {
+
+        let cameraButton: ActionSheet.Button = .default(Text("Camera")) {
+            addVM.source = .camera
+            addVM.showPhotoPicker()
+        }
+        let libraryButton: ActionSheet.Button = .default(Text("Library")) {
+            addVM.source = .library
+            addVM.showPhotoPicker()
+        }
+
+        let cancelButton: ActionSheet.Button = .cancel()
+
+        return ActionSheet(title: Text("How would you like to add the picture?"), buttons: [cameraButton, libraryButton, cancelButton])
+    }
     
     var addAthleteHeader: some View {
         HStack{
@@ -188,7 +245,9 @@ struct AddAthleteView: View {
             Spacer(minLength: 0)
             
             Button(action: {
-                addAthlete()
+                if addVM.textIsAppropriate() {
+                    addAthlete()
+                }
             }){
                 NavigationButtonSystemName(iconName: "checkmark")
             }//Button

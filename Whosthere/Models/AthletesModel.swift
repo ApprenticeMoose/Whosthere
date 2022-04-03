@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+
 
 class AthletesModel: Identifiable, Codable, ObservableObject {
     let id: String 
@@ -15,6 +17,7 @@ class AthletesModel: Identifiable, Codable, ObservableObject {
     let birthyear: Int
     let gender: String
     let showYear: Bool
+//let image: UIImage?
    
     
     init(id: String = UUID().uuidString, firstName: String, lastName: String, birthday: Date?, birthyear: Int, gender: String, showYear: Bool) {

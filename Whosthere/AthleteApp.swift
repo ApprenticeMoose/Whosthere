@@ -20,6 +20,7 @@ struct AthleteApp: App {
             }
             .navigationViewStyle(StackNavigationViewStyle())
             .environmentObject(AthletesViewModel())
+            
         }
     }
 }

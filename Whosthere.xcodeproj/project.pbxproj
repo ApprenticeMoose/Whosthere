@@ -28,6 +28,8 @@
 		BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */; };
 		BCA3A78F275E0496003D5F1C /* NavigationButtonSystemName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */; };
 		BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */; };
+		BCB4211627FA4CC000B939DA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211527FA4CC000B939DA /* ImagePicker.swift */; };
+		BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211727FA4ECE00B939DA /* PicturePicker.swift */; };
 		BCBE870C279CA0E600748358 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBE870B279CA0E600748358 /* PreviewProvider.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +57,8 @@
 		BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListView.swift; sourceTree = "<group>"; };
 		BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonSystemName.swift; sourceTree = "<group>"; };
 		BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingWhereValue.swift; sourceTree = "<group>"; };
+		BCB4211527FA4CC000B939DA /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		BCB4211727FA4ECE00B939DA /* PicturePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePicker.swift; sourceTree = "<group>"; };
 		BCBE870B279CA0E600748358 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,6 +78,7 @@
 			children = (
 				BC3F25562767B3EC00465551 /* AthletesModel.swift */,
 				BC146A2A27E7CE9D0034A9B2 /* AthletesError.swift */,
+				BCB4211727FA4ECE00B939DA /* PicturePicker.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				BC3212F02750E989001A689E /* CustomShape.swift */,
 				BC146A2827E7BB430034A9B2 /* FileManager+Extension.swift */,
 				BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */,
+				BCB4211527FA4CC000B939DA /* ImagePicker.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -258,7 +264,9 @@
 			files = (
 				BC88920427B14F6200A00047 /* MediumButton.swift in Sources */,
 				BC3212F12750E989001A689E /* CustomShape.swift in Sources */,
+				BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */,
 				BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */,
+				BCB4211627FA4CC000B939DA /* ImagePicker.swift in Sources */,
 				BC3212F62750EFA7001A689E /* Color.swift in Sources */,
 				BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */,
 				BC146A2727E5D32E0034A9B2 /* EditAthleteViewModel.swift in Sources */,
