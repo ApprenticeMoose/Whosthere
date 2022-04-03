@@ -115,8 +115,11 @@ struct AthleteDetailView: View {
                 .fontWeight(.bold)
             }
             .foregroundColor(Color.textUnchangedColor)
-        
-        if athlete.noYear {
+        VStack{
+            Text("There is no date given \(String(describing: athlete.noYear))")
+            Text("There is only a year given \(String(describing: athlete.showYear) )")
+        }
+        /*if athlete.noYear == true {
             
             HStack{
                 Text("Add birthday")
@@ -135,7 +138,7 @@ struct AthleteDetailView: View {
                     segue(athlete: athlete)
                 }
         }
-        else if athlete.showYear {
+        else if athlete.noYear == false && athlete.showYear {
             
                 
             
@@ -162,7 +165,7 @@ struct AthleteDetailView: View {
                     }
                     .padding(.bottom, 15)
            
-        }
+        }*/
     }
 }
     

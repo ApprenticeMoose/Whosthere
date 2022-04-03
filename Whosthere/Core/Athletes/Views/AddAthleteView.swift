@@ -510,7 +510,7 @@ struct Popover: View {
                 .onTapGesture {
                     if self.showYear {
                     selectedDate = adjustYear(year: year, date: selectedDate)
-                       noYear = checkIfDateChangend(date: selectedDate)
+                    noYear = checkIfDateChangend(date: selectedDate)
                         show.toggle()
                     } else {
                       noYear = checkIfDateChangend(date: selectedDate)
