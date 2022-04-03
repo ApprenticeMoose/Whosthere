@@ -76,7 +76,7 @@ struct AddAthleteView: View {
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture { show.toggle() }
                        
-                        Popover(selectedDate: $addVM.birthDate, show: $show, selectedYear: $addVM.birthYear, showYear: $addVM.showYear, noYear: $addVM.noYear)
+                        Popover(selectedDate: $addVM.birthDate.bound, show: $show, selectedYear: $addVM.birthYear, showYear: $addVM.showYear)
                         }
                     }
                     .opacity(self.show ? 1 : 0).animation(.easeIn)
@@ -94,14 +94,14 @@ struct AddAthleteView: View {
     func getBirthYear() -> Int {
         if addVM.birthDate != Date()
             {
-            addVM.birthYear = Calendar.current.component(.year, from: addVM.birthDate)
+            addVM.birthYear = Calendar.current.component(.year, from: addVM.birthDate ?? Date())
             }
         return addVM.birthYear
     }
     
     //function that connects all the selected variables to the model via the viewmodel and closes view afterwards
     func addAthlete() {
-        let athlete = AthletesModel(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, birthyear: addVM.birthYear, gender: addVM.gender, showYear: addVM.showYear, noYear: addVM.noYear)
+        let athlete = AthletesModel(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, birthyear: addVM.birthYear, gender: addVM.gender, showYear: addVM.showYear)
         athletesViewModel.addAthlete.send(athlete)
         presentationMode.wrappedValue.dismiss()
     }
@@ -248,7 +248,7 @@ struct BirthdayField: View {
     
     @Binding var show: Bool
     
-    @Binding var selectedDate: Date
+    @Binding var selectedDate: Date?
     
     //@Binding var selectedYear : Int
     
@@ -282,14 +282,14 @@ struct BirthdayField: View {
                     
                    
                 if self.showYear {
-                    Text(String(Calendar.current.component(.year, from: selectedDate)))
+                    Text(String(Calendar.current.component(.year, from: selectedDate ?? Date())))
                         .font(.body)
                         .foregroundColor(makeClear() ? Color.clear : Color.textColor)
                         .fontWeight(.semibold)
                 }
                 else{
                     VStack{
-                    Text(dateFormatter.string(from: selectedDate))
+                        Text(dateFormatter.string(from: selectedDate ?? Date()))
                         .font(.body)
                         .foregroundColor(makeClear() ? Color.clear : Color.textColor)
                         .fontWeight(.semibold)
@@ -308,7 +308,7 @@ struct BirthdayField: View {
     //function to check if the selected date is not today so if another date is selected the birthday header can be grayed out with a tertiary statement in the foregroundcolor modifier
    
     func changeOpacity() -> Bool {
-        if Calendar.current.isDateInToday(selectedDate) {
+        if Calendar.current.isDateInToday(selectedDate ?? Date()) {
             return false
         }
         return true
@@ -317,7 +317,7 @@ struct BirthdayField: View {
     
     //function to check if the selected date is not today so the birthdayfield can be clear at the beginning
     func makeClear() -> Bool {
-        if Calendar.current.isDateInToday(selectedDate) {
+        if Calendar.current.isDateInToday(selectedDate ?? Date()) {
             return true
         }
         return false
@@ -415,20 +415,20 @@ struct Popover: View {
     @State var currentYear = Calendar.current.component(.year, from: Date())
     @Binding var selectedYear : Int
     @Binding var showYear: Bool
-    @Binding var noYear: Bool
+    
     @State var year: Int
     
     let endingDate: Date = Date()
     
     
-    init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>, noYear: Binding<Bool>) {
+    init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>) {
         self._selectedDate = selectedDate
         self._show = show
         self._selectedYear = selectedYear
         self._showYear = showYear
         let startYear = Calendar.current.component(.year, from: selectedDate.wrappedValue)
         self._year = State<Int>(initialValue: startYear)
-        self._noYear = noYear
+        
     }
 
     
@@ -439,12 +439,7 @@ struct Popover: View {
         return selectedDate
     }
     
-    func checkIfDateChangend(date: Date) -> Bool {
-        if date != Date() {
-            noYear = false
-        }
-        return noYear
-    }
+    
     
     var body: some View {
         ZStack {
@@ -510,10 +505,10 @@ struct Popover: View {
                 .onTapGesture {
                     if self.showYear {
                     selectedDate = adjustYear(year: year, date: selectedDate)
-                    noYear = checkIfDateChangend(date: selectedDate)
+                    
                         show.toggle()
                     } else {
-                      noYear = checkIfDateChangend(date: selectedDate)
+                      
                         show.toggle()
                     }
                 }

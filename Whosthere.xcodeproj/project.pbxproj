@@ -27,6 +27,7 @@
 		BC88920427B14F6200A00047 /* MediumButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC88920327B14F6200A00047 /* MediumButton.swift */; };
 		BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */; };
 		BCA3A78F275E0496003D5F1C /* NavigationButtonSystemName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */; };
+		BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */; };
 		BCBE870C279CA0E600748358 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBE870B279CA0E600748358 /* PreviewProvider.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		BC88920327B14F6200A00047 /* MediumButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumButton.swift; sourceTree = "<group>"; };
 		BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListView.swift; sourceTree = "<group>"; };
 		BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonSystemName.swift; sourceTree = "<group>"; };
+		BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingWhereValue.swift; sourceTree = "<group>"; };
 		BCBE870B279CA0E600748358 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -161,6 +163,7 @@
 				BC3212F52750EFA6001A689E /* Color.swift */,
 				BC3212F02750E989001A689E /* CustomShape.swift */,
 				BC146A2827E7BB430034A9B2 /* FileManager+Extension.swift */,
+				BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 				BC146A2B27E7CE9D0034A9B2 /* AthletesError.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 				BCBE870C279CA0E600748358 /* PreviewProvider.swift in Sources */,
+				BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */,
 				BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */,
 				BC146A2927E7BB440034A9B2 /* FileManager+Extension.swift in Sources */,
 			);

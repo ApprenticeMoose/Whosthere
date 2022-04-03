@@ -129,7 +129,7 @@ struct EditAthleteView: View {
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture { show.toggle() }
 
-                        Popover(selectedDate: $editVM.birthDate, show: $show, selectedYear: $editVM.birthYear, showYear: $editVM.showYear, noYear: $editVM.noYear)
+                        Popover(selectedDate: $editVM.birthDate.bound, show: $show, selectedYear: $editVM.birthYear, showYear: $editVM.showYear)
 //  Popover(selectedDate: $editVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $editVM.birthYear)
 
                         }
@@ -146,7 +146,7 @@ struct EditAthleteView: View {
     //MARK: -Functions
     
     func editAthlete() {
-        let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender, showYear: editVM.showYear, noYear: editVM.noYear)
+        let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender, showYear: editVM.showYear)
         athletesViewModel.updateAthlete.send(athlete)
         presentationMode.wrappedValue.dismiss()
     }
@@ -392,20 +392,20 @@ func changeOpacity() -> Bool {
         @State var currentYear = Calendar.current.component(.year, from: Date())
         @Binding var selectedYear : Int
         @Binding var showYear: Bool
-        @Binding var noYear: Bool
+      
         @State var year: Int
         
         let endingDate: Date = Date()
         
         
-        init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>, noYear: Binding<Bool>) {
+        init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>) {
             self._selectedDate = selectedDate
             self._show = show
             self._selectedYear = selectedYear
             self._showYear = showYear
             let startYear = Calendar.current.component(.year, from: selectedDate.wrappedValue)
             self._year = State<Int>(initialValue: startYear)
-            self._noYear = noYear
+           
         }
 
         
@@ -416,12 +416,12 @@ func changeOpacity() -> Bool {
             return selectedDate
         }
         
-        func checkIfDateChangend(date: Date) -> Bool {
-            if date != Date() {
-                noYear = false
-            }
-            return noYear
-        }
+//        func checkIfDateChangend(date: Date) -> Bool {
+//            if date != Date() {
+//                noYear = false
+//            }
+//            return noYear
+//        }
         
         var body: some View {
             ZStack {
@@ -487,10 +487,8 @@ func changeOpacity() -> Bool {
                     .onTapGesture {
                         if self.showYear {
                         selectedDate = adjustYear(year: year, date: selectedDate)
-                        noYear = checkIfDateChangend(date: selectedDate)
                             show.toggle()
                         } else {
-                            noYear = checkIfDateChangend(date: selectedDate)
                             show.toggle()
                         }
                     }

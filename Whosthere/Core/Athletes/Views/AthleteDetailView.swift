@@ -116,56 +116,46 @@ struct AthleteDetailView: View {
             }
             .foregroundColor(Color.textUnchangedColor)
         VStack{
-            Text("There is no date given \(String(describing: athlete.noYear))")
-            Text("There is only a year given \(String(describing: athlete.showYear) )")
-        }
-        /*if athlete.noYear == true {
-            
-            HStack{
-                Text("Add birthday")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color.textUnchangedColor)
-                    .opacity(0.7)
-
-                Image("PenIcon")
-                    .foregroundColor(Color.textUnchangedColor)
-                    .opacity(0.7)
-                    .padding(.horizontal, -3)
+           
+            if let dateOfBirth = athlete.birthday {
+                if athlete.showYear {
+                    Text("\(String(describing: Calendar.current.component(.year, from: dateOfBirth)))")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.textUnchangedColor)
+                        .padding(.bottom, 15)
+                } else {
+                    Text(birthToggle == false ? "\(String(describing: Calendar.current.component(.year, from: dateOfBirth)))" : dateFormatter.string(from: dateOfBirth))
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color.textUnchangedColor)
+                            .onTapGesture {
+                                withAnimation(.easeOut){
+                                birthToggle.toggle()
+                                }
+                            }
+                            .padding(.bottom, 15)
                 }
-                .padding(.bottom, 15)
-                .onTapGesture {
-                    segue(athlete: athlete)
-                }
-        }
-        else if athlete.noYear == false && athlete.showYear {
-            
                 
-            
-            Text("\(String(describing: Calendar.current.component(.year, from: athlete.birthday)))")
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundColor(Color.textUnchangedColor)
-                .onTapGesture {
-                    withAnimation(.easeOut){
-                    birthToggle.toggle()
-                }
-        }
-        .padding(.bottom, 15)
-        }
-        else {
-            Text(birthToggle == false ? "\(String(describing: Calendar.current.component(.year, from: athlete.birthday)))" : dateFormatter.string(from: athlete.birthday))
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color.textUnchangedColor)
-                    .onTapGesture {
-                        withAnimation(.easeOut){
-                        birthToggle.toggle()
-                        }
+            } else {
+                HStack{
+                    Text("Add birthday")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color.textUnchangedColor)
+                        .opacity(0.7)
+
+                    Image("PenIcon")
+                        .foregroundColor(Color.textUnchangedColor)
+                        .opacity(0.7)
+                        .padding(.horizontal, -3)
                     }
                     .padding(.bottom, 15)
-           
-        }*/
+                    .onTapGesture {
+                        segue(athlete: athlete)
+                    }
+            }
+        }
     }
 }
     

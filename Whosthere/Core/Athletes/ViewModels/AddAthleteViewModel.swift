@@ -11,11 +11,11 @@ class AddAthleteViewModel: ObservableObject {
     
     @Published var firstName = ""
     @Published var lastName = ""
-    @Published var birthDate = Date()
+    @Published var birthDate: Date?
     @Published var birthYear = Calendar.current.component(.year, from: Date())
     @Published var gender = ""
     @Published var showYear = false
-    @Published var noYear = true
+    
     
     
     func textIsAppropriate() -> Bool {

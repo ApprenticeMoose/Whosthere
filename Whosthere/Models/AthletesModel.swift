@@ -11,13 +11,13 @@ class AthletesModel: Identifiable, Codable, ObservableObject {
     let id: String 
     let firstName: String
     let lastName: String
-    let birthday: Date
+    let birthday: Date?
     let birthyear: Int
     let gender: String
     let showYear: Bool
-    let noYear: Bool
+   
     
-    init(id: String = UUID().uuidString, firstName: String, lastName: String, birthday: Date, birthyear: Int, gender: String, showYear: Bool, noYear: Bool) {
+    init(id: String = UUID().uuidString, firstName: String, lastName: String, birthday: Date?, birthyear: Int, gender: String, showYear: Bool) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
@@ -25,16 +25,16 @@ class AthletesModel: Identifiable, Codable, ObservableObject {
         self.birthyear = birthyear
         self.gender = gender
         self.showYear = showYear
-        self.noYear = noYear
+        
     }
     
     static var sampleData: [AthletesModel] {
         [
-            AthletesModel(firstName: "Mustafa", lastName: "Acar", birthday: .init(timeIntervalSince1970: 893796436), birthyear: 1998, gender: "male", showYear: false, noYear: false)
+            AthletesModel(firstName: "Mustafa", lastName: "Acar", birthday: .init(timeIntervalSince1970: 893796436), birthyear: 1998, gender: "male", showYear: false)
         ]
     }
     
-    func updateModel(firstName: String, lastName: String, birthday: Date, birthyear: Int, gender: String, showYear: Bool, noYear: Bool) -> AthletesModel {
-        return AthletesModel(id: id, firstName: firstName, lastName: lastName, birthday: birthday, birthyear: birthyear, gender: gender, showYear: showYear, noYear: noYear)
+    func updateModel(firstName: String, lastName: String, birthday: Date, birthyear: Int, gender: String, showYear: Bool) -> AthletesModel {
+        return AthletesModel(id: id, firstName: firstName, lastName: lastName, birthday: birthday, birthyear: birthyear, gender: gender, showYear: showYear)
     }
 }
