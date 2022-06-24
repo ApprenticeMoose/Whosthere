@@ -31,6 +31,7 @@ struct AthletesListView: View {
             VStack{
                 //Header
                 ScreenHeaderTextOnly(screenTitle: "Athletes")
+                   
                 
                 //Screen body
                 VStack(spacing: 0) {
@@ -52,7 +53,7 @@ struct AthletesListView: View {
                         
                     }
                     //Spacer to define the body-sheets size:
-                    //Spacer().frame(maxWidth: .infinity)
+                    Spacer().frame(maxWidth: .infinity)
                 }
                 .background(Color.backgroundColor
                                 .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
@@ -61,6 +62,8 @@ struct AthletesListView: View {
                 
             }//VStack to seperate header and bodysheet
         }//ZStack for background
+        .navigationBarTitle("My Title")
+        .navigationBarHidden(true)
     }//Body
     
     

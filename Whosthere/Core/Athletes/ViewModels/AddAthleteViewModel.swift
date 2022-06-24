@@ -22,7 +22,7 @@ class AddAthleteViewModel: ObservableObject {
     @Published var showActionSheet: Bool = false
     @Published var source: PicturePicker.Source = .library
     
-    func showPhotoPicker() {
+    /*func showPhotoPicker() {
         if source == .camera {
             if !PicturePicker.checkPermissions() {
                 print("There is no camera on this device")
@@ -30,7 +30,7 @@ class AddAthleteViewModel: ObservableObject {
             }
         }
         showPicker = true
-    }
+    }*/
     
     func textIsAppropriate() -> Bool {
         if firstName.count >= 2 && lastName.count >= 1 {

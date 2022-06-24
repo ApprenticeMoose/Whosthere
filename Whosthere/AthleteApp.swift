@@ -15,9 +15,10 @@ struct AthleteApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView{
-            AthletesListView()
-                .navigationBarHidden(true)
+                TabTabView()
+                    .navigationBarHidden(true)
             }
+            .navigationBarHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
             .environmentObject(AthletesViewModel())
             

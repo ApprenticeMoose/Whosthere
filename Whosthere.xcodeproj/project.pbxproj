@@ -23,6 +23,9 @@
 		BC409A6127493F9B0096CD12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6027493F9B0096CD12 /* Assets.xcassets */; };
 		BC409A6427493F9B0096CD12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */; };
 		BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC525F4627AA995F0032B99F /* EditAthleteView.swift */; };
+		BC6D97822865CD2700383AAD /* TabulaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6D97812865CD2700383AAD /* TabulaterView.swift */; };
+		BC6D978728661F1300383AAD /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6D978628661F1300383AAD /* TabViewModel.swift */; };
+		BC6D978928662AC700383AAD /* TabTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6D978828662AC700383AAD /* TabTabView.swift */; };
 		BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */; };
 		BC88920427B14F6200A00047 /* MediumButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC88920327B14F6200A00047 /* MediumButton.swift */; };
 		BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */; };
@@ -52,6 +55,9 @@
 		BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BC409A6527493F9B0096CD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC525F4627AA995F0032B99F /* EditAthleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteView.swift; sourceTree = "<group>"; };
+		BC6D97812865CD2700383AAD /* TabulaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabulaterView.swift; sourceTree = "<group>"; };
+		BC6D978628661F1300383AAD /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
+		BC6D978828662AC700383AAD /* TabTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTabView.swift; sourceTree = "<group>"; };
 		BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonAssestsIcon.swift; sourceTree = "<group>"; };
 		BC88920327B14F6200A00047 /* MediumButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumButton.swift; sourceTree = "<group>"; };
 		BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListView.swift; sourceTree = "<group>"; };
@@ -146,7 +152,11 @@
 		BC525F4827AAD7310032B99F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				BC6D97802865CD1400383AAD /* TabView */,
+				BC6D977C2865CBF700383AAD /* Sessions */,
+				BC6D977E2865CCA000383AAD /* Statistics */,
 				BC525F4927AAD78C0032B99F /* Athletes */,
+				BC6D977F2865CCAF00383AAD /* Settings */,
 				BCA3A789275E034A003D5F1C /* Components */,
 			);
 			path = Core;
@@ -159,6 +169,45 @@
 				BCA3A77F275BB2C6003D5F1C /* Views */,
 			);
 			path = Athletes;
+			sourceTree = "<group>";
+		};
+		BC6D977C2865CBF700383AAD /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Sessions;
+			sourceTree = "<group>";
+		};
+		BC6D977E2865CCA000383AAD /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		BC6D977F2865CCAF00383AAD /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		BC6D97802865CD1400383AAD /* TabView */ = {
+			isa = PBXGroup;
+			children = (
+				BC6D978528661F0000383AAD /* ViewModel */,
+				BC6D97812865CD2700383AAD /* TabulaterView.swift */,
+				BC6D978828662AC700383AAD /* TabTabView.swift */,
+			);
+			path = TabView;
+			sourceTree = "<group>";
+		};
+		BC6D978528661F0000383AAD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				BC6D978628661F1300383AAD /* TabViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		BC798DB7278B85AD0022881E /* Extensions */ = {
@@ -277,11 +326,14 @@
 				BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */,
 				BC3F255C2767C1F000465551 /* AthletesViewModel.swift in Sources */,
 				BC3F25512760D1A800465551 /* FrameButton.swift in Sources */,
+				BC6D978928662AC700383AAD /* TabTabView.swift in Sources */,
 				BC3F2577276C9A4700465551 /* AddAthleteView.swift in Sources */,
 				BC146A2B27E7CE9D0034A9B2 /* AthletesError.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
+				BC6D978728661F1300383AAD /* TabViewModel.swift in Sources */,
 				BCBE870C279CA0E600748358 /* PreviewProvider.swift in Sources */,
 				BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */,
+				BC6D97822865CD2700383AAD /* TabulaterView.swift in Sources */,
 				BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */,
 				BC146A2927E7BB440034A9B2 /* FileManager+Extension.swift in Sources */,
 			);
@@ -416,7 +468,7 @@
 				DEVELOPMENT_TEAM = P93T2Q3CH5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Whosthere/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -438,7 +490,7 @@
 				DEVELOPMENT_TEAM = P93T2Q3CH5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Whosthere/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

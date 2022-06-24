@@ -145,7 +145,7 @@ struct AddAthleteView: View {
                         .padding()
                     
                     Image(uiImage: image)
-                        .resizable()S
+                        .resizable()
                         .scaledToFill()
                         .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
                         .clipShape(Circle())
@@ -194,7 +194,7 @@ struct AddAthleteView: View {
         .onTapGesture {
             addVM.showActionSheet.toggle()
         }
-        .actionSheet(isPresented: $addVM.showActionSheet, content: getActionSheet)
+        //.actionSheet(isPresented: $addVM.showActionSheet, content: getActionSheet)
         .sheet(isPresented: $addVM.showPicker) {
             ImagePicker(sourceType: addVM.source == .library ? .photoLibrary : .camera, selectedImage: $addVM.image)
                 .ignoresSafeArea()
@@ -211,7 +211,7 @@ struct AddAthleteView: View {
         
 }
     
-    func getActionSheet() -> ActionSheet {
+    /*func getActionSheet() -> ActionSheet {
 
         let cameraButton: ActionSheet.Button = .default(Text("Camera")) {
             addVM.source = .camera
@@ -225,7 +225,7 @@ struct AddAthleteView: View {
         let cancelButton: ActionSheet.Button = .cancel()
 
         return ActionSheet(title: Text("How would you like to add the picture?"), buttons: [cameraButton, libraryButton, cancelButton])
-    }
+    }*/
     
     var addAthleteHeader: some View {
         HStack{
