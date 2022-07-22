@@ -25,8 +25,7 @@ struct EditAthleteView: View {
     //Variables
     let athlete: Athlete
     
-    //Passing this varible in from the athleteslistview so Edit & Detail View can be dismissed simultaniously when athletes deleted and user returns to the list view
-    //@Binding var showDetailView: Bool
+
     
 
 
@@ -117,7 +116,6 @@ struct EditAthleteView: View {
                             .onTapGesture { show.toggle() }
 
                         Popover(selectedDate: $editVM.birthDate.bound, show: $show, selectedYear: $editVM.birthYear, showYear: $editVM.showYear)
-//  Popover(selectedDate: $editVM.birthDate, toggleIsOn: $toggleIsOn, show: $show, selectedYear: $editVM.birthYear)
 
                         }
                     }
@@ -132,14 +130,13 @@ struct EditAthleteView: View {
     
     //MARK: -Functions
     //-MARK: Insert Core Data here
-    func editAthlete() {
-        let updatedAthlete = Athlete(context: moc)
-        updatedAthlete.id = editVM.id
-        updatedAthlete.firstName = editVM.firstName
-        updatedAthlete.lastName = editVM.lastName
-        updatedAthlete.birthday = editVM.birthDate
-        updatedAthlete.gender = editVM.gender
-        updatedAthlete.showYear = editVM.showYear
+    func editAthlete(athlete: Athlete) {
+        athlete.id = editVM.id
+        athlete.firstName = editVM.firstName
+        athlete.lastName = editVM.lastName
+        athlete.birthday = editVM.birthDate
+        athlete.gender = editVM.gender
+        athlete.showYear = editVM.showYear
 
         try? moc.save()
 
@@ -148,21 +145,13 @@ struct EditAthleteView: View {
     
     func deleteAthletePressed(athlete: Athlete) {
         
-        let deleteAthlete = Athlete(context: moc)
-        moc.delete(deleteAthlete)
+        
+        moc.delete(athlete)
         
         try? moc.save()
         
         presentationMode.wrappedValue.dismiss()
-//        athletesViewModel.deleteAthlete.send(athlete)
-//
-//        //to double dismiss and get back to ListView
-//        DispatchQueue.main.async {
-//            showDetailView = false
-//                DispatchQueue.main.async {
-//                    presentationMode.wrappedValue.dismiss()
-//                }
-//              }
+
             }
         
     
@@ -188,7 +177,7 @@ struct EditAthleteView: View {
         Spacer(minLength: 0)
 
         Button(action: {
-            editAthlete()
+            editAthlete(athlete: athlete)
         }){
             NavigationButtonSystemName(iconName: "checkmark")
         }//Button
