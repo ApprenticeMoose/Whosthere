@@ -9,19 +9,6 @@ import SwiftUI
 
 //MARK: LoadingView for Lazy Loading of EditView below
 
-//struct EditAthleteLoadingView: View {
-//
-//    @Binding var athlete: AthletesModel?
-//    @Binding var showDetailView: Bool
-//
-//    var body: some View {
-//        ZStack{
-//            if let athlete = athlete {
-//                EditAthleteView(athlete: athlete, showDetailView: $showDetailView)
-//            }
-//        }
-//    }
-//}
 
 struct EditAthleteView: View {
 
@@ -29,16 +16,17 @@ struct EditAthleteView: View {
 
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.managedObjectContext) var moc
 
-    @EnvironmentObject var athletesViewModel: AthletesViewModel
+    //@EnvironmentObject var athletesViewModel: AthletesViewModel
     @ObservedObject var editVM: EditAthleteViewModel
 
 
     //Variables
-    let athlete: AthletesModel
+    let athlete: Athlete
     
-    //Passing this varible in from the athleteslistview so Edit & Detai View can be dismissed simultaniously when athletes deleted and user returns to the list view
-    @Binding var showDetailView: Bool
+    //Passing this varible in from the athleteslistview so Edit & Detail View can be dismissed simultaniously when athletes deleted and user returns to the list view
+    //@Binding var showDetailView: Bool
     
 
 
@@ -47,9 +35,8 @@ struct EditAthleteView: View {
     @State var nonbinary = false
 
 
-    init(athlete: AthletesModel, showDetailView: Binding<Bool>) {
+    init(athlete: Athlete) {
         self.athlete = athlete
-        self._showDetailView = showDetailView
         self.editVM = EditAthleteViewModel(athlete)
 
         if editVM.gender.contains("male") {
@@ -134,7 +121,7 @@ struct EditAthleteView: View {
 
                         }
                     }
-                    .opacity(self.show ? 1 : 0).animation(.easeIn)
+                .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)
 
                 }//ZStackforpopover
             }//ZStack End
@@ -144,24 +131,38 @@ struct EditAthleteView: View {
 
     
     //MARK: -Functions
-    
+    //-MARK: Insert Core Data here
     func editAthlete() {
-        let athlete = AthletesModel(id: editVM.id, firstName: editVM.firstName, lastName: editVM.lastName, birthday: editVM.birthDate, birthyear: editVM.birthYear, gender: editVM.gender, showYear: editVM.showYear)
-        athletesViewModel.updateAthlete.send(athlete)
+        let updatedAthlete = Athlete(context: moc)
+        updatedAthlete.id = editVM.id
+        updatedAthlete.firstName = editVM.firstName
+        updatedAthlete.lastName = editVM.lastName
+        updatedAthlete.birthday = editVM.birthDate
+        updatedAthlete.gender = editVM.gender
+        updatedAthlete.showYear = editVM.showYear
+
+        try? moc.save()
+
         presentationMode.wrappedValue.dismiss()
     }
     
-    func deleteAthletePressed(athlete: AthletesModel) {
+    func deleteAthletePressed(athlete: Athlete) {
         
-        athletesViewModel.deleteAthlete.send(athlete)
-       
-        //to double dismiss and get back to ListView
-        DispatchQueue.main.async {
-            showDetailView = false
-                DispatchQueue.main.async {
-                    presentationMode.wrappedValue.dismiss()
-                }
-              }
+        let deleteAthlete = Athlete(context: moc)
+        moc.delete(deleteAthlete)
+        
+        try? moc.save()
+        
+        presentationMode.wrappedValue.dismiss()
+//        athletesViewModel.deleteAthlete.send(athlete)
+//
+//        //to double dismiss and get back to ListView
+//        DispatchQueue.main.async {
+//            showDetailView = false
+//                DispatchQueue.main.async {
+//                    presentationMode.wrappedValue.dismiss()
+//                }
+//              }
             }
         
     

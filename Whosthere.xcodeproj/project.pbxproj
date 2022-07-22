@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,11 +23,13 @@
 		BC409A6127493F9B0096CD12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6027493F9B0096CD12 /* Assets.xcassets */; };
 		BC409A6427493F9B0096CD12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */; };
 		BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC525F4627AA995F0032B99F /* EditAthleteView.swift */; };
-		BC6D97822865CD2700383AAD /* TabulaterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6D97812865CD2700383AAD /* TabulaterView.swift */; };
 		BC6D978728661F1300383AAD /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6D978628661F1300383AAD /* TabViewModel.swift */; };
 		BC6D978928662AC700383AAD /* TabTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6D978828662AC700383AAD /* TabTabView.swift */; };
 		BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */; };
 		BC88920427B14F6200A00047 /* MediumButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC88920327B14F6200A00047 /* MediumButton.swift */; };
+		BC9D00CF2889B3B90024B4AC /* WhosThere.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */; };
+		BC9D00D12889B58A0024B4AC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC9D00D02889B58A0024B4AC /* DataController.swift */; };
+		BC9D00D4288B0BF10024B4AC /* NavigationBackport in Frameworks */ = {isa = PBXBuildFile; productRef = BC9D00D3288B0BF10024B4AC /* NavigationBackport */; };
 		BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */; };
 		BCA3A78F275E0496003D5F1C /* NavigationButtonSystemName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */; };
 		BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */; };
@@ -55,11 +57,12 @@
 		BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BC409A6527493F9B0096CD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC525F4627AA995F0032B99F /* EditAthleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteView.swift; sourceTree = "<group>"; };
-		BC6D97812865CD2700383AAD /* TabulaterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabulaterView.swift; sourceTree = "<group>"; };
 		BC6D978628661F1300383AAD /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
 		BC6D978828662AC700383AAD /* TabTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTabView.swift; sourceTree = "<group>"; };
 		BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonAssestsIcon.swift; sourceTree = "<group>"; };
 		BC88920327B14F6200A00047 /* MediumButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumButton.swift; sourceTree = "<group>"; };
+		BC9D00CE2889B3B90024B4AC /* WhosThere.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhosThere.xcdatamodel; sourceTree = "<group>"; };
+		BC9D00D02889B58A0024B4AC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListView.swift; sourceTree = "<group>"; };
 		BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonSystemName.swift; sourceTree = "<group>"; };
 		BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingWhereValue.swift; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC9D00D4288B0BF10024B4AC /* NavigationBackport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +89,7 @@
 				BC3F25562767B3EC00465551 /* AthletesModel.swift */,
 				BC146A2A27E7CE9D0034A9B2 /* AthletesError.swift */,
 				BCB4211727FA4ECE00B939DA /* PicturePicker.swift */,
+				BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -95,6 +100,7 @@
 				BC3F255B2767C1F000465551 /* AthletesViewModel.swift */,
 				BC146A2427E5D25D0034A9B2 /* AddAthleteViewModel.swift */,
 				BC146A2627E5D32E0034A9B2 /* EditAthleteViewModel.swift */,
+				BC9D00D02889B58A0024B4AC /* DataController.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -196,7 +202,6 @@
 			isa = PBXGroup;
 			children = (
 				BC6D978528661F0000383AAD /* ViewModel */,
-				BC6D97812865CD2700383AAD /* TabulaterView.swift */,
 				BC6D978828662AC700383AAD /* TabTabView.swift */,
 			);
 			path = TabView;
@@ -226,8 +231,8 @@
 		BCA3A77F275BB2C6003D5F1C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BC3F2576276C9A4700465551 /* AddAthleteView.swift */,
 				BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */,
+				BC3F2576276C9A4700465551 /* AddAthleteView.swift */,
 				BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */,
 				BC525F4627AA995F0032B99F /* EditAthleteView.swift */,
 			);
@@ -258,6 +263,9 @@
 			dependencies = (
 			);
 			name = Whosthere;
+			packageProductDependencies = (
+				BC9D00D3288B0BF10024B4AC /* NavigationBackport */,
+			);
 			productName = Photopickertest;
 			productReference = BC409A5927493F980096CD12 /* Whosthere.app */;
 			productType = "com.apple.product-type.application";
@@ -285,6 +293,9 @@
 				Base,
 			);
 			mainGroup = BC409A5027493F980096CD12;
+			packageReferences = (
+				BC9D00D2288B0BF10024B4AC /* XCRemoteSwiftPackageReference "NavigationBackport" */,
+			);
 			productRefGroup = BC409A5A27493F980096CD12 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -315,6 +326,7 @@
 				BC3212F12750E989001A689E /* CustomShape.swift in Sources */,
 				BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */,
 				BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */,
+				BC9D00D12889B58A0024B4AC /* DataController.swift in Sources */,
 				BCB4211627FA4CC000B939DA /* ImagePicker.swift in Sources */,
 				BC3212F62750EFA7001A689E /* Color.swift in Sources */,
 				BCA3A781275BB2E6003D5F1C /* AthletesListView.swift in Sources */,
@@ -333,9 +345,9 @@
 				BC6D978728661F1300383AAD /* TabViewModel.swift in Sources */,
 				BCBE870C279CA0E600748358 /* PreviewProvider.swift in Sources */,
 				BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */,
-				BC6D97822865CD2700383AAD /* TabulaterView.swift in Sources */,
 				BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */,
 				BC146A2927E7BB440034A9B2 /* FileManager+Extension.swift in Sources */,
+				BC9D00CF2889B3B90024B4AC /* WhosThere.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +536,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BC9D00D2288B0BF10024B4AC /* XCRemoteSwiftPackageReference "NavigationBackport" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnpatrickmorgan/NavigationBackport";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BC9D00D3288B0BF10024B4AC /* NavigationBackport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BC9D00D2288B0BF10024B4AC /* XCRemoteSwiftPackageReference "NavigationBackport" */;
+			productName = NavigationBackport;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				BC9D00CE2889B3B90024B4AC /* WhosThere.xcdatamodel */,
+			);
+			currentVersion = BC9D00CE2889B3B90024B4AC /* WhosThere.xcdatamodel */;
+			path = WhosThere.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BC409A5127493F980096CD12 /* Project object */;
 }

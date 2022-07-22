@@ -10,17 +10,19 @@ import SwiftUI
 @main
 struct AthleteApp: App {
     
-    //@StateObject private var athletesViewModel = AthletesViewModel()
+    @StateObject private var dataController = DataController()
     
     var body: some Scene {
         WindowGroup {
             NavigationView{
                 TabTabView()
                     .navigationBarHidden(true)
+                    .environment(\.managedObjectContext, dataController.container.viewContext)
             }
             .navigationBarHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
-            .environmentObject(AthletesViewModel())
+            //.environmentObject(AthletesViewModel())
+            
             
         }
     }

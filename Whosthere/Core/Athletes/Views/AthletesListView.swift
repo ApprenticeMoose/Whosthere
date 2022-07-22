@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NavigationBackport
 
 struct AthletesListView: View {
     
@@ -13,10 +14,11 @@ struct AthletesListView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    @EnvironmentObject private var vm: AthletesViewModel
+    //@EnvironmentObject private var vm: AthletesViewModel
     
-    @State private var selectedAthlete: AthletesModel? = nil
-    @State private var showDetailView: Bool = false
+    @FetchRequest(sortDescriptors: []) var athletes: FetchedResults<Athlete>
+    
+
     @State private var showAddSheet: Bool = false
     
     
@@ -24,7 +26,7 @@ struct AthletesListView: View {
     //MARK: -Body
     
     var body: some View {
-        
+        NBNavigationStack{
         ZStack{
             Color.accentColor.edgesIgnoringSafeArea(.all)
             
@@ -39,18 +41,32 @@ struct AthletesListView: View {
                     athleteListButtonRow
                         .fullScreenCover(isPresented: $showAddSheet,
                                          content: {AddAthleteView(addVM: AddAthleteViewModel())})
-                        
                     
-//Shows picture when list is empty
-                    if vm.allAthletes.isEmpty {
-                        
+                    
+                   
+
+
+                //Shows picture when list is empty
+                    if athletes.isEmpty {
+
                         emptyListPicture
-                        
-//Shows List if it has componenets
+
+                //Shows List if it has componenets
                     } else {
-                        
-                    athletesList
-                        
+
+                    //athletesList
+                        List(athletes) { athlete in
+                            NBNavigationLink(value: athlete){
+                                ListRowView(athlete: athlete)
+                                        .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
+                                        .listRowBackground(Color.middlegroundColor)
+                                        .listRowSeparator(.hidden)
+                            }
+                        }
+                        .nbNavigationDestination(for: Athlete.self) { athlete in
+                            AthleteDetailView(athlete: athlete)
+                        }
+
                     }
                     //Spacer to define the body-sheets size:
                     Spacer().frame(maxWidth: .infinity)
@@ -64,8 +80,9 @@ struct AthletesListView: View {
         }//ZStack for background
         .navigationBarTitle("My Title")
         .navigationBarHidden(true)
+        }//NavigationStack
     }//Body
-    
+
     
     //MARK: -Functions
     
@@ -101,25 +118,7 @@ struct AthletesListView: View {
         Spacer()
     }
 }
-    
-    var athletesList: some View {
-    
-        List(vm.allAthletes) { athlete in
-        //ForEach(vm.allAthletes) { athlete in
-            NavigationLink(destination: AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)) {
-                RowView(athlete: athlete)
-                    
-            }
-            .navigationViewStyle(StackNavigationViewStyle())
-            .listRowBackground(Color.middlegroundColor)
-//                        .onTapGesture {
-//                            segue(athlete: athlete) //->
-//                        }
-                        //.listRowSeperator(.hidden)->need update
-                }
-    .listStyle(InsetGroupedListStyle())
-    
-}
+
     
     private var athleteListButtonRow: some View {
     
@@ -163,55 +162,47 @@ struct AthletesListView: View {
 }//Struct
 
 
-    //MARK: -Preview
 
-    struct AthletesListView_Previews: PreviewProvider {
-        static var previews: some View {
-            AthletesListView()
-                .navigationBarHidden(true)
-                .environmentObject(dev.athletesVM)
-        }
-}
 
-    //MARK: Subviews
+        //MARK: Subviews
 
-struct ListRowView: View {
-    
-    @Environment(\.colorScheme) var colorScheme
-    
-    //changes may be needed
-    let athlete: AthletesModel
-    
-    var body: some View {
-        HStack {
-            emptyProfilePicture
-            
-            Text(athlete.firstName)
-                .font(.title3)
-            Spacer()
-        }
-        .padding(.vertical, 5)
-        .background(
-            Color.white.opacity(0.001)
-        )
+    struct ListRowView: View {
         
-    }
-    
-    
-    
-    var emptyProfilePicture: some View {
-        ZStack {
-            Circle()
-                .frame(width: 40, height: 40)
-                .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
-                .padding(.horizontal, 10)
-            Image(systemName: "person.fill")
-                .resizable()
-                .frame(width: 20, height: 20, alignment: .center)
-                .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+        @Environment(\.colorScheme) var colorScheme
+        
+        //changes may be needed
+        let athlete: Athlete
+        
+        var body: some View {
+            HStack {
+                emptyProfilePicture
+                
+                Text(athlete.firstName ?? "unknownAthlete")
+                    .font(.title3)
+                Spacer()
+            }
+            .padding(.vertical, 5)
+            .background(
+                Color.white.opacity(0.001)
+            )
+            
+        }
+        
+        
+        
+        var emptyProfilePicture: some View {
+            ZStack {
+                Circle()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                    .padding(.horizontal, 10)
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .frame(width: 20, height: 20, alignment: .center)
+                    .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+            }
         }
     }
-}
 
 struct ScreenHeaderTextOnly: View {
     
@@ -235,14 +226,15 @@ struct ScreenHeaderTextOnly: View {
     }
 }
 
-struct RowView: View {
-    //so the detail view can observe the model and can update immediately
-    @ObservedObject var athlete: AthletesModel
-    
-    var body: some View {
-        ListRowView(athlete: athlete)
-                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
-                .listRowBackground(Color.middlegroundColor)
-    }
-    
-}
+//struct RowView: View {
+//    //so the detail view can observe the model and can update immediately
+//    //@ObservedObject var athlete: AthletesModel
+//    let athlete: Athlete
+//
+//    var body: some View {
+//        ListRowView(athlete: athlete)
+//                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
+//                .listRowBackground(Color.middlegroundColor)
+//    }
+//
+//}

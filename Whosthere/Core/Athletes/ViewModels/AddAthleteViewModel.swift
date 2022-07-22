@@ -17,12 +17,14 @@ class AddAthleteViewModel: ObservableObject {
     @Published var gender = ""
     @Published var showYear = false
     
-    @Published var image: UIImage?
-    @Published var showPicker: Bool = false
-    @Published var showActionSheet: Bool = false
-    @Published var source: PicturePicker.Source = .library
+    //PhotoPickerStuff
+    /*
+    //@Published var image: UIImage?
+    //@Published var showPicker: Bool = false
+    //@Published var showActionSheet: Bool = false
+    //@Published var source: PicturePicker.Source = .library
     
-    /*func showPhotoPicker() {
+    func showPhotoPicker() {
         if source == .camera {
             if !PicturePicker.checkPermissions() {
                 print("There is no camera on this device")

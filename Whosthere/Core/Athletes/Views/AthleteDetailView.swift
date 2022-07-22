@@ -7,20 +7,7 @@
 
 import SwiftUI
 
-//Is for lazyloading and checks if athlete is valid, then passses it to actual DetailView, and displays DetailView
-//struct AthleteDetailLoadingView: View {
-//
-//    @Binding var athlete: AthletesModel?
-//    @Binding var showDetailView: Bool
-//
-//    var body: some View {
-//        ZStack{
-//            if let athlete = athlete {
-//                AthleteDetailView(athlete: athlete, showDetailView: $showDetailView)
-//            }
-//        }
-//    }
-//}
+
 
 struct AthleteDetailView: View {
     
@@ -28,13 +15,12 @@ struct AthleteDetailView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var vm: AthletesViewModel
+    //@EnvironmentObject var vm: AthletesViewModel
     
     // variable to switch between displaying birthdate and birthyear
     @State private var birthToggle: Bool = false
     
     //variables for passing along the data to edit view
-    @State private var selectedAthlete: AthletesModel? = nil
     @State private var showEditView: Bool = false
     
     var dateFormatter: DateFormatter {
@@ -43,12 +29,12 @@ struct AthleteDetailView: View {
         return formatter
     }
     
-    private var athlete: AthletesModel
-    @Binding var showDetailView: Bool
+   
+    private var athlete: Athlete
     
-    init(athlete: AthletesModel, showDetailView: Binding<Bool>) {
+    
+    init(athlete: Athlete) {
         self.athlete = athlete
-        self._showDetailView = showDetailView
         print("Initializing Detail View for: \(String(describing: athlete.firstName))")
     }
     
@@ -67,8 +53,7 @@ struct AthleteDetailView: View {
                     AthleteDetailHeaderButtons
                         .padding(.bottom, -10)
                         .fullScreenCover(isPresented: $showEditView,
-                                         
-                                         content: {EditAthleteView(athlete: athlete, showDetailView: $showDetailView)})
+                                         content: {EditAthleteView(athlete: athlete)})
                     
                     profilePicture
                         .padding(.top, -20)
@@ -80,25 +65,21 @@ struct AthleteDetailView: View {
                         .background(Color.accentColor
                                         .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
                                         .edgesIgnoringSafeArea(.top))
-//Content
+
                     Spacer()
                 }
             
             }//end of ZStack for Color
-//            .background(
-//                NavigationLink(destination: EditAthleteLoadingView(athlete: $selectedAthlete, showDetailView: $showDetailView),
-//                               isActive: $showEditView,
-//                               label: { EmptyView() }))
             .navigationBarHidden(true)
         }//end of Body
     
             
     //MARK: -Functions
     
-    private func segue(athlete: AthletesModel) {
-        selectedAthlete = athlete
-        showEditView.toggle()
-    }
+//    private func segue(athlete: Athlete) {
+//        selectedAthlete = athlete
+//        showEditView.toggle()
+//    }
     
     
     // MARK: -Outsourced Components
@@ -107,10 +88,10 @@ struct AthleteDetailView: View {
     
     VStack(spacing: UIScreen.main.bounds.height/70){
         HStack {
-            Text(athlete.firstName)
+            Text(athlete.firstName ?? "unknown Athlete")
                 .font(.title3)
                 .fontWeight(.bold)
-            Text(athlete.lastName)
+            Text(athlete.lastName ?? "unknown Athlete")
                 .font(.title3)
                 .fontWeight(.bold)
             }
@@ -152,7 +133,7 @@ struct AthleteDetailView: View {
                     }
                     .padding(.bottom, 15)
                     .onTapGesture {
-                        segue(athlete: athlete)
+                       // segue(athlete: athlete)
                     }
             }
         }
