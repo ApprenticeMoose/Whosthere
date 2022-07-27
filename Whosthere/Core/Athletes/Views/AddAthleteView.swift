@@ -14,7 +14,8 @@ struct AddAthleteView: View {
 
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.managedObjectContext) var moc
+    //@Environment(\.managedObjectContext) var moc
+    @StateObject var dataVM: DataController
 
 
 //    @EnvironmentObject var athletesViewModel: AthletesViewModel
@@ -104,15 +105,18 @@ struct AddAthleteView: View {
     
     //function that connects all the selected variables to the model via the viewmodel and closes view afterwards
     func addAthlete() {
-        let newAthlete = Athlete(context: moc)
-        newAthlete.id = UUID()
-        newAthlete.firstName = addVM.firstName
-        newAthlete.lastName = addVM.lastName
-        newAthlete.birthday = addVM.birthDate
-        newAthlete.gender = addVM.gender
-        newAthlete.showYear = addVM.showYear
-
-        try? moc.save()
+        dataVM.addAthlete(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, gender: addVM.gender, showYear: addVM.showYear)
+//        let newAthlete = Athlete(context: moc)
+//        newAthlete.id = UUID()
+//        newAthlete.firstName = addVM.firstName
+//        newAthlete.lastName = addVM.lastName
+//        newAthlete.birthday = addVM.birthDate
+//        newAthlete.gender = addVM.gender
+//        newAthlete.showYear = addVM.showYear
+//
+//        try? moc.save()
+//        dataVM.fetchAthletes()
+//
 
         presentationMode.wrappedValue.dismiss()
     }
@@ -128,6 +132,7 @@ struct AddAthleteView: View {
                 addVM.birthYear = getBirthYear()
             }
             addAthlete()
+            dataVM.fetchAthletes()
         }
     }){
         HStack{

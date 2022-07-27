@@ -16,8 +16,9 @@ struct AthletesListView: View {
     
     //@EnvironmentObject private var vm: AthletesViewModel
     
-    @FetchRequest(sortDescriptors: []) var athletes: FetchedResults<Athlete>
-    
+    //@FetchRequest(sortDescriptors: []) var athletes: FetchedResults<Athlete>
+    @StateObject var dataVM = DataController()
+    @State private var refreshID = UUID()
 
     @State private var showAddSheet: Bool = false
     
@@ -40,14 +41,16 @@ struct AthletesListView: View {
                     
                     athleteListButtonRow
                         .fullScreenCover(isPresented: $showAddSheet,
-                                         content: {AddAthleteView(addVM: AddAthleteViewModel())})
+                                         content: {AddAthleteView(dataVM: DataController(), addVM: AddAthleteViewModel())
+                                .onDisappear(perform: {self.refreshID = UUID()})
+                        })
                     
                     
                    
 
 
                 //Shows picture when list is empty
-                    if athletes.isEmpty {
+                    if dataVM.savedAthletes.isEmpty {
 
                         emptyListPicture
 
@@ -55,14 +58,13 @@ struct AthletesListView: View {
                     } else {
 
                     //athletesList
-                        List(athletes) { athlete in
+                        List(dataVM.savedAthletes) { athlete in
                             NBNavigationLink(value: athlete){
-                                ListRowView(athlete: athlete)
-                                        .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
-                                        .listRowBackground(Color.middlegroundColor)
+                                RowView(athlete: athlete)
                                         .listRowSeparator(.hidden)
                             }
                         }
+                        .id(refreshID)
                         .nbNavigationDestination(for: Athlete.self) { athlete in
                             AthleteDetailView(athlete: athlete)
                         }
@@ -107,7 +109,7 @@ struct AthletesListView: View {
             .padding(.bottom, 15)
         
         NavigationLink(
-            destination: AddAthleteView(addVM: AddAthleteViewModel()),
+            destination: AddAthleteView(dataVM: DataController(), addVM: AddAthleteViewModel()),
             label: {
                 MediumButton(icon: "plus",
                                 description: "Add athlete now",
@@ -226,15 +228,14 @@ struct ScreenHeaderTextOnly: View {
     }
 }
 
-//struct RowView: View {
-//    //so the detail view can observe the model and can update immediately
-//    //@ObservedObject var athlete: AthletesModel
-//    let athlete: Athlete
-//
-//    var body: some View {
-//        ListRowView(athlete: athlete)
-//                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
-//                .listRowBackground(Color.middlegroundColor)
-//    }
-//
-//}
+struct RowView: View {
+    //so the detail view can observe the model and can update immediately
+    @ObservedObject var athlete: Athlete
+
+    var body: some View {
+        ListRowView(athlete: athlete)
+                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
+                .listRowBackground(Color.middlegroundColor)
+    }
+
+}

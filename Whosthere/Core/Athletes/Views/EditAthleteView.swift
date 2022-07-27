@@ -16,7 +16,8 @@ struct EditAthleteView: View {
 
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.managedObjectContext) var moc
+    //@Environment(\.managedObjectContext) var moc
+    @ObservedObject var dataVM: DataController
 
     //@EnvironmentObject var athletesViewModel: AthletesViewModel
     @ObservedObject var editVM: EditAthleteViewModel
@@ -37,7 +38,7 @@ struct EditAthleteView: View {
     init(athlete: Athlete) {
         self.athlete = athlete
         self.editVM = EditAthleteViewModel(athlete)
-
+        self.dataVM = DataController()
         if editVM.gender.contains("male") {
             self._male = State(wrappedValue: true)
            print("male is included")
@@ -130,29 +131,31 @@ struct EditAthleteView: View {
     
     //MARK: -Functions
     //-MARK: Insert Core Data here
-    func editAthlete(athlete: Athlete) {
-        athlete.id = editVM.id
-        athlete.firstName = editVM.firstName
-        athlete.lastName = editVM.lastName
-        athlete.birthday = editVM.birthDate
-        athlete.gender = editVM.gender
-        athlete.showYear = editVM.showYear
-
-        try? moc.save()
-
-        presentationMode.wrappedValue.dismiss()
-    }
+//    func editAthlete(athlete: Athlete) {
+//        athlete.id = editVM.id
+//        athlete.firstName = editVM.firstName
+//        athlete.lastName = editVM.lastName
+//        athlete.birthday = editVM.birthDate
+//        athlete.gender = editVM.gender
+//        athlete.showYear = editVM.showYear
+//
+//        try? moc.save()
+//        dataVM.fetchAthletes()
+//
+//        presentationMode.wrappedValue.dismiss()
+//    }
     
-    func deleteAthletePressed(athlete: Athlete) {
-        
-        
-        moc.delete(athlete)
-        
-        try? moc.save()
-        
-        presentationMode.wrappedValue.dismiss()
-
-            }
+//    func deleteAthletePressed(athlete: Athlete) {
+//
+//
+//        moc.delete(athlete)
+//
+//        try? moc.save()
+//        dataVM.fetchAthletes()
+//
+//        presentationMode.wrappedValue.dismiss()
+//
+//            }
         
     
     //MARK: -Outsourced Components
@@ -177,7 +180,7 @@ struct EditAthleteView: View {
         Spacer(minLength: 0)
 
         Button(action: {
-            editAthlete(athlete: athlete)
+           // editAthlete(athlete: athlete)
         }){
             NavigationButtonSystemName(iconName: "checkmark")
         }//Button
@@ -282,7 +285,7 @@ struct EditAthleteView: View {
                           message: Text("This action cannot be undone!"),
                           primaryButton: .destructive(Text("Delete"),
                           action: {
-                            deleteAthletePressed(athlete: athlete)
+                           // deleteAthletePressed(athlete: athlete)
                         }),
                           secondaryButton: .cancel())
                     })
