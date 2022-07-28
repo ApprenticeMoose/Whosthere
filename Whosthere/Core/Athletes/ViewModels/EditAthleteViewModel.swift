@@ -6,6 +6,7 @@
 
 
 import Foundation
+import CoreData
 
 class EditAthleteViewModel: ObservableObject {
 
@@ -16,16 +17,48 @@ class EditAthleteViewModel: ObservableObject {
     @Published var gender = ""
     @Published var showYear = false
 
-    var id: UUID?
+    var id: NSManagedObjectID?
+     var context: NSManagedObjectContext
 
-
-    init(_ currentAthlete: Athlete) {
-        self.firstName = currentAthlete.firstName ?? "unknown Athlete"
-        self.lastName = currentAthlete.lastName ?? "unknown Athlete"
-        self.birthDate = currentAthlete.birthday ?? Date()
+    init(_ currentAthlete: AthleteViewModel, context: NSManagedObjectContext) {
+        self.firstName = currentAthlete.firstName
+        self.lastName = currentAthlete.lastName
+        self.birthDate = currentAthlete.birthday
         //self.birthYear = currentAthlete.birthyear
-        self.gender = currentAthlete.gender ?? "unknown Athlete"
+        self.gender = currentAthlete.gender
         self.showYear = currentAthlete.showYear
         id = currentAthlete.id
+        self.context = context
     }
+    
+    func deleteAthlete(athleteId: NSManagedObjectID) {
+        do {
+            guard let athlete = try context.existingObject(with: athleteId) as? Athlete else {
+                return
+            }
+            
+            try athlete.delete()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func editAthlete(athleteId: NSManagedObjectID) {
+        do {
+            guard let athlete = try context.existingObject(with: athleteId) as? Athlete else {
+                return
+            }
+            
+            athlete.firstName = firstName
+            athlete.lastName = lastName
+            athlete.birthday = birthDate
+            athlete.gender = gender
+            athlete.showYear = showYear
+            try athlete.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    
 }

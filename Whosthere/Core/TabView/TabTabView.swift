@@ -11,6 +11,8 @@ struct TabTabView: View {
     
     @StateObject var tabData = TabViewModel()
     
+    let viewContext = CoreDataManager.shared.persistentStoreContainer.viewContext
+    
     // Hiding Tab View...
     init(){
         UITabBar.appearance().isHidden = true
@@ -32,7 +34,7 @@ struct TabTabView: View {
                 .navigationTitle("")
                 .navigationBarHidden(true)
             
-            AthletesListView()
+            AthletesListView(vm: AthletesListViewModel(context: viewContext))
                 .tag("Athletes")
                 .navigationTitle("")
                 .navigationBarHidden(true)

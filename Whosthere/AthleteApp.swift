@@ -10,18 +10,19 @@ import SwiftUI
 @main
 struct AthleteApp: App {
     
-    //@StateObject private var dataController = DataController()
-    
     var body: some Scene {
         WindowGroup {
+            
+            let viewContext = CoreDataManager.shared.persistentStoreContainer.viewContext
+            
             NavigationView{
                 TabTabView()
                     .navigationBarHidden(true)
-                    //.environment(\.managedObjectContext, dataController.container.viewContext)
+                    .environment(\.managedObjectContext, viewContext)
             }
             .navigationBarHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
-            //.environmentObject(AthletesViewModel())
+            
             
             
         }

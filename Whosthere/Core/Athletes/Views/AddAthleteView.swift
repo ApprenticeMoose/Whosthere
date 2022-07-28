@@ -14,12 +14,13 @@ struct AddAthleteView: View {
 
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    //@Environment(\.managedObjectContext) var moc
-    @StateObject var dataVM: DataController
 
-
-//    @EnvironmentObject var athletesViewModel: AthletesViewModel
+    
     @ObservedObject var addVM: AddAthleteViewModel
+    
+    init(vm: AddAthleteViewModel) {
+        self.addVM = vm
+    }
 
 
     //Toggle
@@ -102,24 +103,7 @@ struct AddAthleteView: View {
         return addVM.birthYear
     }
 
-    
-    //function that connects all the selected variables to the model via the viewmodel and closes view afterwards
-    func addAthlete() {
-        dataVM.addAthlete(firstName: addVM.firstName, lastName: addVM.lastName, birthday: addVM.birthDate, gender: addVM.gender, showYear: addVM.showYear)
-//        let newAthlete = Athlete(context: moc)
-//        newAthlete.id = UUID()
-//        newAthlete.firstName = addVM.firstName
-//        newAthlete.lastName = addVM.lastName
-//        newAthlete.birthday = addVM.birthDate
-//        newAthlete.gender = addVM.gender
-//        newAthlete.showYear = addVM.showYear
-//
-//        try? moc.save()
-//        dataVM.fetchAthletes()
-//
 
-        presentationMode.wrappedValue.dismiss()
-    }
 
 
     //MARK: Outsourced components
@@ -128,11 +112,10 @@ struct AddAthleteView: View {
     Button(action: {
         if addVM.textIsAppropriate()
             {
-            if addVM.showYear == false {
-                addVM.birthYear = getBirthYear()
-            }
-            addAthlete()
-            dataVM.fetchAthletes()
+            if addVM.showYear == false {addVM.birthYear = getBirthYear()}
+            
+            addVM.save()
+            presentationMode.wrappedValue.dismiss()
         }
     }){
         HStack{
@@ -264,7 +247,8 @@ struct AddAthleteView: View {
 
             Button(action: {
                 if addVM.textIsAppropriate() {
-                    addAthlete()
+                    addVM.save()
+                    presentationMode.wrappedValue.dismiss()
                 }
             }){
                 NavigationButtonSystemName(iconName: "checkmark")

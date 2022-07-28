@@ -15,7 +15,8 @@ struct AthleteDetailView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
-    //@EnvironmentObject var vm: AthletesViewModel
+
+    @Environment(\.managedObjectContext) var context
     
     // variable to switch between displaying birthdate and birthyear
     @State private var birthToggle: Bool = false
@@ -30,10 +31,10 @@ struct AthleteDetailView: View {
     }
     
    
-    private var athlete: Athlete
+    private var athlete: AthleteViewModel
     
     
-    init(athlete: Athlete) {
+    init(athlete: AthleteViewModel) {
         self.athlete = athlete
         print("Initializing Detail View for: \(String(describing: athlete.firstName))")
     }
@@ -53,7 +54,7 @@ struct AthleteDetailView: View {
                     AthleteDetailHeaderButtons
                         .padding(.bottom, -10)
                         .fullScreenCover(isPresented: $showEditView,
-                                         content: {EditAthleteView(athlete: athlete)})
+                                         content: {EditAthleteView(athlete: athlete, context: context)})
                     
                     profilePicture
                         .padding(.top, -20)
@@ -88,10 +89,10 @@ struct AthleteDetailView: View {
     
     VStack(spacing: UIScreen.main.bounds.height/70){
         HStack {
-            Text(athlete.firstName ?? "unknown Athlete")
+            Text(athlete.firstName)
                 .font(.title3)
                 .fontWeight(.bold)
-            Text(athlete.lastName ?? "unknown Athlete")
+            Text(athlete.lastName)
                 .font(.title3)
                 .fontWeight(.bold)
             }
