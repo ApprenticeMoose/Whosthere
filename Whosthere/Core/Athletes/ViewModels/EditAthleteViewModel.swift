@@ -18,13 +18,12 @@ class EditAthleteViewModel: ObservableObject {
     @Published var showYear = false
 
     var id: NSManagedObjectID?
-     var context: NSManagedObjectContext
+    var context: NSManagedObjectContext
 
     init(_ currentAthlete: AthleteViewModel, context: NSManagedObjectContext) {
         self.firstName = currentAthlete.firstName
         self.lastName = currentAthlete.lastName
         self.birthDate = currentAthlete.birthday
-        //self.birthYear = currentAthlete.birthyear
         self.gender = currentAthlete.gender
         self.showYear = currentAthlete.showYear
         id = currentAthlete.id

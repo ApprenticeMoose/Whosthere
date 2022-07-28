@@ -19,10 +19,9 @@ struct AthletesListView: View {
     @Environment(\.managedObjectContext) var viewContext
     @ObservedObject private var athletesListVM: AthletesListViewModel
     
- 
+    @State private var refreshID = UUID()
 
     @State private var showAddSheet: Bool = false
-    
     
     
     //MARK: -Body
@@ -58,16 +57,20 @@ struct AthletesListView: View {
                     } else {
 
                     //athletesList
-                        List(athletesListVM.athletes) { athlete in
-                            NBNavigationLink(value: athlete){
+                        List(athletesListVM.athletes, id: \.id) { athlete in
+                            NavigationLink(
+                                destination: AthleteDetailView(athlete: athlete)
+                                    .onDisappear(perform: {self.refreshID = UUID()}),
+                                label: {
+                                    
                                 RowView(athlete: athlete)
-                            }
-                        }
-                        .nbNavigationDestination(for: AthleteViewModel.self) { athlete in
-                            AthleteDetailView(athlete: athlete)
+                            })
+                        }.id(refreshID)
+//                        .nbNavigationDestination(for: AthleteViewModel.self) { athlete in
+//                            AthleteDetailView(athlete: athlete, needsRefresh: $needsRefresh)
                         }
 
-                    }
+                    
                     //Spacer to define the body-sheets size:
                     //Spacer().frame(maxWidth: .infinity)
                 }
@@ -158,7 +161,7 @@ struct AthletesListView: View {
     UITableViewCell.appearance().backgroundColor = .clear
     UITableView.appearance().tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         
-        self.athletesListVM = vm
+    self.athletesListVM = vm
     }
     
 }//Struct

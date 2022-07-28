@@ -134,7 +134,6 @@ struct EditAthleteView: View {
     func editAthlete(athlete: AthleteViewModel) {
         
         editVM.editAthlete(athleteId: athlete.id)
-
         presentationMode.wrappedValue.dismiss()
     }
     
