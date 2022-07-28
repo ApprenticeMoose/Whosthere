@@ -14,11 +14,12 @@ struct AthletesListView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    //@EnvironmentObject private var vm: AthletesViewModel
+  
     
-    //@FetchRequest(sortDescriptors: []) var athletes: FetchedResults<Athlete>
-    @StateObject var dataVM = DataController()
-    @State private var refreshID = UUID()
+    @Environment(\.managedObjectContext) var viewContext
+    @ObservedObject private var athletesListVM: AthletesListViewModel
+    
+ 
 
     @State private var showAddSheet: Bool = false
     
@@ -41,8 +42,7 @@ struct AthletesListView: View {
                     
                     athleteListButtonRow
                         .fullScreenCover(isPresented: $showAddSheet,
-                                         content: {AddAthleteView(dataVM: DataController(), addVM: AddAthleteViewModel())
-                                .onDisappear(perform: {self.refreshID = UUID()})
+                                         content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))
                         })
                     
                     
@@ -50,7 +50,7 @@ struct AthletesListView: View {
 
 
                 //Shows picture when list is empty
-                    if dataVM.savedAthletes.isEmpty {
+                    if athletesListVM.athletes.isEmpty {
 
                         emptyListPicture
 
@@ -58,20 +58,18 @@ struct AthletesListView: View {
                     } else {
 
                     //athletesList
-                        List(dataVM.savedAthletes) { athlete in
+                        List(athletesListVM.athletes) { athlete in
                             NBNavigationLink(value: athlete){
                                 RowView(athlete: athlete)
-                                        .listRowSeparator(.hidden)
                             }
                         }
-                        .id(refreshID)
-                        .nbNavigationDestination(for: Athlete.self) { athlete in
+                        .nbNavigationDestination(for: AthleteViewModel.self) { athlete in
                             AthleteDetailView(athlete: athlete)
                         }
 
                     }
                     //Spacer to define the body-sheets size:
-                    Spacer().frame(maxWidth: .infinity)
+                    //Spacer().frame(maxWidth: .infinity)
                 }
                 .background(Color.backgroundColor
                                 .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
@@ -109,7 +107,7 @@ struct AthletesListView: View {
             .padding(.bottom, 15)
         
         NavigationLink(
-            destination: AddAthleteView(dataVM: DataController(), addVM: AddAthleteViewModel()),
+            destination: AddAthleteView(vm: AddAthleteViewModel(context: viewContext)),
             label: {
                 MediumButton(icon: "plus",
                                 description: "Add athlete now",
@@ -155,10 +153,12 @@ struct AthletesListView: View {
 }
     
     //initializer for adjusting List View to look as intended
-    init() {
+    init(vm: AthletesListViewModel) {
     UITableView.appearance().backgroundColor = .clear
     UITableViewCell.appearance().backgroundColor = .clear
     UITableView.appearance().tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+        
+        self.athletesListVM = vm
     }
     
 }//Struct
@@ -173,13 +173,13 @@ struct AthletesListView: View {
         @Environment(\.colorScheme) var colorScheme
         
         //changes may be needed
-        let athlete: Athlete
+        let athlete: AthleteViewModel
         
         var body: some View {
             HStack {
                 emptyProfilePicture
                 
-                Text(athlete.firstName ?? "unknownAthlete")
+                Text(athlete.firstName)
                     .font(.title3)
                 Spacer()
             }
@@ -230,7 +230,7 @@ struct ScreenHeaderTextOnly: View {
 
 struct RowView: View {
     //so the detail view can observe the model and can update immediately
-    @ObservedObject var athlete: Athlete
+    @ObservedObject var athlete: AthleteViewModel
 
     var body: some View {
         ListRowView(athlete: athlete)

@@ -7,8 +7,15 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class AddAthleteViewModel: ObservableObject {
+    
+    var context: NSManagedObjectContext
+    
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
     
     @Published var firstName = ""
     @Published var lastName = ""
@@ -16,6 +23,22 @@ class AddAthleteViewModel: ObservableObject {
     @Published var birthYear = Calendar.current.component(.year, from: Date())
     @Published var gender = ""
     @Published var showYear = false
+    
+    func save() {
+        do {
+            let newAthlete = Athlete(context: context)
+            newAthlete.id = UUID()
+            newAthlete.firstName = firstName
+            newAthlete.lastName = lastName
+            newAthlete.birthday = birthDate
+            newAthlete.gender = gender
+            newAthlete.showYear = showYear
+            try newAthlete.save()
+            
+        } catch {
+            print(error)
+        }
+    }
     
     //PhotoPickerStuff
     /*
