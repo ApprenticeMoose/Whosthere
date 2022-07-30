@@ -13,6 +13,7 @@ struct TabTabView: View {
     
     let viewContext = CoreDataManager.shared.persistentStoreContainer.viewContext
     
+    
     // Hiding Tab View...
     init(){
         UITabBar.appearance().isHidden = true
@@ -38,6 +39,8 @@ struct TabTabView: View {
                 .tag("Athletes")
                 .navigationTitle("")
                 .navigationBarHidden(true)
+            //need to induce this EnvironmentObject so everything from AthletesListView onwards can use it for Navigation with @EnvironmentObject
+                .environmentObject(AppState())
             
             Text("Settings")
                 .tag("Settings")
