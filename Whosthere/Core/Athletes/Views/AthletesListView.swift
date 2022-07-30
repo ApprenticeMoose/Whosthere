@@ -8,6 +8,15 @@
 import SwiftUI
 import NavigationBackport
 
+enum Route: Hashable {
+    case detail(AthleteViewModel)
+    case edit(AthleteViewModel)
+}
+class AppState: ObservableObject {
+    @Published var path = NBNavigationPath()
+}
+
+
 struct AthletesListView: View {
     
     //MARK: -Properties
@@ -17,17 +26,21 @@ struct AthletesListView: View {
   
     
     @Environment(\.managedObjectContext) var viewContext
+    
     @ObservedObject private var athletesListVM: AthletesListViewModel
     
     @State private var refreshID = UUID()
 
     @State private var showAddSheet: Bool = false
     
+    @EnvironmentObject var appState: AppState
+    
+   
     
     //MARK: -Body
     
     var body: some View {
-        NBNavigationStack{
+        NBNavigationStack(path: $appState.path){
         ZStack{
             Color.accentColor.edgesIgnoringSafeArea(.all)
             
@@ -57,22 +70,28 @@ struct AthletesListView: View {
                     } else {
 
                     //athletesList
-                        List(athletesListVM.athletes, id: \.id) { athlete in
-                            NavigationLink(
-                                destination: AthleteDetailView(athlete: athlete)
-                                    .onDisappear(perform: {self.refreshID = UUID()}),
-                                label: {
-                                    
-                                RowView(athlete: athlete)
-                            })
-                        }.id(refreshID)
-//                        .nbNavigationDestination(for: AthleteViewModel.self) { athlete in
-//                            AthleteDetailView(athlete: athlete, needsRefresh: $needsRefresh)
+                        List(athletesListVM.athletes) { athlete in
+                            NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
+                                //{RowView(athlete: athlete)}
+                            
+                        }
+                        .id(refreshID)
+                                .nbNavigationDestination(for: Route.self) { route in
+                                    switch route {
+                                    case let .detail(athlete):
+                                        AthleteDetailView(athlete: athlete)
+                                            .onDisappear(perform: {self.refreshID = UUID()})
+                                    case let .edit(athlete):
+                                        EditAthleteView(athlete: athlete, context: viewContext, goBackToRoot: { appState.path.removeLast(appState.path.count) })
+                                    }
+                                }
                         }
 
+                        
+                   // }
                     
                     //Spacer to define the body-sheets size:
-                    //Spacer().frame(maxWidth: .infinity)
+                    Spacer().frame(maxWidth: .infinity)
                 }
                 .background(Color.backgroundColor
                                 .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
@@ -83,6 +102,7 @@ struct AthletesListView: View {
         }//ZStack for background
         .navigationBarTitle("My Title")
         .navigationBarHidden(true)
+        
         }//NavigationStack
     }//Body
 
@@ -107,20 +127,19 @@ struct AthletesListView: View {
             
         
         Text("Start growing your team")
-            .padding(.bottom, 15)
+           // .padding(.bottom, 10)
         
-        NavigationLink(
-            destination: AddAthleteView(vm: AddAthleteViewModel(context: viewContext)),
-            label: {
-                MediumButton(icon: "plus",
-                                description: "Add athlete now",
-                                textColor: .textColor,
-                                backgroundColor: .middlegroundColor)})
-        
-        Spacer()
-        Spacer()
+        Button {
+            showAddSheet = true
+        } label: {
+            MediumButton(icon: "plus",
+                            description: "Add athlete now",
+                            textColor: .textColor,
+                         backgroundColor: .middlegroundColor);
+        }
     }
 }
+        
 
     
     private var athleteListButtonRow: some View {

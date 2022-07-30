@@ -21,7 +21,7 @@ struct MediumButton: View {
             Text(description)
                 .font(.footnote)
         }
-        .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 150 , minHeight: 0, maxHeight: 44)
+        .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 150 , minHeight: 44, maxHeight: 44)
         .background(backgroundColor)
         .foregroundColor(textColor)
         .cornerRadius(10)

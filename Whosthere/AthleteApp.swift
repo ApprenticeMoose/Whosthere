@@ -15,10 +15,12 @@ struct AthleteApp: App {
             
             let viewContext = CoreDataManager.shared.persistentStoreContainer.viewContext
             
+            
             NavigationView{
                 TabTabView()
                     .navigationBarHidden(true)
                     .environment(\.managedObjectContext, viewContext)
+                    
             }
             .navigationBarHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())

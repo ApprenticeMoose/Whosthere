@@ -22,11 +22,13 @@ struct EditAthleteView: View {
 
     private (set) var context: NSManagedObjectContext
     
+    
     //Variables
-    let athlete: AthleteViewModel
+    @ObservedObject var athlete: AthleteViewModel
     
+    @EnvironmentObject var appState: AppState
 
-    
+    let goBackToRoot: () -> Void
 
 
     @State var male = false
@@ -34,11 +36,12 @@ struct EditAthleteView: View {
     @State var nonbinary = false
 
 
-    init(athlete: AthleteViewModel, context: NSManagedObjectContext) {
+    init(athlete: AthleteViewModel, context: NSManagedObjectContext, goBackToRoot: @escaping () -> Void
+    ) {
+        self.goBackToRoot = goBackToRoot
         self.context = context
         self.athlete = athlete
         self.editVM = EditAthleteViewModel(athlete, context: context)
-        //self.dataVM = CoreDataManager()
         if editVM.gender.contains("male") {
             self._male = State(wrappedValue: true)
            print("male is included")
@@ -89,6 +92,7 @@ struct EditAthleteView: View {
                             }
 
                             Spacer()
+                            //Text("\(appState.path.count)")
                             Spacer()
 
                             archiveButton
@@ -134,14 +138,16 @@ struct EditAthleteView: View {
     func editAthlete(athlete: AthleteViewModel) {
         
         editVM.editAthlete(athleteId: athlete.id)
-        presentationMode.wrappedValue.dismiss()
+
+        appState.path.removeLast()
+        
     }
     
     func deleteAthletePressed(athlete: AthleteViewModel) {
 
         editVM.deleteAthlete(athleteId: athlete.id)
         
-        presentationMode.wrappedValue.dismiss()
+        appState.path.removeLast(appState.path.count)
 
             }
         
@@ -153,7 +159,7 @@ struct EditAthleteView: View {
     HStack{
 
         Button(action: {
-            presentationMode.wrappedValue.dismiss()
+            appState.path.removeLast()
         }){
             NavigationButtonSystemName(iconName: "chevron.backward")
         }

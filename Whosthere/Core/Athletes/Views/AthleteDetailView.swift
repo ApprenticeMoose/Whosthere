@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NavigationBackport
 
 
 
@@ -18,11 +19,14 @@ struct AthleteDetailView: View {
 
     @Environment(\.managedObjectContext) var context
     
+    
+    @EnvironmentObject var appState: AppState
+    
     // variable to switch between displaying birthdate and birthyear
     @State private var birthToggle: Bool = false
     
     //variables for passing along the data to edit view
-    @State private var showEditView: Bool = false
+    
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -53,9 +57,7 @@ struct AthleteDetailView: View {
                     
                     AthleteDetailHeaderButtons
                         .padding(.bottom, -10)
-                        .fullScreenCover(isPresented: $showEditView,
-                                         content: {EditAthleteView(athlete: athlete, context: context)})
-                    
+
                     profilePicture
                         .padding(.top, -20)
                         .padding(.bottom, -10)
@@ -77,10 +79,7 @@ struct AthleteDetailView: View {
             
     //MARK: -Functions
     
-//    private func segue(athlete: Athlete) {
-//        selectedAthlete = athlete
-//        showEditView.toggle()
-//    }
+
     
     
     // MARK: -Outsourced Components
@@ -133,9 +132,7 @@ struct AthleteDetailView: View {
                         .padding(.horizontal, -3)
                     }
                     .padding(.bottom, 15)
-                    .onTapGesture {
-                       // segue(athlete: athlete)
-                    }
+                   
             }
         }
     }
@@ -146,7 +143,7 @@ struct AthleteDetailView: View {
     HStack(){
         
         Button(action: {
-            presentationMode.wrappedValue.dismiss()
+            appState.path.removeLast()
         }){
             NavigationButtonSystemName(iconName: "chevron.backward")
         }
@@ -157,11 +154,10 @@ struct AthleteDetailView: View {
         Spacer(minLength: 0)
         
         
-        Button(action: {
-            showEditView.toggle()
-        }){
-            NavigationButtonAssestsIcon(iconName: "PenIcon")
-        }
+            NBNavigationLink(value: Route.edit(athlete)) {
+                NavigationButtonAssestsIcon(iconName: "PenIcon")
+            }
+
         
     }//HeaderHStackEnding
     .padding()
