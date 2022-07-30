@@ -26,7 +26,7 @@ struct AthletesListView: View {
   
     
     @Environment(\.managedObjectContext) var viewContext
-    //@Environment(\.)
+    
     @ObservedObject private var athletesListVM: AthletesListViewModel
     
     @State private var refreshID = UUID()
@@ -77,14 +77,13 @@ struct AthletesListView: View {
                             
                         }
                         .id(refreshID)
-//                        .nbNavigationDestination(for: AthleteViewModel.self) { athlete in
-//                            AthleteDetailView(athlete: athlete)
                                 .nbNavigationDestination(for: Route.self) { route in
                                     switch route {
                                     case let .detail(athlete):
                                         AthleteDetailView(athlete: athlete)
+                                            .onDisappear(perform: {self.refreshID = UUID()})
                                     case let .edit(athlete):
-                                        EditAthleteView(athlete: athlete, context: viewContext)
+                                        EditAthleteView(athlete: athlete, context: viewContext, goBackToRoot: { appState.path.removeLast(appState.path.count) })
                                     }
                                 }
                         }
@@ -139,18 +138,6 @@ struct AthletesListView: View {
                             textColor: .textColor,
                          backgroundColor: .middlegroundColor);
         }
-
-        
-//        NavigationLink(
-//            destination: AddAthleteView(vm: AddAthleteViewModel(context: viewContext)),
-//            label: {
-//                MediumButton(icon: "plus",
-//                                description: "Add athlete now",
-//                                textColor: .textColor,
-//                                backgroundColor: .middlegroundColor)})
-//
-//        Spacer()
-//        Spacer()
     }
 }
         

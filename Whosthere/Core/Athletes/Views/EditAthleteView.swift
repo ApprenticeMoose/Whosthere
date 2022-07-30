@@ -22,14 +22,13 @@ struct EditAthleteView: View {
 
     private (set) var context: NSManagedObjectContext
     
-    //@Binding var showEditView: Bool
     
     //Variables
     @ObservedObject var athlete: AthleteViewModel
     
     @EnvironmentObject var appState: AppState
 
-    
+    let goBackToRoot: () -> Void
 
 
     @State var male = false
@@ -37,13 +36,12 @@ struct EditAthleteView: View {
     @State var nonbinary = false
 
 
-    init(athlete: AthleteViewModel, context: NSManagedObjectContext
-         //, showEditView: Binding<Bool>
+    init(athlete: AthleteViewModel, context: NSManagedObjectContext, goBackToRoot: @escaping () -> Void
     ) {
+        self.goBackToRoot = goBackToRoot
         self.context = context
         self.athlete = athlete
         self.editVM = EditAthleteViewModel(athlete, context: context)
-        //self._showEditView = showEditView
         if editVM.gender.contains("male") {
             self._male = State(wrappedValue: true)
            print("male is included")
@@ -141,7 +139,6 @@ struct EditAthleteView: View {
         
         editVM.editAthlete(athleteId: athlete.id)
 
-        //presentationMode.wrappedValue.dismiss()
         appState.path.removeLast()
         
     }
@@ -150,7 +147,6 @@ struct EditAthleteView: View {
 
         editVM.deleteAthlete(athleteId: athlete.id)
         
-        //presentationMode.wrappedValue.dismiss()
         appState.path.removeLast(appState.path.count)
 
             }
@@ -164,7 +160,6 @@ struct EditAthleteView: View {
 
         Button(action: {
             appState.path.removeLast()
-            //presentationMode.wrappedValue.dismiss()
         }){
             NavigationButtonSystemName(iconName: "chevron.backward")
         }
