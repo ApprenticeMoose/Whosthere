@@ -19,6 +19,8 @@ struct AthleteDetailView: View {
 
     @Environment(\.managedObjectContext) var context
     
+    @EnvironmentObject var tabData: TabViewModel
+    
     
     @EnvironmentObject var appState: AppState
     
@@ -40,15 +42,24 @@ struct AthleteDetailView: View {
     
     init(athlete: AthleteViewModel) {
         self.athlete = athlete
+        //tabData.showDetail = true
+//        if appState.path.count >= 1 {
+//            tabData.showDetail = true
+//        } else {
+//            return
+//        }
         print("Initializing Detail View for: \(String(describing: athlete.firstName))")
+       
     }
     
     
     //MARK: -Body
     
     var body: some View {
-           
-        ZStack{
+        //self.tabData.showDetail = true
+//        return
+//        print(appState.path.count)
+        return ZStack{
             Color.backgroundColor.edgesIgnoringSafeArea(.all)
             
             VStack{
@@ -63,13 +74,25 @@ struct AthleteDetailView: View {
                         .padding(.bottom, -10)
                 
                     nameAndBirthday
+                    
+                   
                 
                         }
+                    //.onAppear(perform: {tabData.showDetail = true})
                         .background(Color.accentColor
                                         .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
                                         .edgesIgnoringSafeArea(.top))
+                        //.onAppear(perform: print("\(appState.path.count)"))
+                
+                    Spacer()
+                    Button(action: {
+                        appState.path.removeLast(appState.path.count)
+                    }){
+                        Text("pop to root")
+                    }
 
                     Spacer()
+                
                 }
             
             }//end of ZStack for Color
@@ -144,6 +167,8 @@ struct AthleteDetailView: View {
         
         Button(action: {
             appState.path.removeLast()
+            tabData.showDetail = false
+            
         }){
             NavigationButtonSystemName(iconName: "chevron.backward")
         }

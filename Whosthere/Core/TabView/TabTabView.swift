@@ -41,6 +41,7 @@ struct TabTabView: View {
                 .navigationBarHidden(true)
             //need to induce this EnvironmentObject so everything from AthletesListView onwards can use it for Navigation with @EnvironmentObject
                 .environmentObject(AppState())
+                .environmentObject(tabData)
             
             Text("Settings")
                 .tag("Settings")

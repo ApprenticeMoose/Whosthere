@@ -11,6 +11,7 @@ import NavigationBackport
 enum Route: Hashable {
     case detail(AthleteViewModel)
     case edit(AthleteViewModel)
+    case test(AthleteViewModel)
 }
 class AppState: ObservableObject {
     @Published var path = NBNavigationPath()
@@ -23,7 +24,9 @@ struct AthletesListView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-  
+    @State var hideTabBar: Bool = false
+    
+    @EnvironmentObject var tabData: TabViewModel
     
     @Environment(\.managedObjectContext) var viewContext
     
@@ -72,19 +75,32 @@ struct AthletesListView: View {
                     //athletesList
                         List(athletesListVM.athletes) { athlete in
                             NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
+//                                .onTapGesture {
+//                                    tabData.showDetail = true
+//                                }
                                 //{RowView(athlete: athlete)}
                             
                         }
+                        
                         .id(refreshID)
                                 .nbNavigationDestination(for: Route.self) { route in
                                     switch route {
                                     case let .detail(athlete):
                                         AthleteDetailView(athlete: athlete)
+                                            //.environmentObject(tabData)
+                                            //.onAppear(perform: {tabData.showDetail = true})
+                                            //tabData.showDetail = true
                                             .onDisappear(perform: {self.refreshID = UUID()})
                                     case let .edit(athlete):
-                                        EditAthleteView(athlete: athlete, context: viewContext, goBackToRoot: { appState.path.removeLast(appState.path.count) })
+                                        EditAthleteView(athlete: athlete, context: viewContext
+                                                       , goBackToRoot: { appState.path.removeLast(appState.path.count)}
+                                        )
+                                      
+                                    case let .test(athlete):
+                                        TestView(athlete: athlete)
                                     }
                                 }
+                       // NBNavigationLink(
                         }
 
                         
@@ -246,7 +262,8 @@ struct ScreenHeaderTextOnly: View {
             Spacer(minLength: 0)
             
         }
-        .padding()
+        .padding(.horizontal)
+        .padding(.top, 15)
     }
 }
 

@@ -7,9 +7,28 @@
 
 import SwiftUI
 import CoreData
+import NavigationBackport
 
-//MARK: LoadingView for Lazy Loading of EditView below
 
+
+struct TestView: View {
+    @EnvironmentObject var appState: AppState
+    private var athlete: AthleteViewModel
+    
+    init(athlete: AthleteViewModel) {
+        self.athlete = athlete
+        print("Initializing Test View for: \(String(describing: athlete.firstName))")
+    }
+    
+    var body: some View{
+        
+        Button(action: {
+            appState.path.removeLast(appState.path.count)
+        }){
+            Text("pop to root")
+        }
+    }
+}
 
 struct EditAthleteView: View {
 
@@ -36,11 +55,13 @@ struct EditAthleteView: View {
     @State var nonbinary = false
 
 
-    init(athlete: AthleteViewModel, context: NSManagedObjectContext, goBackToRoot: @escaping () -> Void
+    init(athlete: AthleteViewModel, context: NSManagedObjectContext
+         , goBackToRoot: @escaping () -> Void
     ) {
         self.goBackToRoot = goBackToRoot
         self.context = context
         self.athlete = athlete
+        
         self.editVM = EditAthleteViewModel(athlete, context: context)
         if editVM.gender.contains("male") {
             self._male = State(wrappedValue: true)
@@ -51,7 +72,7 @@ struct EditAthleteView: View {
             self._nonbinary = State(wrappedValue: true)
         }
         print("Initializing Edit View for: \(String(describing: athlete.firstName))")
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .systemBlue
+//        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .systemBlue
     }
 
     //Toggle
@@ -67,10 +88,9 @@ struct EditAthleteView: View {
     var body: some View {
         //GeometryReader so the View doesnt move uppwards once the keyboard is actived
         GeometryReader { _ in
-        ZStack{
+            ZStack{
 
             Color.accentColor.edgesIgnoringSafeArea(.all)
-        
             ZStack{
                 VStack{
                     //header
@@ -81,18 +101,30 @@ struct EditAthleteView: View {
                             //all that is in the screen body
 
                             profilePicture
+                            
 
                             LongTextField(textFieldDescription: "First Name",  firstNameTF: $editVM.firstName)
 
+                            Spacer()
+                                .frame(minHeight: 20, idealHeight: 40, maxHeight: 50)
+                            
                             LongTextField(textFieldDescription: "Last Name", firstNameTF: $editVM.lastName)
 
                             HStack {
-                                BirthdayField(show: $show, selectedDate: $editVM.birthDate, /*selectedYear: $editVM.birthYear,*/ showYear: $editVM.showYear)
+                                BirthdayField(show: $show, selectedDate: $editVM.birthDate, showYear: $editVM.showYear)
                                 EditGenderButtons(gender: $editVM.gender, male: $male, female: $female, nonbinary: $nonbinary)
                             }
 
                             Spacer()
+                                .frame(minHeight: 0, idealHeight: 50, maxHeight: 60)
                             //Text("\(appState.path.count)")
+                            
+//                            NBNavigationLink(value: Route.test(athlete)){
+//
+//
+//                                Text("go to test")}
+                                
+                            
                             Spacer()
 
                             archiveButton
@@ -146,8 +178,8 @@ struct EditAthleteView: View {
     func deleteAthletePressed(athlete: AthleteViewModel) {
 
         editVM.deleteAthlete(athleteId: athlete.id)
-        
-        appState.path.removeLast(appState.path.count)
+        goBackToRoot()
+        //appState.path.removeLast(appState.path.count)
 
             }
         
@@ -191,13 +223,13 @@ struct EditAthleteView: View {
                 .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
                 .foregroundColor(Color.textUnchangedColor)
                 .clipShape(Circle())
-                .padding()
+                //.padding()
             
             Rectangle()
                 .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
                 .clipShape(Circle())
                 .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
-                .padding()
+                //.padding()
             
             Image(systemName: "person.fill")
                 .resizable()
@@ -219,6 +251,7 @@ struct EditAthleteView: View {
             }
             .offset(x: 40, y: -30)
         }
+    .padding(8)
 }
     
     var archiveButton: some View{
@@ -239,7 +272,7 @@ struct EditAthleteView: View {
                 
                 Spacer()
             }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
             .background(Color.middlegroundColor)
             .foregroundColor(.blue)
             .cornerRadius(10)
@@ -268,7 +301,7 @@ struct EditAthleteView: View {
                     
                     Spacer()
                 }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
                 .background(Color.middlegroundColor)
                 .foregroundColor(.red)
                 .cornerRadius(10)

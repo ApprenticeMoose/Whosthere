@@ -254,7 +254,8 @@ struct AddAthleteView: View {
                 NavigationButtonSystemName(iconName: "checkmark")
             }//Button
         }//HeaderHStackEnding
-        .padding()
+        .padding(.horizontal)
+        .padding(.top, 15)
 }
 
     var buttonDisabledColor: Color {
@@ -293,7 +294,7 @@ struct LongTextField: View {
 
                 //.textInputAutocapitalization(.words)
         }
-        .padding()
+        .padding(.horizontal)
         .navigationBarHidden(true)
     }
 

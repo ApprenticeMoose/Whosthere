@@ -20,6 +20,7 @@ struct AthleteApp: App {
                 TabTabView()
                     .navigationBarHidden(true)
                     .environment(\.managedObjectContext, viewContext)
+                    .environmentObject(TabViewModel())
                     
             }
             .navigationBarHidden(true)
