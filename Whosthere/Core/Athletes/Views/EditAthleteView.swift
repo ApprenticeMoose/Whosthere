@@ -58,13 +58,11 @@ struct EditAthleteView: View {
         self.athlete = athlete
         
         self.editVM = EditAthleteViewModel(athlete, context: context)
-        
-        if editVM.gender.contains("male") {
+        if editVM.gender == "male" {
             self._male = State(wrappedValue: true)
-           print("male is included")
-        } else if editVM.gender.contains("female") {
+        } else if editVM.gender == "female" {
             self._female = State(wrappedValue: true)
-        } else if editVM.gender.contains("nonbinary") {
+        } else if editVM.gender == "nonbinary" {
             self._nonbinary = State(wrappedValue: true)
         }
         print("Initializing Edit View for: \(String(describing: athlete.firstName))")
