@@ -12,21 +12,20 @@ struct AddAthleteView: View {
 
     //MARK: Properties
 
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.presentationMode) var presentationMode                       //For dismissing views
+    @Environment(\.colorScheme) var colorScheme                                 //DarkMode
 
     
-    @ObservedObject var addVM: AddAthleteViewModel
+    @ObservedObject var addVM: AddAthleteViewModel                              //Accessing the variables for adding
     
     init(vm: AddAthleteViewModel) {
         self.addVM = vm
     }
 
 
-    //Toggle
-    @State var show: Bool = false
-    @State var showPrompt: Bool = false
-    @State var buttonFarbe : Color = .orangeAccentColor
+                                                                                
+    @State var show: Bool = false                                               //Bool for showing Birthdaypicker
+    @State var buttonFarbe : Color = .orangeAccentColor                         //Color for Button
 
 
 
@@ -51,11 +50,13 @@ struct AddAthleteView: View {
                             profilePicture
 
                             LongTextField(textFieldDescription: "First Name",  firstNameTF: $addVM.firstName)
+                            
+                        
 
                             LongTextField(textFieldDescription: "Last Name", firstNameTF: $addVM.lastName)
 
                             HStack {
-                                BirthdayField(show: $show, selectedDate: $addVM.birthDate, /*selectedYear: $addVM.birthYear,*/ showYear: $addVM.showYear)
+                                BirthdayField(show: $show, selectedDate: $addVM.birthDate, showYear: $addVM.showYear)
                                 GenderButtons(gender: $addVM.gender)
                             }
 
@@ -281,6 +282,7 @@ struct LongTextField: View {
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
+                .padding(.top, 15)
 
             TextField("", text: $firstNameTF)
                 .autocapitalization(.words)
@@ -311,8 +313,6 @@ struct BirthdayField: View {
     @Binding var show: Bool
 
     @Binding var selectedDate: Date?
-
-    //@Binding var selectedYear : Int
 
     @Binding var showYear: Bool
 
@@ -468,7 +468,6 @@ struct GenderButtons: View {
 
 struct Popover: View {
     @Binding var selectedDate: Date
-    //@Binding var toggleIsOn: Bool
     @Binding var show: Bool
     @State var currentYear = Calendar.current.component(.year, from: Date())
     @Binding var selectedYear : Int
@@ -587,5 +586,4 @@ struct Popover: View {
 // ->
 // https://stackoverflow.com/questions/34558515/trying-to-capitalize-the-first-letter-of-each-word-in-a-text-field-using-swift#34558603
 //
-//3. work out MVVM stuff so all data is saved, the list actually works and you can look at a rough detail athlete view -> save with Core Data -> Create nice and full athlete view
 // */

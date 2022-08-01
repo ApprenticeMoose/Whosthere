@@ -34,35 +34,31 @@ struct EditAthleteView: View {
 
 //MARK: -Properties
 
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.presentationMode) var presentationMode                           //For dismissing views
+    @Environment(\.colorScheme) var colorScheme                                     //DarkMode
  
-    @ObservedObject var editVM: EditAthleteViewModel
+    @ObservedObject var editVM: EditAthleteViewModel                                //Accessing the variables for editing
 
-    private (set) var context: NSManagedObjectContext
+    @EnvironmentObject var appState: AppState                                       //For Navigation
+    private (set) var context: NSManagedObjectContext                               //Core Data moc
+    @ObservedObject var athlete: AthleteViewModel                                   //Accessing the athletes
     
     
-    //Variables
-    @ObservedObject var athlete: AthleteViewModel
-    
-    @EnvironmentObject var appState: AppState
-
-    let goBackToRoot: () -> Void
+    let goBackToRoot: () -> Void                                                    //For pop to root
 
 
-    @State var male = false
+    @State var male = false                                                         //For triggering the gender Buttons
     @State var female = false
     @State var nonbinary = false
 
 
-    init(athlete: AthleteViewModel, context: NSManagedObjectContext
-         , goBackToRoot: @escaping () -> Void
-    ) {
+    init(athlete: AthleteViewModel, context: NSManagedObjectContext, goBackToRoot: @escaping () -> Void) {
         self.goBackToRoot = goBackToRoot
         self.context = context
         self.athlete = athlete
         
         self.editVM = EditAthleteViewModel(athlete, context: context)
+        
         if editVM.gender.contains("male") {
             self._male = State(wrappedValue: true)
            print("male is included")
@@ -72,22 +68,19 @@ struct EditAthleteView: View {
             self._nonbinary = State(wrappedValue: true)
         }
         print("Initializing Edit View for: \(String(describing: athlete.firstName))")
-//        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .systemBlue
     }
 
     //Toggle
-    @State var show: Bool = false
-    @State var toggleIsOn: Bool = false
-    @State var showPrompt: Bool = false
-    @State var buttonFarbe : Color = .orangeAccentColor
-    @State var showAlert: Bool = false
+    @State var show: Bool = false                                               //Bool for showing Birthdaypicker
+    @State var buttonFarbe : Color = .orangeAccentColor                         //Color for Button
+    @State var showAlert: Bool = false                                          //Bool for Delete Alert
 
 
 //MARK: -Body
 
     var body: some View {
-        //GeometryReader so the View doesnt move uppwards once the keyboard is actived
-        GeometryReader { _ in
+
+        GeometryReader { _ in                               //GeometryReader so the View doesnt move uppwards once the keyboard is actived
             ZStack{
 
             Color.accentColor.edgesIgnoringSafeArea(.all)
@@ -106,7 +99,7 @@ struct EditAthleteView: View {
                             LongTextField(textFieldDescription: "First Name",  firstNameTF: $editVM.firstName)
 
                             Spacer()
-                                .frame(minHeight: 20, idealHeight: 40, maxHeight: 50)
+                                .frame(minHeight: 0, idealHeight: 40, maxHeight: 50)
                             
                             LongTextField(textFieldDescription: "Last Name", firstNameTF: $editVM.lastName)
 
@@ -117,21 +110,13 @@ struct EditAthleteView: View {
 
                             Spacer()
                                 .frame(minHeight: 0, idealHeight: 50, maxHeight: 60)
-                            //Text("\(appState.path.count)")
-                            
-//                            NBNavigationLink(value: Route.test(athlete)){
-//
-//
-//                                Text("go to test")}
-                                
+                    
                             
                             Spacer()
 
                             archiveButton
                             deleteButton
 
-    //Spacer to define the body-sheets size
-    //                     Spacer().frame(maxWidth: .infinity)
 
                             Spacer(minLength: 25)
 
@@ -179,7 +164,6 @@ struct EditAthleteView: View {
 
         editVM.deleteAthlete(athleteId: athlete.id)
         goBackToRoot()
-        //appState.path.removeLast(appState.path.count)
 
             }
         
@@ -407,7 +391,6 @@ func changeOpacity() -> Bool {
     
     struct Popover: View {
         @Binding var selectedDate: Date
-        //@Binding var toggleIsOn: Bool
         @Binding var show: Bool
         @State var currentYear = Calendar.current.component(.year, from: Date())
         @Binding var selectedYear : Int
@@ -435,13 +418,6 @@ func changeOpacity() -> Bool {
             selectedDate = Calendar.current.date(from: j) ?? selectedDate
             return selectedDate
         }
-        
-//        func checkIfDateChangend(date: Date) -> Bool {
-//            if date != Date() {
-//                noYear = false
-//            }
-//            return noYear
-//        }
         
         var body: some View {
             ZStack {

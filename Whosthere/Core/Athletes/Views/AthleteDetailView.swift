@@ -14,56 +14,33 @@ struct AthleteDetailView: View {
     
     // MARK: -Properties
     
-    @Environment(\.presentationMode) var presentationMode
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.presentationMode) var presentationMode                   //For dismissing views
+    @Environment(\.colorScheme) var colorScheme                             //DarkMode
+    
 
-    @Environment(\.managedObjectContext) var context
-    
-    @EnvironmentObject var tabData: TabViewModel
-    
-    
-    @EnvironmentObject var appState: AppState
-    
-    // variable to switch between displaying birthdate and birthyear
-    @State private var birthToggle: Bool = false
-    
-    //variables for passing along the data to edit view
+    @Environment(\.managedObjectContext) var context                        //Core Data moc
+    @EnvironmentObject var appState: AppState                               //Accessing the athletes
     
     
-    var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        return formatter
-    }
+    @State private var birthToggle: Bool = false                          //Variable to switch between displaying birthdate and birthyear
     
-   
     private var athlete: AthleteViewModel
     
     
     init(athlete: AthleteViewModel) {
         self.athlete = athlete
-        //tabData.showDetail = true
-//        if appState.path.count >= 1 {
-//            tabData.showDetail = true
-//        } else {
-//            return
-//        }
         print("Initializing Detail View for: \(String(describing: athlete.firstName))")
-       
     }
-    
+  
     
     //MARK: -Body
     
     var body: some View {
-        //self.tabData.showDetail = true
-//        return
-//        print(appState.path.count)
-        return ZStack{
-            Color.backgroundColor.edgesIgnoringSafeArea(.all)
+        ZStack{
+            Color.backgroundColor.edgesIgnoringSafeArea(.all)                        //Grey background
             
             VStack{
-//Header
+                                                                                     //Header
                 VStack{
                     
                     AthleteDetailHeaderButtons
@@ -74,22 +51,11 @@ struct AthleteDetailView: View {
                         .padding(.bottom, -10)
                 
                     nameAndBirthday
-                    
-                   
                 
                         }
-                    //.onAppear(perform: {tabData.showDetail = true})
                         .background(Color.accentColor
                                         .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
                                         .edgesIgnoringSafeArea(.top))
-                        //.onAppear(perform: print("\(appState.path.count)"))
-                
-                    Spacer()
-                    Button(action: {
-                        appState.path.removeLast(appState.path.count)
-                    }){
-                        Text("pop to root")
-                    }
 
                     Spacer()
                 
@@ -100,9 +66,13 @@ struct AthleteDetailView: View {
         }//end of Body
     
             
-    //MARK: -Functions
+    //MARK: -Dateformatter
     
-
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter
+    }
     
     
     // MARK: -Outsourced Components
@@ -167,8 +137,6 @@ struct AthleteDetailView: View {
         
         Button(action: {
             appState.path.removeLast()
-            tabData.showDetail = false
-            
         }){
             NavigationButtonSystemName(iconName: "chevron.backward")
         }
@@ -178,8 +146,7 @@ struct AthleteDetailView: View {
         
         Spacer(minLength: 0)
         
-        
-            NBNavigationLink(value: Route.test(athlete)) {
+            NBNavigationLink(value: Route.edit(athlete)) {
                 NavigationButtonAssestsIcon(iconName: "PenIcon")
             }
 

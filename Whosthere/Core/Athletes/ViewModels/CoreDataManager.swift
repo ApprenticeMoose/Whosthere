@@ -15,8 +15,6 @@ class CoreDataManager: ObservableObject {
     let persistentStoreContainer : NSPersistentContainer
     static let shared = CoreDataManager()
     
-    //@Published var savedAthletes: [Athlete] = []
-    
     private init(){
         persistentStoreContainer = NSPersistentContainer(name: "WhosThere")
         persistentStoreContainer.loadPersistentStores { description, error in

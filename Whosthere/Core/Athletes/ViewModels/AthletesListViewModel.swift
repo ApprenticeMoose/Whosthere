@@ -49,10 +49,6 @@ extension AthletesListViewModel: NSFetchedResultsControllerDelegate {
 class AthleteViewModel: Identifiable, ObservableObject, Hashable, Equatable {
     static func == (lhs: AthleteViewModel, rhs: AthleteViewModel) -> Bool {
         return lhs.id == rhs.id
-//        return lhs.lastName == rhs.lastName
-//        return lhs.birthday == rhs.birthday
-//        return lhs.gender == rhs.gender
-//        return lhs.showYear == rhs.showYear
     }
     
     func hash(into hasher: inout Hasher) {

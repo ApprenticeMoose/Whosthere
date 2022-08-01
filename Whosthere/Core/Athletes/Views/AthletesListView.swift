@@ -22,90 +22,61 @@ struct AthletesListView: View {
     
     //MARK: -Properties
     
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme                             //DarkMode
     
-    @State var hideTabBar: Bool = false
+    @State private var refreshID = UUID()                                   //For manually refreshing the list after update
+    @State private var showAddSheet: Bool = false                           //Bool for AddSheet
     
-    @EnvironmentObject var tabData: TabViewModel
     
-    @Environment(\.managedObjectContext) var viewContext
-    
-    @ObservedObject private var athletesListVM: AthletesListViewModel
-    
-    @State private var refreshID = UUID()
-
-    @State private var showAddSheet: Bool = false
-    
-    @EnvironmentObject var appState: AppState
-    
-   
+    @EnvironmentObject var appState: AppState                               //For Navigation
+    @Environment(\.managedObjectContext) var viewContext                    //Core Data moc
+    @ObservedObject private var athletesListVM: AthletesListViewModel       //Accessing the athletes
     
     //MARK: -Body
     
     var body: some View {
-        NBNavigationStack(path: $appState.path){
+        NBNavigationStack(path: $appState.path){                            //NavigationStack
         ZStack{
-            Color.accentColor.edgesIgnoringSafeArea(.all)
+            Color.accentColor.edgesIgnoringSafeArea(.all)                   //Grey background
             
             VStack{
-                //Header
+                                                                            //Header
                 ScreenHeaderTextOnly(screenTitle: "Athletes")
-                   
-                
-                //Screen body
+                                                                            //Screen body
                 VStack(spacing: 0) {
                     
                     athleteListButtonRow
                         .fullScreenCover(isPresented: $showAddSheet,
-                                         content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))
-                        })
-                    
-                    
-                   
+                                         content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))})
 
-
-                //Shows picture when list is empty
+                                                                            //Shows picture when list is empty
                     if athletesListVM.athletes.isEmpty {
 
                         emptyListPicture
-
-                //Shows List if it has componenets
+                                                                            //Shows List if it has componenets
                     } else {
-
-                    //athletesList
+                                                                            //AthletesList
                         List(athletesListVM.athletes) { athlete in
                             NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
-//                                .onTapGesture {
-//                                    tabData.showDetail = true
-//                                }
-                                //{RowView(athlete: athlete)}
-                            
                         }
-                        
                         .id(refreshID)
-                                .nbNavigationDestination(for: Route.self) { route in
+                        
+                        .nbNavigationDestination(for: Route.self) { route in
                                     switch route {
                                     case let .detail(athlete):
                                         AthleteDetailView(athlete: athlete)
-                                            //.environmentObject(tabData)
-                                            //.onAppear(perform: {tabData.showDetail = true})
-                                            //tabData.showDetail = true
                                             .onDisappear(perform: {self.refreshID = UUID()})
                                     case let .edit(athlete):
-                                        EditAthleteView(athlete: athlete, context: viewContext
-                                                       , goBackToRoot: { appState.path.removeLast(appState.path.count)}
-                                        )
+                                        EditAthleteView(athlete: athlete
+                                                        , context: viewContext
+                                                        , goBackToRoot: { appState.path.removeLast(appState.path.count)})
                                       
                                     case let .test(athlete):
                                         TestView(athlete: athlete)
                                     }
                                 }
-                       // NBNavigationLink(
-                        }
+                        }//else
 
-                        
-                   // }
-                    
                     //Spacer to define the body-sheets size:
                     Spacer().frame(maxWidth: .infinity)
                 }
