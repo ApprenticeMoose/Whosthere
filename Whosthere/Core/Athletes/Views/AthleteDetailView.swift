@@ -179,7 +179,7 @@ struct AthleteDetailView: View {
         Spacer(minLength: 0)
         
         
-            NBNavigationLink(value: Route.edit(athlete)) {
+            NBNavigationLink(value: Route.test(athlete)) {
                 NavigationButtonAssestsIcon(iconName: "PenIcon")
             }
 
