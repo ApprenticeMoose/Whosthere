@@ -20,6 +20,7 @@ struct AthleteDetailView: View {
 
     @Environment(\.managedObjectContext) var context                        //Core Data moc
     @EnvironmentObject var appState: AppState                               //Accessing the athletes
+    @EnvironmentObject var tabDetail: TabDetailVM
     
     
     @State private var birthToggle: Bool = false                          //Variable to switch between displaying birthdate and birthyear
@@ -56,7 +57,7 @@ struct AthleteDetailView: View {
                         .background(Color.accentColor
                                         .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
                                         .edgesIgnoringSafeArea(.top))
-
+                
                     Spacer()
                 
                 }
@@ -136,6 +137,7 @@ struct AthleteDetailView: View {
     HStack(){
         
         Button(action: {
+            withAnimation(.spring()){tabDetail.showDetail = false}
             appState.path.removeLast()
         }){
             NavigationButtonSystemName(iconName: "chevron.backward")

@@ -10,9 +10,10 @@ import CoreData
 import NavigationBackport
 
 
-
+/*
 struct TestView: View {
     @EnvironmentObject var appState: AppState
+    
     private var athlete: AthleteViewModel
     
     init(athlete: AthleteViewModel) {
@@ -29,6 +30,7 @@ struct TestView: View {
         }
     }
 }
+*/
 
 struct EditAthleteView: View {
 
@@ -40,6 +42,7 @@ struct EditAthleteView: View {
     @ObservedObject var editVM: EditAthleteViewModel                                //Accessing the variables for editing
 
     @EnvironmentObject var appState: AppState                                       //For Navigation
+    @EnvironmentObject var tabDetail: TabDetailVM                                   //For TabBar hiding
     private (set) var context: NSManagedObjectContext                               //Core Data moc
     @ObservedObject var athlete: AthleteViewModel                                   //Accessing the athletes
     
@@ -161,6 +164,7 @@ struct EditAthleteView: View {
     func deleteAthletePressed(athlete: AthleteViewModel) {
 
         editVM.deleteAthlete(athleteId: athlete.id)
+        withAnimation(.spring(dampingFraction: 1.0)){tabDetail.showDetail = false}
         goBackToRoot()
 
             }

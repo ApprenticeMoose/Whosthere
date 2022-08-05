@@ -12,6 +12,7 @@ import CoreData
 class AthletesListViewModel: NSObject, ObservableObject {
     
     @Published var athletes = [AthleteViewModel]()
+    @Published var showDetail: Bool = false
     private let fetchResultsController: NSFetchedResultsController<Athlete>
     private (set) var context: NSManagedObjectContext
     

@@ -11,7 +11,7 @@ import NavigationBackport
 enum Route: Hashable {
     case detail(AthleteViewModel)
     case edit(AthleteViewModel)
-    case test(AthleteViewModel)
+    //case test(AthleteViewModel)
 }
 class AppState: ObservableObject {
     @Published var path = NBNavigationPath()
@@ -31,6 +31,8 @@ struct AthletesListView: View {
     @EnvironmentObject var appState: AppState                               //For Navigation
     @Environment(\.managedObjectContext) var viewContext                    //Core Data moc
     @ObservedObject private var athletesListVM: AthletesListViewModel       //Accessing the athletes
+    //@EnvironmentObject var athletesListVM: AthletesListViewModel
+    @EnvironmentObject var tabDetail: TabDetailVM
     
     //MARK: -Body
     
@@ -65,14 +67,22 @@ struct AthletesListView: View {
                                     switch route {
                                     case let .detail(athlete):
                                         AthleteDetailView(athlete: athlete)
-                                            .onDisappear(perform: {self.refreshID = UUID()})
+                                            .environmentObject(AthletesListViewModel(context: viewContext))
+                                            .onAppear(perform: {
+                                                withAnimation(.spring()){self.tabDetail.showDetail = true};
+                                                print("\(athletesListVM.showDetail)")
+                                            })
+                                            .onDisappear(perform: {self.refreshID = UUID();
+                                                //self.tabDetail.showDetail.toggle();
+                                                print("\(athletesListVM.showDetail)")
+                                            })
                                     case let .edit(athlete):
                                         EditAthleteView(athlete: athlete
                                                         , context: viewContext
                                                         , goBackToRoot: { appState.path.removeLast(appState.path.count)})
                                       
-                                    case let .test(athlete):
-                                        TestView(athlete: athlete)
+//                                    case let .test(athlete):
+//                                        TestView(athlete: athlete)
                                     }
                                 }
                         }//else
