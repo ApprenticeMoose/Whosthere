@@ -10,28 +10,6 @@ import CoreData
 import NavigationBackport
 
 
-/*
-struct TestView: View {
-    @EnvironmentObject var appState: AppState
-    
-    private var athlete: AthleteViewModel
-    
-    init(athlete: AthleteViewModel) {
-        self.athlete = athlete
-        print("Initializing Test View for: \(String(describing: athlete.firstName))")
-    }
-    
-    var body: some View{
-        
-        Button(action: {
-            appState.path.removeLast(appState.path.count)
-        }){
-            Text("pop to root")
-        }
-    }
-}
-*/
-
 struct EditAthleteView: View {
 
 //MARK: -Properties
@@ -164,7 +142,9 @@ struct EditAthleteView: View {
     func deleteAthletePressed(athlete: AthleteViewModel) {
 
         editVM.deleteAthlete(athleteId: athlete.id)
-        withAnimation(.spring(dampingFraction: 1.0)){tabDetail.showDetail = false}
+        //withAnimation(.spring(dampingFraction: 1.0)){
+        tabDetail.showDetail = false
+        //}
         goBackToRoot()
 
             }

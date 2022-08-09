@@ -31,21 +31,20 @@ struct AthletesListView: View {
     @EnvironmentObject var appState: AppState                               //For Navigation
     @Environment(\.managedObjectContext) var viewContext                    //Core Data moc
     @ObservedObject private var athletesListVM: AthletesListViewModel       //Accessing the athletes
-    //@EnvironmentObject var athletesListVM: AthletesListViewModel
-    @EnvironmentObject var tabDetail: TabDetailVM
+    @EnvironmentObject var tabDetail: TabDetailVM                           //For hiding tabbar
     
     //MARK: -Body
     
     var body: some View {
         NBNavigationStack(path: $appState.path){                            //NavigationStack
         ZStack{
-            Color.accentColor.edgesIgnoringSafeArea(.all)                   //Grey background
-            
+            Color.accentGreen.edgesIgnoringSafeArea(.all)                   //GreenAccentHeader
+        
             VStack{
                                                                             //Header
                 ScreenHeaderTextOnly(screenTitle: "Athletes")
                                                                             //Screen body
-                VStack(spacing: 0) {
+                VStack{
                     
                     athleteListButtonRow
                         .fullScreenCover(isPresented: $showAddSheet,
@@ -58,39 +57,64 @@ struct AthletesListView: View {
                                                                             //Shows List if it has componenets
                     } else {
                                                                             //AthletesList
-                        List(athletesListVM.athletes) { athlete in
-                            NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
+//                        List(athletesListVM.athletes) { athlete in
+//                            NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
+//                        }
+//                        .listRowBackground(Color.mainCard)
+//                        .id(refreshID)
+                        
+                        ScrollView(showsIndicators: false){
+                            LazyVStack{
+                                let enumerated = Array(zip(athletesListVM.athletes.indices, athletesListVM.athletes))
+                                ForEach(enumerated, id: \.1) { index, athlete in
+                                
+                            
+                                    NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
+                                  
+                                    if index != enumerated.count - 1 {
+                                        Seperator()
+                                    }
+
+                                    
+                                         
+                                    
+                                    
+                                    
+                                
+                            }
+                            .id(refreshID)
+                            }
+                            .padding(8)
+                            .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.mainCard))
+                            .padding()
                         }
-                        .id(refreshID)
                         
                         .nbNavigationDestination(for: Route.self) { route in
                                     switch route {
                                     case let .detail(athlete):
                                         AthleteDetailView(athlete: athlete)
                                             .environmentObject(AthletesListViewModel(context: viewContext))
-                                            .onAppear(perform: {
-                                                withAnimation(.spring()){self.tabDetail.showDetail = true};
-                                                print("\(athletesListVM.showDetail)")
-                                            })
-                                            .onDisappear(perform: {self.refreshID = UUID();
-                                                //self.tabDetail.showDetail.toggle();
-                                                print("\(athletesListVM.showDetail)")
-                                            })
+                                            .onAppear(perform:
+                                                        //{withAnimation(.spring())
+                                                {self.tabDetail.showDetail = true}
+                                            //}
+                                            )
+                                            .onDisappear(perform: {self.refreshID = UUID()})
                                     case let .edit(athlete):
                                         EditAthleteView(athlete: athlete
                                                         , context: viewContext
                                                         , goBackToRoot: { appState.path.removeLast(appState.path.count)})
                                       
-//                                    case let .test(athlete):
-//                                        TestView(athlete: athlete)
                                     }
                                 }
+                        
                         }//else
-
+                    Spacer(minLength: 60)
                     //Spacer to define the body-sheets size:
-                    Spacer().frame(maxWidth: .infinity)
+                    //Spacer().frame(maxWidth: .infinity)
+                    //Spacer().frame(maxHeight: .infinity)
                 }
-                .background(Color.backgroundColor
+                .background(Color.mainBackground
                                 .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
                                 .edgesIgnoringSafeArea(.bottom))
                 
@@ -146,7 +170,7 @@ struct AthletesListView: View {
         Button(action: {
             //Change List Appearance
         }){
-            FrameButton(iconName: "HamburgerListIcon", iconColor: .textColor)
+            FrameButton(iconName: "HamburgerListIcon", iconColor: colorScheme == .light ? .accentGold : .accentGreen, backgroundColor: colorScheme == .light ? .accentGreen : .accentGold)
         }
         
         Spacer()
@@ -155,7 +179,7 @@ struct AthletesListView: View {
         Button(action: {
             //Make Sort Sheet Appear
         }){
-            FrameButton(iconName: "SortIcon", iconColor: .textColor)
+            FrameButton(iconName: "SortIcon", iconColor: colorScheme == .light ? .accentGold : .accentGreen, backgroundColor: colorScheme == .light ? .accentGreen : .accentGold)
                 .padding(.horizontal, 8)
         }
         
@@ -163,20 +187,20 @@ struct AthletesListView: View {
         Button(action: {
             showAddSheet.toggle()
         }){
-            FrameButton(iconName: "AddAthleteIcon", iconColor: .textColor)
+            FrameButton(iconName: "AddAthleteIcon", iconColor: colorScheme == .light ? .accentGold : .accentGreen, backgroundColor: colorScheme == .light ? .accentGreen : .accentGold)
         }
         
     }//HStackButtonsEnd
     .padding(.horizontal, 22)
-    .padding(.vertical, 20)
+    .padding(.top, 20)
 }
     
     //initializer for adjusting List View to look as intended
     init(vm: AthletesListViewModel) {
-    UITableView.appearance().backgroundColor = .clear
-    UITableViewCell.appearance().backgroundColor = .clear
-    UITableView.appearance().tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
-        
+        UITableView.appearance().backgroundColor = .clear
+//    UITableViewCell.appearance().backgroundColor = .clear
+        UITableView.appearance().tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+
     self.athletesListVM = vm
     }
     
@@ -195,12 +219,17 @@ struct AthletesListView: View {
         let athlete: AthleteViewModel
         
         var body: some View {
+            VStack{
             HStack {
                 emptyProfilePicture
                 
                 Text(athlete.firstName)
+                    .foregroundColor(.mainText)
                     .font(.title3)
                 Spacer()
+            }
+            .padding(.bottom, 4)
+             
             }
             .padding(.vertical, 5)
             .background(
@@ -216,11 +245,13 @@ struct AthletesListView: View {
                 Circle()
                     .frame(width: 40, height: 40)
                     .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                    //.foregroundColor(.sheetButton)
                     .padding(.horizontal, 10)
                 Image(systemName: "person.fill")
                     .resizable()
                     .frame(width: 20, height: 20, alignment: .center)
-                    .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+                    //.foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+                    .foregroundColor(.sheetButton.opacity(0.5))
             }
         }
     }
@@ -237,7 +268,7 @@ struct ScreenHeaderTextOnly: View {
             
             Text(screenTitle)
                 .font(.title)
-                .foregroundColor(.textUnchangedColor)
+                .foregroundColor(.headerText)
                 .fontWeight(.medium)
             
             Spacer(minLength: 0)
@@ -255,7 +286,24 @@ struct RowView: View {
     var body: some View {
         ListRowView(athlete: athlete)
                 .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
-                .listRowBackground(Color.middlegroundColor)
+                .listRowBackground(Color.mainCard)
     }
 
+}
+
+
+struct Seperator: View {
+    var isLast: Bool = false
+    @Environment(\.colorScheme) var colorScheme
+    
+    var body: some View {
+        if !isLast{
+        HStack{
+            Rectangle().fill(colorScheme == .light ? Color.detailGray2 : Color.detailGray5).frame(width: 280, height: 1)
+                .padding(.horizontal, 10)
+            Spacer()
+        }
+        }
+    }
+    
 }

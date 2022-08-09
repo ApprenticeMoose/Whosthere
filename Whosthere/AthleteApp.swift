@@ -15,7 +15,7 @@ struct AthleteApp: App {
             
             let viewContext = CoreDataManager.shared.persistentStoreContainer.viewContext
             
-                //AthletesListView(vm: AthletesListViewModel(context: viewContext))
+            
             ContentView()
                     .environmentObject(AppState())
                     .environment(\.managedObjectContext, viewContext)

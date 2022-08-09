@@ -18,4 +18,23 @@ extension Color {
     static let textUnchangedColor = Color("TextUnchangedColor")
     static let darkModeDisabledButtonColor = Color("DarkModeDisabledButtonColor")
     
+    static let accentGold = Color("AccentGold")
+    static let accentGreen = Color("AccentGreen")
+    
+    static let mainBackground = Color("MainBackground")
+    static let mainCard = Color("MainCardList")
+    static let mainText = Color("MainText")
+    
+    static let sheetBackground = Color("SheetBackground")
+    static let sheetButton = Color("SheetButton")
+    static let sheetCard = Color("SheetCard")
+    static let sheetText = Color("SheetText")
+    
+    static let headerText = Color("GeneralHeaderText")
+    static let detatilGray1 = Color("GeneralDetailGray1")
+    static let detailGray2 = Color("GeneralDetailGray2")
+    static let detailGray5 = Color("GeneralDetailGray5")
+    static let detailWhiteIsh = Color("GeneralDetailWhiteIsh")
+
+    
 }

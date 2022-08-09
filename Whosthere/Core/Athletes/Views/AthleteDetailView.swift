@@ -137,7 +137,9 @@ struct AthleteDetailView: View {
     HStack(){
         
         Button(action: {
-            withAnimation(.spring()){tabDetail.showDetail = false}
+            //withAnimation(.spring()){
+                tabDetail.showDetail = false
+            //}
             appState.path.removeLast()
         }){
             NavigationButtonSystemName(iconName: "chevron.backward")

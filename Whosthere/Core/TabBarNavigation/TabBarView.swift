@@ -25,7 +25,7 @@ struct TabBar: View {
             .padding(.horizontal, 8)
             .padding(.top, 14)
             .padding(.bottom,30)
-            .background(Color.accentColor.clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20)))
+            .background(Color.accentGreen.clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20)))
             .shadow(color: .black.opacity(0.09), radius: 5, x: 5, y: 5)
             .shadow(color: .black.opacity(0.09), radius: 5, x: -5, y: 0)
 
@@ -43,7 +43,6 @@ struct TabBar: View {
             Button {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                     selectedTab = item.tab
-                    //color = item.color
                 }
             } label: {
                 VStack(spacing: 0) {
@@ -60,7 +59,7 @@ struct TabBar: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            .foregroundColor(selectedTab == item.tab ? Color.orange : Color.gray)
+            .foregroundColor(selectedTab == item.tab ? Color.accentGold : Color.detatilGray1.opacity(0.5))
         }
     }
 }
