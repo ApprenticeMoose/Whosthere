@@ -10,8 +10,13 @@ import SwiftUI
 struct TabBar: View {
     
     @AppStorage("selectedTab") var selectedTab: Tab = .sessions
+    @Environment(\.colorScheme) var colorScheme                     //DarkMode
     @State var color: Color = .blue
     @State var tabItemWidth: CGFloat = 0
+    
+//    var tabIconColorUnselected: Color {
+//        colorScheme == .light ? Color.black : Color.detailGray2
+//    }
     
     //MARK: Body
     
@@ -23,11 +28,11 @@ struct TabBar: View {
                 buttons
             }
             .padding(.horizontal, 8)
-            .padding(.top, 14)
-            .padding(.bottom,30)
-            .background(Color.accentGreen.clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20)))
-            .shadow(color: .black.opacity(0.09), radius: 5, x: 5, y: 5)
-            .shadow(color: .black.opacity(0.09), radius: 5, x: -5, y: 0)
+            .padding(.top, 4)
+            .padding(.bottom, 24)
+            .background(Color.appBackground)
+//            .shadow(color: .black.opacity(0.09), radius: 5, x: 5, y: 5)
+//            .shadow(color: .black.opacity(0.09), radius: 5, x: -5, y: 0)
 
             .frame(maxHeight: .infinity, alignment: .bottom)
         .ignoresSafeArea()
@@ -59,10 +64,12 @@ struct TabBar: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            .foregroundColor(selectedTab == item.tab ? Color.accentGold : Color.detatilGray1.opacity(0.5))
+            .foregroundColor(selectedTab == item.tab ? Color.header : Color.subTitle.opacity(0.30))
         }
     }
 }
+
+
 
 struct TabBar_Previews: PreviewProvider {
     static var previews: some View {

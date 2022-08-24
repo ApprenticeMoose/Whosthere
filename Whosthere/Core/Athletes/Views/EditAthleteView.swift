@@ -51,7 +51,7 @@ struct EditAthleteView: View {
 
     //Toggle
     @State var show: Bool = false                                               //Bool for showing Birthdaypicker
-    @State var buttonFarbe : Color = .orangeAccentColor                         //Color for Button
+    @State var buttonFarbe : Color = .accentGold                                //Color for Button
     @State var showAlert: Bool = false                                          //Bool for Delete Alert
 
 
@@ -60,9 +60,9 @@ struct EditAthleteView: View {
     var body: some View {
 
         GeometryReader { _ in                               //GeometryReader so the View doesnt move uppwards once the keyboard is actived
-            ZStack{
-
-            Color.accentColor.edgesIgnoringSafeArea(.all)
+//            ZStack{
+//
+//            Color.accentColor.edgesIgnoringSafeArea(.all)
             ZStack{
                 VStack{
                     //header
@@ -92,22 +92,23 @@ struct EditAthleteView: View {
                     
                             
                             Spacer()
-
+                            
+                            //HStack{
                             archiveButton
                             deleteButton
-
+                            //}
 
                             Spacer(minLength: 25)
 
                         }
                         .padding(.top, 20)
-                        .background(Color.backgroundColor
-                                        .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
-                                    .edgesIgnoringSafeArea(.bottom))
+                        
 
                     } //ZStack for Popover
                 }//VStack to seperate Header and ScreenBody/content
-
+                .background(Color.appBackground
+                               // .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
+                            .edgesIgnoringSafeArea(.all))
                 ZStack{
                     if self.show {
                         
@@ -123,7 +124,7 @@ struct EditAthleteView: View {
                 .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)
 
                 }//ZStackforpopover
-            }//ZStack End
+            //}//ZStack End
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
     }//Body End
@@ -159,14 +160,18 @@ struct EditAthleteView: View {
         Button(action: {
             appState.path.removeLast()
         }){
-            NavigationButtonSystemName(iconName: "chevron.backward")
+            //NavigationButtonSystemName(iconName: "chevron.backward")
+            Image(systemName: "arrow.backward")
+                .resizable()
+                .foregroundColor(.header)
+                .frame(width: 27, height: 20)
         }
 
         Spacer(minLength: 0)
 
         Text("Edit Athlete")
             .font(.title)
-            .foregroundColor(.textUnchangedColor)
+            .foregroundColor(.header)
             .fontWeight(.medium)
 
         Spacer(minLength: 0)
@@ -174,7 +179,11 @@ struct EditAthleteView: View {
         Button(action: {
            editAthlete(athlete: athlete)
         }){
-            NavigationButtonSystemName(iconName: "checkmark")
+            //NavigationButtonSystemName(iconName: "checkmark")
+            Image(systemName: "checkmark")
+                .resizable()
+                .foregroundColor(.header)
+                .frame(width: 26, height: 20)
         }//Button
         
     }//HeaderHStackEnding
@@ -187,33 +196,33 @@ struct EditAthleteView: View {
         ZStack {
             Rectangle()
                 .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
-                .foregroundColor(Color.textUnchangedColor)
+                .foregroundColor(Color.header)
                 .clipShape(Circle())
                 //.padding()
             
             Rectangle()
                 .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
                 .clipShape(Circle())
-                .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                .foregroundColor(colorScheme == .light ? .accentMidGround : .accentBigButton)
                 //.padding()
             
             Image(systemName: "person.fill")
                 .resizable()
                 .frame(width: 42, height: 42, alignment: .center)
-                .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+                .foregroundColor(colorScheme == .light ? .cardGrey2 : .cardProfileLetter)
         }
         
         ZStack{
             
             Circle()
-                .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
-                .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
+                .strokeBorder(Color.header, lineWidth: 1)
+                .background(Circle().foregroundColor(.accentSmallButton))
                 .frame(width: 34, height: 34)
             
             Image("AddCameraIcon")
                 .resizable()
                 .frame(width: 17, height: 17, alignment: .center)
-                .foregroundColor(.orangeAccentColor)
+                .foregroundColor(.white)
             }
             .offset(x: 40, y: -30)
         }
@@ -239,8 +248,8 @@ struct EditAthleteView: View {
                 Spacer()
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
-            .background(Color.middlegroundColor)
-            .foregroundColor(.blue)
+            .background(Color.accentMidGround)
+            .foregroundColor(Color.midTitle)
             .cornerRadius(10)
             .padding(.horizontal)
             .padding(.vertical, 10)
@@ -268,8 +277,8 @@ struct EditAthleteView: View {
                     Spacer()
                 }
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
-                .background(Color.middlegroundColor)
-                .foregroundColor(.red)
+                .background(Color.deleteButton)
+                .foregroundColor(.white)
                 .cornerRadius(10)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
@@ -294,6 +303,7 @@ struct EditAthleteView: View {
 @Binding var female : Bool
 @Binding var nonbinary : Bool
 
+@Environment(\.colorScheme) var colorScheme
 
 
 
@@ -303,7 +313,7 @@ var body: some View{
         Text("Gender")
             .font(.body)
             .fontWeight(.semibold)
-            .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
+            .foregroundColor(Color.subTitle)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 10)
 
@@ -319,12 +329,23 @@ var body: some View{
                 nonbinary = false
             }) {
                 ZStack {
-                    Rectangle()
-                        .frame(width: 44, height: 44)
-                        .cornerRadius(10)
-                        .foregroundColor(male ? Color.accentColor: Color.middlegroundColor)
+                    if male {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                            .frame(width: 44, height: 44)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.accentSmallButton)
+                            )
+                            
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 44, height: 44)
+                            .foregroundColor(Color.accentMidGround)
+                    }
+                  
                     Image("MaleIcon")
-                        .foregroundColor(male ? Color.textUnchangedColor: Color.textColor)
+                        .foregroundColor(male ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                 }
             }
 
@@ -336,12 +357,22 @@ var body: some View{
                 nonbinary = false
             }) {
                 ZStack {
-                    Rectangle()
-                        .frame(width: 44, height: 44)
-                        .cornerRadius(10)
-                        .foregroundColor(female ? Color.accentColor: Color.middlegroundColor)
+                    if female {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                            .frame(width: 44, height: 44)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.accentSmallButton)
+                            )
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 44, height: 44)
+                            .foregroundColor(Color.accentMidGround)
+                    }
+                  
                     Image("FemaleIcon")
-                        .foregroundColor(female ? Color.textUnchangedColor: Color.textColor)
+                        .foregroundColor(female ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                 }
             }
 
@@ -352,12 +383,22 @@ var body: some View{
                 female = false
             }) {
                 ZStack {
-                    Rectangle()
-                        .frame(width: 44, height: 44)
-                        .cornerRadius(10)
-                        .foregroundColor(nonbinary ? Color.accentColor: Color.middlegroundColor)
+                    if nonbinary {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                            .frame(width: 44, height: 44)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.accentSmallButton)
+                            )
+                    } else {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 44, height: 44)
+                            .foregroundColor(Color.accentMidGround)
+                    }
+                  
                     Image("NonBinaryIcon")
-                        .foregroundColor(nonbinary ? Color.textUnchangedColor: Color.textColor)
+                        .foregroundColor(nonbinary ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                 }
             }
         }
@@ -377,6 +418,7 @@ func changeOpacity() -> Bool {
         @State var currentYear = Calendar.current.component(.year, from: Date())
         @Binding var selectedYear : Int
         @Binding var showYear: Bool
+        @Environment(\.colorScheme) var colorScheme
       
         @State var year: Int
         
@@ -404,7 +446,7 @@ func changeOpacity() -> Bool {
         var body: some View {
             ZStack {
                 RoundedRectangle(cornerRadius: 15)
-                    .foregroundColor(.middlegroundColor)
+                    .foregroundColor(colorScheme == .light ? .appBackground : .accentMidGround)
                     .frame(maxWidth: .infinity)
                     .frame(height: 425, alignment: .center)
                     .padding(.horizontal)
@@ -428,7 +470,8 @@ func changeOpacity() -> Bool {
                     } else {
                         DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
                             .datePickerStyle(.graphical)
-                            .accentColor(.orangeAccentColor)
+                            .colorScheme(colorScheme == .light ? .light : .dark)
+                            .accentColor(.accentSmallButton)
                             .labelsHidden()
                             .padding(.horizontal, 30)
                             .padding(.top, 20)
@@ -449,7 +492,7 @@ func changeOpacity() -> Bool {
                             .padding(.horizontal)
                             .padding(.horizontal)
                             .padding(.bottom, 8)
-                            .toggleStyle(SwitchToggleStyle(tint: Color.orangeAccentColor))
+                            .toggleStyle(SwitchToggleStyle(tint: Color.accentSmallButton))
                     
                     HStack{
                         Image(systemName: "plus")
@@ -458,8 +501,8 @@ func changeOpacity() -> Bool {
                             .font(.headline)
                     }
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
-                    .background(Color.orangeAccentColor)
-                    .foregroundColor(Color.textUnchangedColor)
+                    .background(Color.accentSmallButton)
+                    .foregroundColor(Color.white)
                     .cornerRadius(10)
                     .padding(.horizontal, 25)
                     .onTapGesture {

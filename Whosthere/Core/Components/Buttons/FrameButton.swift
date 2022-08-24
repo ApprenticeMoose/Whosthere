@@ -20,6 +20,7 @@ struct FrameButton: View {
             .frame(width: 30, height: 30)
             .background(
                 RoundedRectangle(cornerRadius: 5)
+                    
                     .foregroundColor(backgroundColor)
                     //.stroke(Color.textColor, lineWidth: 2.0)
                     //.foregroundColor(iconColor)

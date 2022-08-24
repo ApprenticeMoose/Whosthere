@@ -37,18 +37,24 @@ struct AthletesListView: View {
     
     var body: some View {
         NBNavigationStack(path: $appState.path){                            //NavigationStack
-        ZStack{
-            Color.accentGreen.edgesIgnoringSafeArea(.all)                   //GreenAccentHeader
+//        ZStack{
+//            Color.accentGreen.edgesIgnoringSafeArea(.all)                   //GreenAccentHeader
         
-            VStack{
+//            VStack{
                                                                             //Header
-                ScreenHeaderTextOnly(screenTitle: "Athletes")
+               
+                
+                
                                                                             //Screen body
                 VStack{
                     
-                    athleteListButtonRow
-                        .fullScreenCover(isPresented: $showAddSheet,
-                                         content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))})
+                    HStack{
+                        ScreenHeaderTextOnly(screenTitle: "Athletes")
+                        athleteListButtonRow
+                            .fullScreenCover(isPresented: $showAddSheet,
+                                             content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))})
+                        
+                    }
 
                                                                             //Shows picture when list is empty
                     if athletesListVM.athletes.isEmpty {
@@ -85,8 +91,8 @@ struct AthletesListView: View {
                             .id(refreshID)
                             }
                             .padding(8)
-                            .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.mainCard))
-                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.accentMidGround))
+                            .padding(.horizontal)
                         }
                         
                         .nbNavigationDestination(for: Route.self) { route in
@@ -114,13 +120,12 @@ struct AthletesListView: View {
                     //Spacer().frame(maxWidth: .infinity)
                     //Spacer().frame(maxHeight: .infinity)
                 }
-                .background(Color.mainBackground
-                                .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
-                                .edgesIgnoringSafeArea(.bottom))
+                .background(Color.appBackground
+                    .edgesIgnoringSafeArea(.all))
                 
                 
-            }//VStack to seperate header and bodysheet
-        }//ZStack for background
+//            }//VStack to seperate header and bodysheet
+//        }//ZStack for background
         .navigationBarTitle("My Title")
         .navigationBarHidden(true)
         
@@ -166,28 +171,25 @@ struct AthletesListView: View {
     private var athleteListButtonRow: some View {
     
     HStack{
-        //Change AthletesListViewButton
-        Button(action: {
-            //Change List Appearance
-        }){
-            FrameButton(iconName: "HamburgerListIcon", iconColor: colorScheme == .light ? .accentGold : .accentGreen, backgroundColor: colorScheme == .light ? .accentGreen : .accentGold)
-        }
-        
-        Spacer()
-        
-        //Sort Button
+ 
         Button(action: {
             //Make Sort Sheet Appear
         }){
-            FrameButton(iconName: "SortIcon", iconColor: colorScheme == .light ? .accentGold : .accentGreen, backgroundColor: colorScheme == .light ? .accentGreen : .accentGold)
-                .padding(.horizontal, 8)
+            Image(systemName: "slider.horizontal.3")
+                .resizable()
+                .frame(width: 24, height: 22)
+                .foregroundColor(Color.header)
+                .padding(.horizontal, 14)
         }
         
         // Add Athlete Button
         Button(action: {
             showAddSheet.toggle()
         }){
-            FrameButton(iconName: "AddAthleteIcon", iconColor: colorScheme == .light ? .accentGold : .accentGreen, backgroundColor: colorScheme == .light ? .accentGreen : .accentGold)
+            Image(systemName: "plus")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .foregroundColor(Color.header)
         }
         
     }//HStackButtonsEnd
@@ -231,9 +233,9 @@ struct AthletesListView: View {
             .padding(.bottom, 4)
              
             }
-            .padding(.vertical, 5)
+            .padding(.top, 5)
             .background(
-                Color.white.opacity(0.001)
+                Color.accentMidGround
             )
             
         }
@@ -244,14 +246,14 @@ struct AthletesListView: View {
             ZStack {
                 Circle()
                     .frame(width: 40, height: 40)
-                    .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                    .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey1)
                     //.foregroundColor(.sheetButton)
                     .padding(.horizontal, 10)
                 Image(systemName: "person.fill")
                     .resizable()
                     .frame(width: 20, height: 20, alignment: .center)
                     //.foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
-                    .foregroundColor(.sheetButton.opacity(0.5))
+                    .foregroundColor(colorScheme == .light ? .cardGrey2 : .cardProfileLetter)
             }
         }
     }
@@ -264,18 +266,18 @@ struct ScreenHeaderTextOnly: View {
         
         HStack{
             
-            Spacer(minLength: 0)
+//            Spacer(minLength: 0)
             
             Text(screenTitle)
-                .font(.title)
-                .foregroundColor(.headerText)
-                .fontWeight(.medium)
+                .font(.largeTitle)
+                .foregroundColor(.header)
+                .fontWeight(.semibold)
             
             Spacer(minLength: 0)
             
         }
-        .padding(.horizontal)
-        .padding(.top, 15)
+        .padding(.horizontal, 22)
+        .padding(.top, 20)
     }
 }
 
@@ -285,8 +287,8 @@ struct RowView: View {
 
     var body: some View {
         ListRowView(athlete: athlete)
-                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
-                .listRowBackground(Color.mainCard)
+//                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
+//                .listRowBackground(Color.mainCard)
     }
 
 }
@@ -297,13 +299,13 @@ struct Seperator: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        if !isLast{
+        
         HStack{
-            Rectangle().fill(colorScheme == .light ? Color.detailGray2 : Color.detailGray5).frame(width: 280, height: 1)
+            Rectangle().fill(Color.appBackground).frame(width: UIScreen.main.bounds.width, height: 1)
                 .padding(.horizontal, 10)
             Spacer()
         }
-        }
+        .padding(.top, 0)
     }
     
 }

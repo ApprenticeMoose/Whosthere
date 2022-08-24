@@ -34,9 +34,9 @@ struct AddAthleteView: View {
     var body: some View {
         //GeometryReader so the View doesnt move upwards once the keyboard is actived
         GeometryReader { _ in
-        ZStack{
-
-            Color.accentColor.edgesIgnoringSafeArea(.all)
+//        ZStack{
+//
+//            Color.accentColor.edgesIgnoringSafeArea(.all)
 
             ZStack{
                 VStack{
@@ -68,12 +68,12 @@ struct AddAthleteView: View {
                             addButton
                         }
                         .padding(.top, 20)
-                        .background(Color.backgroundColor
-                                        .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
-                                        .edgesIgnoringSafeArea(.bottom))
+//                        .background(Color.backgroundColor
+//                                        .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
+//                                        .edgesIgnoringSafeArea(.bottom))
                     } //ZStack for Popover
                 }//VStack to seperate Header and ScreenBody/content
-
+                .background(Color.appBackground.edgesIgnoringSafeArea(.all))
                 ZStack{
                     if self.show {
                         Color.black
@@ -86,7 +86,7 @@ struct AddAthleteView: View {
                     }
                     .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)
             }//ZStackforpopover
-        }//ZStack End
+//        }//ZStack End
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }//Body End
@@ -126,8 +126,8 @@ struct AddAthleteView: View {
                 .font(.headline)
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 55)
-        .background(addVM.textIsAppropriate() ? Color.orangeAccentColor : buttonDisabledColor)
-        .foregroundColor(.textUnchangedColor)
+        .background(addVM.textIsAppropriate() ? Color.accentBigButton : buttonDisabledColor)
+        .foregroundColor(addVM.textIsAppropriate() ? Color.white : colorScheme == .light ? Color.white : Color.cardGrey2)
         .cornerRadius(10)
         .padding()
     }
@@ -157,20 +157,20 @@ struct AddAthleteView: View {
 
                 Rectangle()
                     .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
-                    .foregroundColor(Color.textUnchangedColor)
+                    .foregroundColor(Color.header)
                     .clipShape(Circle())
                     .padding()
 
                 Rectangle()
                     .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
                     .clipShape(Circle())
-                    .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                    .foregroundColor(colorScheme == .light ? .accentMidGround : .accentBigButton)
                     .padding()
 
                 Image(systemName: "person.fill")
                     .resizable()
                     .frame(width: 42, height: 42, alignment: .center)
-                    .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+                    .foregroundColor(colorScheme == .light ? .cardGrey2 : .cardProfileLetter)
                 
 
      //       }
@@ -180,13 +180,13 @@ struct AddAthleteView: View {
 
                 ZStack{
                     Circle()
-                        .strokeBorder(Color.textUnchangedColor, lineWidth: 1)
-                        .background(Circle().foregroundColor(colorScheme == .light ? Color.greyFourColor : Color.greyTwoColor))
+                        .strokeBorder(Color.header, lineWidth: 1)
+                        .background(Circle().foregroundColor(.accentSmallButton))
                         .frame(width: 34, height: 34)
                     Image("AddCameraIcon")
                         .resizable()
                         .frame(width: 17, height: 17, alignment: .center)
-                        .foregroundColor(.orangeAccentColor)
+                        .foregroundColor(.white)
                     }
                     .offset(x: 40, y: -30)
                 }
@@ -234,14 +234,18 @@ struct AddAthleteView: View {
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }){
-                NavigationButtonSystemName(iconName: "chevron.backward")
+                //NavigationButtonSystemName(iconName: "chevron.backward")
+                Image(systemName: "arrow.backward")
+                    .resizable()
+                    .foregroundColor(.header)
+                    .frame(width: 27, height: 20)
             }
 
             Spacer(minLength: 0)
 
             Text("Add Athlete")
                 .font(.title)
-                .foregroundColor(.textUnchangedColor)
+                .foregroundColor(.header)
                 .fontWeight(.medium)
 
             Spacer(minLength: 0)
@@ -252,10 +256,16 @@ struct AddAthleteView: View {
                     presentationMode.wrappedValue.dismiss()
                 }
             }){
-                NavigationButtonSystemName(iconName: "checkmark")
+                Image(systemName: "checkmark")
+                    .resizable()
+                    //.font(.headline)
+                    .foregroundColor(.header)
+                    .frame(width: 26, height: 20)
+                    //.offset(y: -3)
+                //NavigationButtonSystemName(iconName: "checkmark")
             }//Button
         }//HeaderHStackEnding
-        .padding(.horizontal)
+        .padding(.horizontal, 22)
         .padding(.top, 15)
 }
 
@@ -270,6 +280,7 @@ struct AddAthleteView: View {
 
 struct LongTextField: View {
 
+    @Environment(\.colorScheme) var colorScheme
     @State var textFieldDescription: String
     @Binding var firstNameTF: String
 
@@ -278,7 +289,8 @@ struct LongTextField: View {
             //Firstname
             Text(textFieldDescription)
                 .font(.body)
-                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
+                //.foregroundColor(changeOpacity() ? Color.headerText.opacity(0.30) : Color.headerText)
+                .foregroundColor(Color.subTitle)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
@@ -288,8 +300,10 @@ struct LongTextField: View {
                 .autocapitalization(.words)
                 .padding(.vertical, 10)
                 .padding(.horizontal)
-                .background(Color.middlegroundColor)
-                .foregroundColor(Color.textColor)
+                //.background(colorScheme == .light ? Color.detailWhiteIsh : Color.sheetCard)
+                .background(Color.accentMidGround)
+                //.foregroundColor(colorScheme == .light ? Color.accentGreen : Color.detailWhiteIsh)
+                .foregroundColor(.midTitle)
                 .frame(height:44)
                 .cornerRadius(10)
                 .font(.headline)
@@ -309,6 +323,8 @@ struct LongTextField: View {
 }
 
 struct BirthdayField: View {
+    
+    @Environment(\.colorScheme) var colorScheme
 
     @Binding var show: Bool
 
@@ -327,7 +343,7 @@ struct BirthdayField: View {
 
             Text("Birthday")
                 .font(.body)
-                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
+                .foregroundColor(Color.subTitle)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
@@ -337,23 +353,26 @@ struct BirthdayField: View {
                 Rectangle()
                     .padding(.vertical, 10)
                     .padding(.horizontal)
-                    .foregroundColor(Color.middlegroundColor)
-                    .background(Color.middlegroundColor)
+                    .background(Color.accentMidGround)
+                    //.foregroundColor(colorScheme == .light ? Color.accentGreen : Color.detailWhiteIsh)
+                    .foregroundColor(.accentMidGround)
                     .frame(height: 44)
                     .cornerRadius(10)
+                    
+
 
 
                 if self.showYear {
                     Text(String(Calendar.current.component(.year, from: selectedDate ?? Date())))
                         .font(.body)
-                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
+                        .foregroundColor(makeClear() ? Color.clear : Color.midTitle)
                         .fontWeight(.semibold)
                 }
                 else{
                     VStack{
                         Text(dateFormatter.string(from: selectedDate ?? Date()))
                         .font(.body)
-                        .foregroundColor(makeClear() ? Color.clear : Color.textColor)
+                        .foregroundColor(makeClear() ? Color.clear : Color.midTitle)
                         .fontWeight(.semibold)
                     }
 //                    .onAppear(perform: selectedYear = Calendar.current.component(.year, from: selectedDate))
@@ -392,7 +411,8 @@ struct GenderButtons: View {
     @State var male = false
     @State var female = false
     @State var nonbinary = false
-
+    
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View{
         VStack(alignment: .leading){
@@ -400,7 +420,7 @@ struct GenderButtons: View {
             Text("Gender")
                 .font(.body)
                 .fontWeight(.semibold)
-                .foregroundColor(changeOpacity() ? Color.textColor.opacity(0.30) : Color.textColor)
+                .foregroundColor(Color.subTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 10)
 
@@ -413,12 +433,23 @@ struct GenderButtons: View {
                     nonbinary = false
                 }) {
                     ZStack {
-                        Rectangle()
-                            .frame(width: 44, height: 44)
-                            .cornerRadius(10)
-                            .foregroundColor(male ? Color.accentColor: Color.middlegroundColor)
+                        if male {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                                .frame(width: 44, height: 44)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.accentSmallButton)
+                                )
+                                
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 44, height: 44)
+                                .foregroundColor(Color.accentMidGround)
+                        }
+                      
                         Image("MaleIcon")
-                            .foregroundColor(male ? Color.textUnchangedColor: Color.textColor)
+                            .foregroundColor(male ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                     }
                 }
 
@@ -429,12 +460,22 @@ struct GenderButtons: View {
                     nonbinary = false
                 }) {
                     ZStack {
-                        Rectangle()
-                            .frame(width: 44, height: 44)
-                            .cornerRadius(10)
-                            .foregroundColor(female ? Color.accentColor: Color.middlegroundColor)
+                        if female {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                                .frame(width: 44, height: 44)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.accentSmallButton)
+                                )
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 44, height: 44)
+                                .foregroundColor(Color.accentMidGround)
+                        }
+                      
                         Image("FemaleIcon")
-                            .foregroundColor(female ? Color.textUnchangedColor: Color.textColor)
+                            .foregroundColor(female ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                     }
                 }
 
@@ -445,12 +486,22 @@ struct GenderButtons: View {
                     female = false
                 }) {
                     ZStack {
-                        Rectangle()
-                            .frame(width: 44, height: 44)
-                            .cornerRadius(10)
-                            .foregroundColor(nonbinary ? Color.accentColor: Color.middlegroundColor)
+                        if nonbinary {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                                .frame(width: 44, height: 44)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.accentSmallButton)
+                                )
+                        } else {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 44, height: 44)
+                                .foregroundColor(Color.accentMidGround)
+                        }
+                      
                         Image("NonBinaryIcon")
-                            .foregroundColor(nonbinary ? Color.textUnchangedColor: Color.textColor)
+                            .foregroundColor(nonbinary ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                     }
                 }
             }
@@ -472,6 +523,7 @@ struct Popover: View {
     @State var currentYear = Calendar.current.component(.year, from: Date())
     @Binding var selectedYear : Int
     @Binding var showYear: Bool
+    @Environment(\.colorScheme) var colorScheme
 
     @State var year: Int
 
@@ -501,7 +553,7 @@ struct Popover: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
-                .foregroundColor(.middlegroundColor)
+                .foregroundColor(colorScheme == .light ? .appBackground : .accentMidGround)
                 .frame(maxWidth: .infinity)
                 .frame(height: 425, alignment: .center)
                 .padding(.horizontal)
@@ -525,7 +577,8 @@ struct Popover: View {
                 } else {
                     DatePicker("", selection: $selectedDate, in: ...endingDate, displayedComponents: .date)
                         .datePickerStyle(.graphical)
-                        .accentColor(.orangeAccentColor)
+                        .colorScheme(colorScheme == .light ? .light : .dark)
+                        .accentColor(.accentSmallButton)
                         .labelsHidden()
                         .padding(.horizontal, 30)
                         .padding(.top, 20)
@@ -541,12 +594,12 @@ struct Popover: View {
                             Text("Select year of birth only")
                                    .font(.body)
                                    .fontWeight(.semibold)
-                                    .foregroundColor(Color.textColor)
+                                    .foregroundColor(Color.header)
                         })
                         .padding(.horizontal)
                         .padding(.horizontal)
                         .padding(.bottom, 8)
-                        .toggleStyle(SwitchToggleStyle(tint: Color.orangeAccentColor))
+                        .toggleStyle(SwitchToggleStyle(tint: Color.accentSmallButton))
 
                 HStack{
                     Image(systemName: "plus")
@@ -555,8 +608,8 @@ struct Popover: View {
                         .font(.headline)
                 }
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: 40)
-                .background(Color.orangeAccentColor)
-                .foregroundColor(Color.textUnchangedColor)
+                .background(Color.accentSmallButton)
+                .foregroundColor(Color.white)
                 .cornerRadius(10)
                 .padding(.horizontal, 25)
                 .onTapGesture {

@@ -35,6 +35,25 @@ extension Color {
     static let detailGray2 = Color("GeneralDetailGray2")
     static let detailGray5 = Color("GeneralDetailGray5")
     static let detailWhiteIsh = Color("GeneralDetailWhiteIsh")
+    
+    static let accentBigButton = Color("AccentBigButton")
+    static let accentMidGround = Color("AccentMidGround")
+    static let accentSmallButton = Color("AccentSmallButton")
+    
+    static let appBackground = Color("AppBackground")
+    static let deleteButton = Color("DeleteButton")
+    
+    static let cardGrey1 = Color("CardGrey1")
+    static let cardGrey2 = Color("CardGrey2")
+    static let cardGrey3 = Color("CardGrey3")
+    static let cardText = Color("CardText")
+    static let cardProfileLetter = Color("CardProfileLetter")
+    
+    static let header = Color("Header")
+    static let midTitle = Color("MidTitle")
+    static let subTitle = Color("SubTitle")
+    
+    
 
     
 }

@@ -37,8 +37,8 @@ struct AthleteDetailView: View {
     //MARK: -Body
     
     var body: some View {
-        ZStack{
-            Color.backgroundColor.edgesIgnoringSafeArea(.all)                        //Grey background
+//        ZStack{
+//            Color.mainBackground.edgesIgnoringSafeArea(.all)                        //Grey background
             
             VStack{
                                                                                      //Header
@@ -49,20 +49,21 @@ struct AthleteDetailView: View {
 
                     profilePicture
                         .padding(.top, -20)
-                        .padding(.bottom, -10)
+                        .padding(.bottom, -15)
                 
                     nameAndBirthday
                 
                         }
-                        .background(Color.accentColor
-                                        .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
-                                        .edgesIgnoringSafeArea(.top))
+//                        .background(Color.accentGreen
+//                                        .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
+//                                        .edgesIgnoringSafeArea(.top))
                 
                     Spacer()
                 
                 }
+            .background(Color.appBackground)
             
-            }//end of ZStack for Color
+//            }//end of ZStack for Color
             .navigationBarHidden(true)
         }//end of Body
     
@@ -80,8 +81,8 @@ struct AthleteDetailView: View {
     
     var nameAndBirthday: some View {
     
-    VStack(spacing: UIScreen.main.bounds.height/70){
-        HStack {
+    VStack(spacing: UIScreen.main.bounds.height/80){
+        HStack(spacing: 6) {
             Text(athlete.firstName)
                 .font(.title3)
                 .fontWeight(.bold)
@@ -89,7 +90,7 @@ struct AthleteDetailView: View {
                 .font(.title3)
                 .fontWeight(.bold)
             }
-            .foregroundColor(Color.textUnchangedColor)
+            .foregroundColor(Color.header)
         VStack{
            
             if let dateOfBirth = athlete.birthday {
@@ -97,13 +98,13 @@ struct AthleteDetailView: View {
                     Text("\(String(describing: Calendar.current.component(.year, from: dateOfBirth)))")
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color.textUnchangedColor)
+                        .foregroundColor(Color.header)
                         .padding(.bottom, 15)
                 } else {
                     Text(birthToggle == false ? "\(String(describing: Calendar.current.component(.year, from: dateOfBirth)))" : dateFormatter.string(from: dateOfBirth))
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .foregroundColor(Color.textUnchangedColor)
+                            .foregroundColor(Color.header)
                             .onTapGesture {
                                 withAnimation(.easeOut){
                                 birthToggle.toggle()
@@ -117,11 +118,11 @@ struct AthleteDetailView: View {
                     Text("Add birthday")
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color.textUnchangedColor)
+                        .foregroundColor(Color.header)
                         .opacity(0.7)
 
                     Image("PenIcon")
-                        .foregroundColor(Color.textUnchangedColor)
+                        .foregroundColor(Color.header)
                         .opacity(0.7)
                         .padding(.horizontal, -3)
                     }
@@ -137,12 +138,16 @@ struct AthleteDetailView: View {
     HStack(){
         
         Button(action: {
-            //withAnimation(.spring()){
-                tabDetail.showDetail = false
-            //}
+
+            tabDetail.showDetail = false
+            
             appState.path.removeLast()
+            
         }){
-            NavigationButtonSystemName(iconName: "chevron.backward")
+            Image(systemName: "arrow.backward")
+                .resizable()
+                .foregroundColor(.header)
+                .frame(width: 27, height: 20)
         }
         
         Spacer(minLength: 0)
@@ -151,32 +156,37 @@ struct AthleteDetailView: View {
         Spacer(minLength: 0)
         
             NBNavigationLink(value: Route.edit(athlete)) {
-                NavigationButtonAssestsIcon(iconName: "PenIcon")
+                Image("PenIcon")
+                    .resizable()
+                    .foregroundColor(.header)
+                    .frame(width: 25, height: 25)
             }
 
         
     }//HeaderHStackEnding
-    .padding()
+    .padding(.horizontal, 25)
+    .padding(.top, 25)
 }
     
     var profilePicture: some View {
         
         ZStack {
             Rectangle()
-                .frame(minWidth: 120, maxWidth: 120, minHeight: 120, maxHeight: 120)
-                .foregroundColor(Color.textUnchangedColor)
+                .frame(minWidth: 108, maxWidth: 108, minHeight: 108, maxHeight: 108)
+                .foregroundColor(Color.header)
                 .clipShape(Circle())
                 .padding()
             
             Rectangle()
-                .frame(minWidth: 0, maxWidth: 114, minHeight: 0, maxHeight: 114)
+                .frame(minWidth: 0, maxWidth: 104, minHeight: 0, maxHeight: 104)
                 .clipShape(Circle())
-                .foregroundColor(colorScheme == .light ? .greyFourColor : .greyTwoColor)
+                .foregroundColor(colorScheme == .light ? .accentMidGround : .accentBigButton)
                 .padding()
             Image(systemName: "person.fill")
                 .resizable()
                 .frame(width: 42, height: 42, alignment: .center)
-                .foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+                .foregroundColor(colorScheme == .light ? .cardGrey2 : .cardProfileLetter)
+                //.foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
         }
     }
 }
