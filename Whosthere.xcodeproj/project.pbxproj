@@ -40,6 +40,7 @@
 		BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */; };
 		BCB4211627FA4CC000B939DA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211527FA4CC000B939DA /* ImagePicker.swift */; };
 		BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211727FA4ECE00B939DA /* PicturePicker.swift */; };
+		BCD9654928B916C3008DEE7F /* SessionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD9654828B916C3008DEE7F /* SessionsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingWhereValue.swift; sourceTree = "<group>"; };
 		BCB4211527FA4CC000B939DA /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BCB4211727FA4ECE00B939DA /* PicturePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePicker.swift; sourceTree = "<group>"; };
+		BCD9654828B916C3008DEE7F /* SessionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				BC78F34D289C9B3E00F6BC34 /* SessionsHomeView.swift */,
+				BCD9654828B916C3008DEE7F /* SessionsViewModel.swift */,
 			);
 			path = Sessions;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				BC3212F12750E989001A689E /* CustomShape.swift in Sources */,
 				BC78F345289C78BA00F6BC34 /* TabBarView.swift in Sources */,
 				BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */,
+				BCD9654928B916C3008DEE7F /* SessionsViewModel.swift in Sources */,
 				BC78F34C289C8B3E00F6BC34 /* TabDetailVM.swift in Sources */,
 				BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */,
 				BC9D00D12889B58A0024B4AC /* CoreDataManager.swift in Sources */,
