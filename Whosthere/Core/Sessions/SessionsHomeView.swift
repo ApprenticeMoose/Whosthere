@@ -26,7 +26,7 @@ struct SessionsHomeView: View {
     }
     
     var body: some View {
-        ZStack{
+        //ZStack{
             VStack(spacing: 18){
                 
                 HStack{
@@ -36,6 +36,7 @@ struct SessionsHomeView: View {
                     //                                     content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))})
                     
                 }
+                
               
                 
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -56,13 +57,19 @@ struct SessionsHomeView: View {
                             ForEach(0..<sessionsVM.wholeWeeks.count, id: \.self) { i in
                                 ZStack {
                                     if sessionsVM.checkCurrentWeek(dates: sessionsVM.wholeWeeks[i]) {
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .stroke(Color.header, lineWidth: 1.0)
-                                            .frame(minWidth: 100, maxWidth: 110, minHeight: 40, idealHeight: 40, maxHeight: 40)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 5)
-                                                    .fill(Color.accentMidGround)
-                                            )
+                                        ZStack{
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .frame(minWidth: 100, maxWidth: 110, minHeight: 40, idealHeight: 40, maxHeight: 40)
+                                                .foregroundColor(Color.accentMidGround)
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .stroke(Color.header, lineWidth: 1.0)
+                                                .frame(minWidth: 99, maxWidth: 109, minHeight: 39, idealHeight: 39, maxHeight: 39)
+                                                
+                                        }
+//                                        .background(
+//                                                RoundedRectangle(cornerRadius: 5)
+//                                                    .fill(Color.accentMidGround)
+//                                            )
                                         
                                     } else {
                                         RoundedRectangle(cornerRadius: 5)
@@ -119,7 +126,10 @@ struct SessionsHomeView: View {
                             }
                         }
                     }
-                    .padding(.horizontal)
+                                        .padding(.horizontal)
+                                        .padding(.bottom)
+                                        
+                                        
                     
                 }//scrollview
                 
@@ -133,7 +143,7 @@ struct SessionsHomeView: View {
                 Spacer()
             } //VStack
             Spacer()
-        }//zstack
+        //}//zstack
         ZStack{
             if self.show {
                 

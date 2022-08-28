@@ -24,6 +24,7 @@ class SessionsViewModel: ObservableObject {
         self.calendar.minimumDaysInFirstWeek = 4
         fetchAllDays()
         setButtonAtLaunch()
+        print("\(selectedDay)")
         
     }
 
