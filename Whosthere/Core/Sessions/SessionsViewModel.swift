@@ -12,51 +12,63 @@ class SessionsViewModel: ObservableObject {
     @Published var shownWeeksFirstDay: [Date] = []
     @Published var shownWeeksLastDay: [Date] = []
     @Published var shownWeek: [Int] = []
-    @Published var currentWeek: Date = (Calendar.current.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date())
-    @Published var scrollToIndex: Int = 0
+    @Published var selectedDay: Date = (Calendar.current.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date())
+    @Published var scrollToIndex: Int = 3
+    
+    @Published var wholeWeeks: [[Date]] = []
     
     var calendar = Calendar.current
     
     init(){
         self.calendar.firstWeekday = 2
         self.calendar.minimumDaysInFirstWeek = 4
-        fetchShownWeeksFirstDay()
-        isCurrentWeek()
-    }
-    
-    func isCurrentWeek() {
-        let current = calendar.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date()
-            currentWeek = current
-        return scrollToIndex = shownWeeksFirstDay.firstIndex(where: {$0 == self.currentWeek}) ?? 0
-    }
-    
-    func fetchShownWeeksFirstDay() {
-        let currentWeek = calendar.dateInterval(of: .weekOfYear, for: Date())
+        fetchAllDays()
+        setButtonAtLaunch()
         
-        guard let firstWeekday = currentWeek?.start else {
+    }
+
+    func setButtonAtLaunch() {
+            let current = calendar.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date()
+                selectedDay = current
+            
+            return scrollToIndex = 3
+    
+        }
+    
+    func fetchAllDays() {
+        let thisWeek = calendar.dateInterval(of: .weekOfYear, for: selectedDay)
+        
+        guard let firstDayOfWeek = thisWeek?.start else {
             return
         }
-
+        var weekArray: [Date] = []
+  
+        
         (-3...3).forEach { day in
-            if let weekday = calendar.date(byAdding: .weekOfYear, value: day, to: firstWeekday){
-                shownWeeksFirstDay.append(weekday)
+            if let weekday = calendar.date(byAdding: .weekOfYear, value: day, to: firstDayOfWeek){
                 
-                var comps2 = DateComponents()
-                comps2.weekOfYear = 1
-                comps2.day = -1
-                if let endOfWeek = calendar.date(byAdding: comps2, to: weekday) {
-                shownWeeksLastDay.append(endOfWeek)
-                    
+                
+                (0...6).forEach { dayz in
+                    if let days = calendar.date(byAdding: .day, value: dayz, to: weekday){
+                        //create an array of all days and then append this to wholeweeks etc
+                        
+                        weekArray.append(days)
                     }
                 }
+                wholeWeeks.append(weekArray)
+                weekArray.removeAll()
             }
         }
+        
+    }
     
+    //get the Int of the week from any date that is entered
     func extractWeek(date: Date) -> Int {
         let week = calendar.component(.weekOfYear, from: date)
         return week
     }
     
+    //function to convert Dates into Strings to be used in text etc with formatting via "dd", "MMM", etc
     func extractDate(date: Date, format: String) -> String{
         let formatter = DateFormatter()
         
@@ -65,8 +77,20 @@ class SessionsViewModel: ObservableObject {
         return formatter.string(from: date)
     }
     
-    func checkCurrentWeek(date: Date) -> Bool {
-        return calendar.isDate(currentWeek, inSameDayAs: date)
+    //run the array of weekdates through the for loop which singles out if the currently selected date is in this array
+    func checkCurrentWeek(dates: [Date]) -> Bool {
+        
+        var date: Date = Date()
+        
+        for i in dates {
+            
+            if i == selectedDay {
+                date = i
+                break
+            }
+        }
+        
+        return calendar.isDate(selectedDay, inSameDayAs: date)
     }
 }
 
