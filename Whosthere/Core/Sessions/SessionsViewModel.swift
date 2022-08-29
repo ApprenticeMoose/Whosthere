@@ -9,10 +9,7 @@ import Foundation
 
 class SessionsViewModel: ObservableObject {
     
-    @Published var shownWeeksFirstDay: [Date] = []
-    @Published var shownWeeksLastDay: [Date] = []
-    @Published var shownWeek: [Int] = []
-    @Published var selectedDay: Date = (Calendar.current.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date())
+    @Published var selectedDay: Date =  Date()
     @Published var scrollToIndex: Int = 3
     
     @Published var wholeWeeks: [[Date]] = []
@@ -24,7 +21,8 @@ class SessionsViewModel: ObservableObject {
         self.calendar.minimumDaysInFirstWeek = 4
         fetchAllDays()
         setButtonAtLaunch()
-        print("\(selectedDay)")
+        print(wholeWeeks)
+        //print("\(selectedDay)")
         
     }
 
@@ -39,14 +37,16 @@ class SessionsViewModel: ObservableObject {
     func fetchAllDays() {
         let thisWeek = calendar.dateInterval(of: .weekOfYear, for: selectedDay)
         
+        
+        
         guard let firstDayOfWeek = thisWeek?.start else {
-            return
+            return print("failure")
         }
         var weekArray: [Date] = []
   
         
-        (-3...3).forEach { day in
-            if let weekday = calendar.date(byAdding: .weekOfYear, value: day, to: firstDayOfWeek){
+        (-3...3).forEach { week in
+            if let weekday = calendar.date(byAdding: .weekOfYear, value: week, to: firstDayOfWeek){
                 
                 
                 (0...6).forEach { dayz in
@@ -56,7 +56,9 @@ class SessionsViewModel: ObservableObject {
                         weekArray.append(days)
                     }
                 }
+                
                 wholeWeeks.append(weekArray)
+                print(wholeWeeks)
                 weekArray.removeAll()
             }
         }
@@ -79,19 +81,15 @@ class SessionsViewModel: ObservableObject {
     }
     
     //run the array of weekdates through the for loop which singles out if the currently selected date is in this array
-    func checkCurrentWeek(dates: [Date]) -> Bool {
-        
-        var date: Date = Date()
+    func checkCurrentWeek(dates: [Date], dateSelected: Date) -> Bool {
+        var isInWeek: Bool = false
         
         for i in dates {
-            
-            if i == selectedDay {
-                date = i
-                break
+            if i == dateSelected {
+                isInWeek = true
             }
         }
-        
-        return calendar.isDate(selectedDay, inSameDayAs: date)
+        return isInWeek
     }
 }
 

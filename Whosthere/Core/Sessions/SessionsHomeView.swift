@@ -13,7 +13,7 @@ struct SessionsHomeView: View {
     
     
     var calendar = Calendar.current
-    @State var isSelectedWeekButton: Bool = false
+    //@State var isSelectedWeekButton: Bool = false
     @State var show: Bool = false
     
     init(){
@@ -42,7 +42,7 @@ struct SessionsHomeView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     ScrollViewReader { proxy in
                         
-                        HStack(spacing: 10){
+                        HStack(spacing: 11){
                             //CalendarButton
                             ZStack{
                                 RoundedRectangle(cornerRadius: 5)
@@ -56,7 +56,7 @@ struct SessionsHomeView: View {
                             }
                             ForEach(0..<sessionsVM.wholeWeeks.count, id: \.self) { i in
                                 ZStack {
-                                    if sessionsVM.checkCurrentWeek(dates: sessionsVM.wholeWeeks[i]) {
+                                    if sessionsVM.checkCurrentWeek(dates: sessionsVM.wholeWeeks[i], dateSelected: sessionsVM.selectedDay) {
                                         ZStack{
                                             RoundedRectangle(cornerRadius: 5)
                                                 .frame(minWidth: 100, maxWidth: 110, minHeight: 40, idealHeight: 40, maxHeight: 40)
@@ -93,10 +93,10 @@ struct SessionsHomeView: View {
                                         }
                                         
                                     }
-                                    .foregroundColor(sessionsVM.checkCurrentWeek(dates: sessionsVM.wholeWeeks[i]) ? Color.header : Color.header.opacity(0.3))
+                                    .foregroundColor(sessionsVM.checkCurrentWeek(dates: sessionsVM.wholeWeeks[i], dateSelected: sessionsVM.selectedDay) ? Color.header : Color.header.opacity(0.3))
                                 }
                                 .onTapGesture {
-                                    isSelectedWeekButton = true
+                                    //isSelectedWeekButton = true
                                     
                                     sessionsVM.selectedDay = sessionsVM.wholeWeeks[i][0]
                                     sessionsVM.scrollToIndex = i
@@ -142,8 +142,11 @@ struct SessionsHomeView: View {
                 
                 Spacer()
             } //VStack
-            Spacer()
+            .background(Color.appBackground
+                .edgesIgnoringSafeArea(.all))
+            //Spacer()
         //}//zstack
+        
         ZStack{
             if self.show {
                 
