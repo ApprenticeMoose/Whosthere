@@ -249,7 +249,7 @@ struct EditAthleteView: View {
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
             .background(Color.accentMidGround)
-            .foregroundColor(Color.midTitle)
+            .foregroundColor(Color.midTitle.opacity(0.8))
             .cornerRadius(10)
             .padding(.horizontal)
             .padding(.vertical, 10)
@@ -277,8 +277,8 @@ struct EditAthleteView: View {
                     Spacer()
                 }
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
-                .background(Color.deleteButton)
-                .foregroundColor(.white)
+                .background(Color.accentMidGround)
+                .foregroundColor(Color.red)
                 .cornerRadius(10)
                 .padding(.horizontal)
                 .padding(.vertical, 10)

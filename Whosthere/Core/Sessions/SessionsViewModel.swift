@@ -9,35 +9,38 @@ import Foundation
 
 class SessionsViewModel: ObservableObject {
     
+    //MARK: - Varibales for DateSelection
     @Published var selectedDay: Date =  Date()
     @Published var scrollToIndex: Int = 3
-    
     @Published var wholeWeeks: [[Date]] = []
     
     var calendar = Calendar.current
     
     init(){
-        self.calendar.firstWeekday = 2
+        //Init for DateSelection
+        self.calendar.firstWeekday = 2                          //To set start of week to monday
         self.calendar.minimumDaysInFirstWeek = 4
-        fetchAllDays()
+        fetchAllDays()                                          //fetches 7 arrays for the buttons each with the 7days that are
         setButtonAtLaunch()
-        print(wholeWeeks)
-        //print("\(selectedDay)")
         
     }
 
+    
+    //MARK: - DateSelectionFunctions
+    
+    
+    //used to set the selectedday as the first day of the week, so the buttons can be painted correctly concerning their selected state...could need rework in future if the start date is supposed to be todays date and not the first date of the week
     func setButtonAtLaunch() {
             let current = calendar.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date()
                 selectedDay = current
-            
+
             return scrollToIndex = 3
-    
+
         }
     
+    //fetching all days from todays date current week and 3 weeks in the past and future and putting it into the wholeWeeks Array as 7 Arrays each  containting 7 Days in an Array...used to set the Buttons to select the current week dynamically
     func fetchAllDays() {
         let thisWeek = calendar.dateInterval(of: .weekOfYear, for: selectedDay)
-        
-        
         
         guard let firstDayOfWeek = thisWeek?.start else {
             return print("failure")
@@ -51,14 +54,12 @@ class SessionsViewModel: ObservableObject {
                 
                 (0...6).forEach { dayz in
                     if let days = calendar.date(byAdding: .day, value: dayz, to: weekday){
-                        //create an array of all days and then append this to wholeweeks etc
                         
                         weekArray.append(days)
                     }
                 }
                 
                 wholeWeeks.append(weekArray)
-                print(wholeWeeks)
                 weekArray.removeAll()
             }
         }
