@@ -40,6 +40,7 @@
 		BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */; };
 		BCB4211627FA4CC000B939DA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211527FA4CC000B939DA /* ImagePicker.swift */; };
 		BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211727FA4ECE00B939DA /* PicturePicker.swift */; };
+		BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */; };
 		BCD9654928B916C3008DEE7F /* SessionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD9654828B916C3008DEE7F /* SessionsViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,7 @@
 		BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingWhereValue.swift; sourceTree = "<group>"; };
 		BCB4211527FA4CC000B939DA /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BCB4211727FA4ECE00B939DA /* PicturePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePicker.swift; sourceTree = "<group>"; };
+		BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
 		BCD9654828B916C3008DEE7F /* SessionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,8 +192,8 @@
 		BC6D977C2865CBF700383AAD /* Sessions */ = {
 			isa = PBXGroup;
 			children = (
-				BC78F34D289C9B3E00F6BC34 /* SessionsHomeView.swift */,
-				BCD9654828B916C3008DEE7F /* SessionsViewModel.swift */,
+				BCD8E74F28BE4C5900EA9A93 /* SessionsHome */,
+				BCD8E74E28BE4C4C00EA9A93 /* AddSessions */,
 			);
 			path = Sessions;
 			sourceTree = "<group>";
@@ -252,6 +254,23 @@
 				BC4DA003278A265C0064A350 /* Buttons */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		BCD8E74E28BE4C4C00EA9A93 /* AddSessions */ = {
+			isa = PBXGroup;
+			children = (
+				BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */,
+			);
+			path = AddSessions;
+			sourceTree = "<group>";
+		};
+		BCD8E74F28BE4C5900EA9A93 /* SessionsHome */ = {
+			isa = PBXGroup;
+			children = (
+				BC78F34D289C9B3E00F6BC34 /* SessionsHomeView.swift */,
+				BCD9654828B916C3008DEE7F /* SessionsViewModel.swift */,
+			);
+			path = SessionsHome;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -352,6 +371,7 @@
 				BC3F25512760D1A800465551 /* FrameButton.swift in Sources */,
 				BC3F2577276C9A4700465551 /* AddAthleteView.swift in Sources */,
 				BC146A2B27E7CE9D0034A9B2 /* AthletesError.swift in Sources */,
+				BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 				BC78F352289C9CF000F6BC34 /* SettingsOverView.swift in Sources */,
 				BC6F5F6E2892FA7000523280 /* AthleteBaseModel.swift in Sources */,
