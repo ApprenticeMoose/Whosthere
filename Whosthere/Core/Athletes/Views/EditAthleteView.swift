@@ -118,7 +118,9 @@ struct EditAthleteView: View {
                             .onTapGesture { show.toggle() }
 
                         Popover(selectedDate: $editVM.birthDate.bound, show: $show, selectedYear: $editVM.birthYear, showYear: $editVM.showYear)
-
+                            .onChange(of: editVM.birthDate.bound) { _ in
+                                print(editVM.birthDate.bound)
+                            }
                         }
                     }
                 .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)

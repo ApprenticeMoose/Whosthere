@@ -238,9 +238,6 @@ struct AddSessionView: View {
                             .frame(maxWidth: 250)
                             .frame(height: 220, alignment: .center)
                     }
-                        //.datePickerStyle(.wheel)
-                    //TimePicker(selectedTime: $selectedTime)
-                    
                 }
             }
             .opacity(self.showTimePicker ? 1 : 0).animation(.easeIn, value: showTimePicker)
@@ -255,45 +252,23 @@ struct AddSessionView: View {
                     
                        DateSeläctör(selectedDate: $selectedDate)
                         .onChange(of: selectedDate) { date in
-                            if date == roundMinutesDown(date: Date()) {
+                            if Calendar.current.isDateInToday(date) {
                                 todayIsSelected = true
                                 tomorrowIsSelected = false
-                            } else {
-                                todayIsSelected = false
-                                tomorrowIsSelected = false
-                            }
-                            
-                            
-                            if date == roundMinutesDown(date: setDateToTomorrow()) {
+                            } else if Calendar.current.isDateInTomorrow(date) {
                                 todayIsSelected = false
                                 tomorrowIsSelected = true
                             } else {
                                 todayIsSelected = false
                                 tomorrowIsSelected = false
                             }
-                            print(selectedDate)
-                            print(Date())
-                            print(setDateToTomorrow())
+
                         }
-                            
-                        
-//                                else {
-//                                todayIsSelected = false
-//                            }
-//                            if  date == setDateToTomorrow() {
-//                                tomorrowIsSelected = true
-//                            } else {
-//                                tomorrowIsSelected = false
-//                            }
                         }
                 }
             .opacity(self.showDatePicker ? 1 : 0).animation(.easeIn, value: showDatePicker)
             
         }
-//        .onAppear {
-//            UIDatePicker.appearance().minuteInterval = 5
-//        }
-                
     }
     
     var addSessionHeader: some View {
@@ -412,20 +387,6 @@ struct MyDatePicker: UIViewRepresentable {
     }
 }
 
-//struct DatePickerDemo: View {
-//    @State var wakeUp: Date = Date()
-//    @State var minterval: Int = 1
-//
-//    var body: some View {
-//        VStack {
-//            Stepper(value: $minterval) {
-//                Text("Minute interval: \(minterval)")
-//            }
-//            MyDatePicker(selection: $wakeUp, minuteInterval: minterval, displayedComponents: .hourAndMinute)
-//            Text("\(wakeUp)")
-//        }
-//    }
-//}
 
 struct DateSeläctör: View {
     @Binding var selectedDate: Date

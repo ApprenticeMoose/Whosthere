@@ -17,7 +17,9 @@ struct SessionsHomeView: View {
     }
     
     //MARK: - Variables for DateSelection
-    @State var show: Bool = false
+    
+    @State var showCalendar: Bool = false
+    @State var showAddSessionSheet: Bool = false
     
     var calendar = Calendar.current
     
@@ -27,7 +29,7 @@ struct SessionsHomeView: View {
         return formatter
     }
     
-    //replace the headerbutton and connect the show variable
+    //MARK: - Body
     
     var body: some View {
         
@@ -35,9 +37,16 @@ struct SessionsHomeView: View {
             
             HStack{
                 ScreenHeaderTextOnly(screenTitle: "Sessions")
-                athleteListButtonRow
-                //                    .fullScreenCover(isPresented: $showAddSheet,
-                //                                     content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))})
+                
+                sessionsTopButtonRow(firstButtonImage: "calendar",
+                                     secondButtonImage: "plus",
+                                     buttonColor: Color.header,
+                                     calendarShow: $showCalendar,
+                                     addSessionShow: $showAddSessionSheet)
+                                    .fullScreenCover(isPresented: $showAddSessionSheet,
+                                                     content: {AddSessionView()
+                                        
+                                    })
                 
             }
             
@@ -50,7 +59,7 @@ struct SessionsHomeView: View {
                         
                         SmallCalendarButton()
                             .onTapGesture {
-                                show.toggle()
+                                showCalendar.toggle()
                             }
                         ForEach(0..<sessionsVM.wholeWeeks.count, id: \.self) { i in
                             //
@@ -78,7 +87,7 @@ struct SessionsHomeView: View {
                         
                         SmallCalendarButton()
                             .onTapGesture {
-                                show.toggle()
+                                showCalendar.toggle()
                             }
                     }
                 }
@@ -100,14 +109,14 @@ struct SessionsHomeView: View {
         
         
         ZStack{
-            if self.show {
+            if self.showCalendar {
                 
                 Color.black
                     .opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
-                    .onTapGesture { show.toggle() }
+                    .onTapGesture { showCalendar.toggle() }
                 
-                PopoverCalendar(selectedDate: $sessionsVM.selectedDay, show: $show)
+                PopoverCalendar(selectedDate: $sessionsVM.selectedDay, show: $showCalendar)
                     .onChange(of: sessionsVM.selectedDay) { _ in            //to fetch new dates for the buttons when random dates is selected from calendar
                         sessionsVM.wholeWeeks.removeAll()
                         sessionsVM.fetchAllDays()
@@ -116,46 +125,20 @@ struct SessionsHomeView: View {
                     }
             }
         }
-        .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)
+        .opacity(self.showCalendar ? 1 : 0).animation(.easeIn, value: showCalendar)
     }//body
     
-    
-    
-    private var athleteListButtonRow: some View {
-        
-        HStack{
-            Button(action: {
-                //Make  Sheet Appear
-                show.toggle()
-            }){
-                Image(systemName: "calendar")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(Color.header)
-                    .padding(.horizontal, 14)
-            }
-            
-            // Add Athlete Button
-            Button(action: {
-                //showAddSheet.toggle()
-            }){
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(Color.header)
-            }
-        }//HStackButtonsEnd
-        .padding(.horizontal, 22)
-        .padding(.top, 20)
-    }
-    
 }//StructEnd
+
+
+    //MARK: - UI Components
 
 struct sessionsTopButtonRow: View {
     var firstButtonImage: String
     var secondButtonImage: String
     var buttonColor: Color
     @Binding var calendarShow: Bool
+    @Binding var addSessionShow: Bool
     
     var body: some View {
         HStack{
@@ -172,7 +155,7 @@ struct sessionsTopButtonRow: View {
             
             // Add Athlete Button
             Button(action: {
-                //showAddSheet.toggle()
+                addSessionShow.toggle()
             }){
                 Image(systemName: secondButtonImage) //"plus"
                     .resizable()

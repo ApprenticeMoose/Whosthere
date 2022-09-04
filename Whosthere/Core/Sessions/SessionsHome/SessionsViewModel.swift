@@ -10,6 +10,7 @@ import Foundation
 class SessionsViewModel: ObservableObject {
     
     //MARK: - Varibales for DateSelection
+    
     @Published var selectedDay: Date =  Date()
     @Published var scrollToIndex: Int = 3
     @Published var wholeWeeks: [[Date]] = []
@@ -27,7 +28,6 @@ class SessionsViewModel: ObservableObject {
 
     
     //MARK: - DateSelectionFunctions
-    
     
     //used to set the selectedday as the first day of the week, so the buttons can be painted correctly concerning their selected state...could need rework in future if the start date is supposed to be todays date and not the first date of the week
     func setButtonAtLaunch() {
