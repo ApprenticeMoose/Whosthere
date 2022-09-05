@@ -17,8 +17,8 @@ struct AddSessionView: View {
     @State var todayIsSelected = true
     @State var tomorrowIsSelected = false
     
-    @State var selectedTime = Date()
-    @State var selectedDate = Date()
+//    @State var selectedTime = Date()
+//    @State var selectedDate = Date()
     
     //@State var isSelected = false
     @State private var selectedIndices = Set<Int>()
@@ -28,6 +28,8 @@ struct AddSessionView: View {
     
     @ObservedObject private var athletesListVM: AthletesListViewModel
     @Environment(\.managedObjectContext) var viewContext
+    
+    @ObservedObject var addSessionVM: AddSessionViewModel
     
     @ObservedObject var datesVM: DatesViewModel
     
@@ -44,9 +46,10 @@ struct AddSessionView: View {
         return firstLetter + lastLetter
     }
     
-    init(vm: AthletesListViewModel){
+    init(vmA: AthletesListViewModel, vmS: AddSessionViewModel){
         self.datesVM = DatesViewModel()
-        self.athletesListVM = vm
+        self.athletesListVM = vmA
+        self.addSessionVM = vmS
     }
 
     var body: some View {
@@ -77,7 +80,7 @@ struct AddSessionView: View {
                                 .cornerRadius(10)
                             
                             
-                            Text("\(datesVM.extractDate(date: datesVM.roundMinutesDown(date: selectedTime), format: "HH:mm"))")
+                            Text("\(datesVM.extractDate(date: datesVM.roundMinutesDown(date: addSessionVM.sessionTime), format: "HH:mm"))")
                             //.font(.title3)
                                 .fontWeight(.semibold)
                             
@@ -146,7 +149,7 @@ struct AddSessionView: View {
                         
                         .onTapGesture {
                             //show time selection
-                            selectedDate = Date()
+                            addSessionVM.sessionDate = Date()
                             todayIsSelected = true
                             tomorrowIsSelected = false
                         }
@@ -174,7 +177,7 @@ struct AddSessionView: View {
                         .padding(.horizontal, 8)
                         .onTapGesture {
                             //show time selection
-                            selectedDate = datesVM.setDateToTomorrow()
+                            addSessionVM.sessionDate = datesVM.setDateToTomorrow()
                             todayIsSelected = false
                             tomorrowIsSelected = true
                         }
@@ -188,7 +191,7 @@ struct AddSessionView: View {
                                 .frame(width: 105, height: 40)
                                 .cornerRadius(10)
                             
-                            Text("\(datesVM.extractDate(date: selectedDate, format: "dd. MMM"))")
+                            Text("\(datesVM.extractDate(date: addSessionVM.sessionDate, format: "dd. MMM"))")
                                 .fontWeight(.semibold)
                         }
                         //.padding()
@@ -365,7 +368,7 @@ struct AddSessionView: View {
                         .frame(maxWidth: 250)
                         .frame(height: 220, alignment: .center)
                         .padding(.horizontal)
-                    MyTimePicker(selection: $selectedTime, minuteInterval: 5, displayedComponents: .hourAndMinute)
+                        MyTimePicker(selection: $addSessionVM.sessionTime, minuteInterval: 5, displayedComponents: .hourAndMinute)
                             .frame(maxWidth: 250)
                             .frame(height: 220, alignment: .center)
                     }
@@ -381,8 +384,8 @@ struct AddSessionView: View {
                         .edgesIgnoringSafeArea(.all)
                         .onTapGesture { showDatePicker.toggle() }
                     
-                       DateSeläctör(selectedDate: $selectedDate)
-                        .onChange(of: selectedDate) { date in
+                       DateSeläctör(selectedDate: $addSessionVM.sessionDate)
+                        .onChange(of: addSessionVM.sessionDate) { date in
                             if Calendar.current.isDateInToday(date) {
                                 todayIsSelected = true
                                 tomorrowIsSelected = false
@@ -424,7 +427,7 @@ struct AddSessionView: View {
             Spacer(minLength: 0)
             
             Button(action: {
-                
+                addSessionVM.save()
                 presentationMode.wrappedValue.dismiss()
                 
             }){
@@ -436,6 +439,26 @@ struct AddSessionView: View {
         }//HeaderHStackEnding
         .padding(.horizontal, 22)
         .padding(.top, 15)
+    }
+    
+    var addSessionButton: some View{
+    Button(action: {
+        addSessionVM.save()
+        presentationMode.wrappedValue.dismiss()
+        }) {
+        HStack{
+            Image(systemName: "plus")
+                .font(.system(size: 20))
+            Text("Add Session")
+                .font(.headline)
+        }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 55, maxHeight: 55)
+        .background(Color.accentBigButton)
+        .foregroundColor(Color.white)
+        .cornerRadius(10)
+        .padding()
+    }
+    .frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
     }
 }
 
@@ -549,24 +572,7 @@ struct DateSeläctör: View {
     }
 }
 
-var addSessionButton: some View{
-Button(action: {
-  
-    }) {
-    HStack{
-        Image(systemName: "plus")
-            .font(.system(size: 20))
-        Text("Add Session")
-            .font(.headline)
-    }
-    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 55, maxHeight: 55)
-    .background(Color.accentBigButton)
-    .foregroundColor(Color.white)
-    .cornerRadius(10)
-    .padding()
-}
-.frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
-}
+
 
 //struct AddSessionView_Previews: PreviewProvider {
 //    static var previews: some View {

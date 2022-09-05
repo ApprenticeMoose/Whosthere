@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		BC146A2527E5D25D0034A9B2 /* AddAthleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC146A2427E5D25D0034A9B2 /* AddAthleteViewModel.swift */; };
 		BC146A2727E5D32E0034A9B2 /* EditAthleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC146A2627E5D32E0034A9B2 /* EditAthleteViewModel.swift */; };
-		BC146A2B27E7CE9D0034A9B2 /* AthletesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC146A2A27E7CE9D0034A9B2 /* AthletesError.swift */; };
 		BC3212F12750E989001A689E /* CustomShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3212F02750E989001A689E /* CustomShape.swift */; };
 		BC3212F62750EFA7001A689E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3212F52750EFA6001A689E /* Color.swift */; };
 		BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */; };
@@ -20,6 +19,10 @@
 		BC409A6127493F9B0096CD12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6027493F9B0096CD12 /* Assets.xcassets */; };
 		BC409A6427493F9B0096CD12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */; };
 		BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC525F4627AA995F0032B99F /* EditAthleteView.swift */; };
+		BC6F246628C62EEA00679360 /* AddSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F246528C62EEA00679360 /* AddSessionViewModel.swift */; };
+		BC6F246828C6312600679360 /* SessionBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F246728C6312600679360 /* SessionBaseModel.swift */; };
+		BC6F246A28C6364700679360 /* Session+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F246928C6364700679360 /* Session+Extension.swift */; };
+		BC6F246C28C639E800679360 /* SessionsHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F246B28C639E800679360 /* SessionsHomeViewModel.swift */; };
 		BC6F5F6A2892F45400523280 /* AthletesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F5F692892F45400523280 /* AthletesListViewModel.swift */; };
 		BC6F5F6C2892FA3500523280 /* Athlete+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F5F6B2892FA3500523280 /* Athlete+Extension.swift */; };
 		BC6F5F6E2892FA7000523280 /* AthleteBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F5F6D2892FA7000523280 /* AthleteBaseModel.swift */; };
@@ -47,7 +50,6 @@
 /* Begin PBXFileReference section */
 		BC146A2427E5D25D0034A9B2 /* AddAthleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAthleteViewModel.swift; sourceTree = "<group>"; };
 		BC146A2627E5D32E0034A9B2 /* EditAthleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteViewModel.swift; sourceTree = "<group>"; };
-		BC146A2A27E7CE9D0034A9B2 /* AthletesError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesError.swift; sourceTree = "<group>"; };
 		BC3212F02750E989001A689E /* CustomShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomShape.swift; sourceTree = "<group>"; };
 		BC3212F52750EFA6001A689E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,10 @@
 		BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BC409A6527493F9B0096CD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC525F4627AA995F0032B99F /* EditAthleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteView.swift; sourceTree = "<group>"; };
+		BC6F246528C62EEA00679360 /* AddSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionViewModel.swift; sourceTree = "<group>"; };
+		BC6F246728C6312600679360 /* SessionBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBaseModel.swift; sourceTree = "<group>"; };
+		BC6F246928C6364700679360 /* Session+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+Extension.swift"; sourceTree = "<group>"; };
+		BC6F246B28C639E800679360 /* SessionsHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsHomeViewModel.swift; sourceTree = "<group>"; };
 		BC6F5F692892F45400523280 /* AthletesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthletesListViewModel.swift; sourceTree = "<group>"; };
 		BC6F5F6B2892FA3500523280 /* Athlete+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Athlete+Extension.swift"; sourceTree = "<group>"; };
 		BC6F5F6D2892FA7000523280 /* AthleteBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteBaseModel.swift; sourceTree = "<group>"; };
@@ -98,10 +104,10 @@
 		BC3F25552767B39E00465551 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BC146A2A27E7CE9D0034A9B2 /* AthletesError.swift */,
 				BCB4211727FA4ECE00B939DA /* PicturePicker.swift */,
 				BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */,
 				BC6F5F6D2892FA7000523280 /* AthleteBaseModel.swift */,
+				BC6F246728C6312600679360 /* SessionBaseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -233,6 +239,7 @@
 				BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */,
 				BCB4211527FA4CC000B939DA /* ImagePicker.swift */,
 				BC6F5F6B2892FA3500523280 /* Athlete+Extension.swift */,
+				BC6F246928C6364700679360 /* Session+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -260,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */,
+				BC6F246528C62EEA00679360 /* AddSessionViewModel.swift */,
 			);
 			path = AddSessions;
 			sourceTree = "<group>";
@@ -269,6 +277,7 @@
 			children = (
 				BC78F34D289C9B3E00F6BC34 /* SessionsHomeView.swift */,
 				BCD9654828B916C3008DEE7F /* DatesViewModel.swift */,
+				BC6F246B28C639E800679360 /* SessionsHomeViewModel.swift */,
 			);
 			path = SessionsHome;
 			sourceTree = "<group>";
@@ -351,7 +360,10 @@
 				BC78F347289C7AFE00F6BC34 /* TabModel.swift in Sources */,
 				BC88920427B14F6200A00047 /* MediumButton.swift in Sources */,
 				BC78F34A289C814300F6BC34 /* ContentView.swift in Sources */,
+				BC6F246628C62EEA00679360 /* AddSessionViewModel.swift in Sources */,
+				BC6F246A28C6364700679360 /* Session+Extension.swift in Sources */,
 				BC3212F12750E989001A689E /* CustomShape.swift in Sources */,
+				BC6F246828C6312600679360 /* SessionBaseModel.swift in Sources */,
 				BC78F345289C78BA00F6BC34 /* TabBarView.swift in Sources */,
 				BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */,
 				BCD9654928B916C3008DEE7F /* DatesViewModel.swift in Sources */,
@@ -370,11 +382,11 @@
 				BC78F34E289C9B3E00F6BC34 /* SessionsHomeView.swift in Sources */,
 				BC3F25512760D1A800465551 /* FrameButton.swift in Sources */,
 				BC3F2577276C9A4700465551 /* AddAthleteView.swift in Sources */,
-				BC146A2B27E7CE9D0034A9B2 /* AthletesError.swift in Sources */,
 				BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 				BC78F352289C9CF000F6BC34 /* SettingsOverView.swift in Sources */,
 				BC6F5F6E2892FA7000523280 /* AthleteBaseModel.swift in Sources */,
+				BC6F246C28C639E800679360 /* SessionsHomeViewModel.swift in Sources */,
 				BC78F350289C9C4D00F6BC34 /* StatisticsOverview.swift in Sources */,
 				BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */,
 				BC6F5F6A2892F45400523280 /* AthletesListViewModel.swift in Sources */,

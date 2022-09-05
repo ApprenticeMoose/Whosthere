@@ -12,9 +12,10 @@ struct SessionsHomeView: View {
     @ObservedObject var datesVM: DatesViewModel
     
     
-    init(vm: AthletesListViewModel){
+    init(vmA: AthletesListViewModel, vmS: SessionsViewModel){
         self.datesVM = DatesViewModel()
-        self.athletesListVM = vm
+        self.athletesListVM = vmA
+        self.sessionsVM = vmS
     }
     
     //MARK: - Variables for DateSelection
@@ -25,6 +26,8 @@ struct SessionsHomeView: View {
     var calendar = Calendar.current
     
     @ObservedObject private var athletesListVM: AthletesListViewModel
+    //@ObservedObject var addSessionVM: AddSessionViewModel
+    @ObservedObject var sessionsVM: SessionsViewModel
     @Environment(\.managedObjectContext) var viewContext
     
     var dateFormatter: DateFormatter {
@@ -48,7 +51,7 @@ struct SessionsHomeView: View {
                                      calendarShow: $showCalendar,
                                      addSessionShow: $showAddSessionSheet)
                                     .fullScreenCover(isPresented: $showAddSessionSheet,
-                                                     content: {AddSessionView(vm: AthletesListViewModel(context: viewContext))
+                                                     content: {AddSessionView(vmA: AthletesListViewModel(context: viewContext), vmS: AddSessionViewModel(context: viewContext))
                                         
                                     })
                 
@@ -105,6 +108,13 @@ struct SessionsHomeView: View {
             Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
             Text("\(datesVM.scrollToIndex)")
             
+            ScrollView(showsIndicators: false){
+                LazyVStack{
+                    ForEach(sessionsVM.sessions, id: \.self) { session in
+                        Text("\(session.date)")
+                    }
+                }
+            }
             
             Spacer()
         } //VStack
