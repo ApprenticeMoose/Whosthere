@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddSessionView: View {
     
-    var type: DatePickerComponents? = .date
+    //var type: DatePickerComponents? = .date
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
@@ -20,43 +20,41 @@ struct AddSessionView: View {
     @State var selectedTime = Date()
     @State var selectedDate = Date()
     
-    //var selectedTimeDate for saving
+    //@State var isSelected = false
+    @State private var selectedIndices = Set<Int>()
     
     @State var showTimePicker: Bool = false
     @State var showDatePicker: Bool = false
     
-    @ObservedObject var sessionsVM: SessionsViewModel
+    @ObservedObject private var athletesListVM: AthletesListViewModel
+    @Environment(\.managedObjectContext) var viewContext
     
-    init(){
-        self.sessionsVM = SessionsViewModel()
+    @ObservedObject var datesVM: DatesViewModel
+    
+        let preference = [
+            GridItem(.flexible()),
+            GridItem(.flexible()),
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ]
+    
+    func getInitials(firstName: String, lastName: String) -> String {
+        let firstLetter = firstName.first?.uppercased() ?? ""
+        let lastLetter = lastName.first?.uppercased() ?? ""
+        return firstLetter + lastLetter
     }
     
-    func roundMinutesDown(date: Date) -> Date {
-        let calendar = Calendar.current
-        let minute = calendar.component(.minute, from: date)
-        return calendar.date(byAdding: .minute, value: (5 - minute % 5) - 5, to: date) ?? Date()
-        
+    init(vm: AthletesListViewModel){
+        self.datesVM = DatesViewModel()
+        self.athletesListVM = vm
     }
-    
-    func mergeTimeAndDate(time: Date, date: Date) -> Date {
-        let calendar = Calendar.current
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
-        let dateComponents = calendar.dateComponents([.calendar, .year, .month, .day, .timeZone, .weekday, .weekOfYear], from: date)
-        let mergedDate = DateComponents(calendar: dateComponents.calendar, timeZone: dateComponents.timeZone, year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: timeComponents.hour, minute: timeComponents.minute, weekday: dateComponents.weekday, weekOfYear: dateComponents.weekOfYear)
-        return roundMinutesDown(date: calendar.date(from: mergedDate) ?? Date())
-    }
-    
-    func setDateToTomorrow() -> Date {
-        let calendar = Calendar.current
-        return calendar.date(byAdding: .day, value: 1, to: Date()) ?? Date()
-    }
-    
+
     var body: some View {
         ZStack{
-            VStack{
+            ScrollView{
                 addSessionHeader
                 
-                
+          //Time
                 VStack (alignment: .leading, spacing: 0){
                     
                     Text("Time")
@@ -79,7 +77,7 @@ struct AddSessionView: View {
                                 .cornerRadius(10)
                             
                             
-                            Text("\(sessionsVM.extractDate(date: roundMinutesDown(date: selectedTime), format: "HH:mm"))")
+                            Text("\(datesVM.extractDate(date: datesVM.roundMinutesDown(date: selectedTime), format: "HH:mm"))")
                             //.font(.title3)
                                 .fontWeight(.semibold)
                             
@@ -112,7 +110,7 @@ struct AddSessionView: View {
                 }
                 .padding(.top)
                 
-                
+       //Date
                 VStack (alignment: .leading, spacing: 0){
                     
                     Text("Date")
@@ -176,7 +174,7 @@ struct AddSessionView: View {
                         .padding(.horizontal, 8)
                         .onTapGesture {
                             //show time selection
-                            selectedDate = setDateToTomorrow()
+                            selectedDate = datesVM.setDateToTomorrow()
                             todayIsSelected = false
                             tomorrowIsSelected = true
                         }
@@ -190,7 +188,7 @@ struct AddSessionView: View {
                                 .frame(width: 105, height: 40)
                                 .cornerRadius(10)
                             
-                            Text("\(sessionsVM.extractDate(date: selectedDate, format: "dd. MMM"))")
+                            Text("\(datesVM.extractDate(date: selectedDate, format: "dd. MMM"))")
                                 .fontWeight(.semibold)
                         }
                         //.padding()
@@ -202,18 +200,151 @@ struct AddSessionView: View {
                     }
                     .padding()
                     
-                    Text("Sessions Date+Time: \(mergeTimeAndDate(time: selectedTime, date: selectedDate))")
-                        .padding()
-                    Text("Today: \(String(todayIsSelected))")
-                        .padding()
-                    Text("Tomorrow: \(String(tomorrowIsSelected))")
-                        .padding()
-                    Text("Date: \(selectedDate)")
+                    
+        //Athletes
+                    
+                    VStack (alignment: .leading, spacing: 0){
                         
-    
-                    Text("Today: \(Date())")
-                      
-                    Text("Tomorrow: \(setDateToTomorrow())")
+                        Text("Athletes")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .padding(.horizontal, 30)
+                            .offset(y: 6)
+                        
+                        
+                        //HStack{
+                            
+                        
+//                        LazyVGrid(columns: columns, alignment: .center) {
+//                            ForEach(0..<10) { index in
+//                                VStack{
+//                                    Circle()
+//                                        .frame(height: 45)
+//                                    Text("Athlete \(index)")
+//                                }
+//                            }
+//                        }
+//                        .padding()
+//                        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
+//                        .padding()
+                        
+                        VStack {
+                                    LazyVGrid(columns: preference, spacing: 16) {
+                                        
+//                                        ForEach(athletesListVM.athletes.dropLast(athletesListVM.athletes.count % 4), id: \.self) { athlete in
+                                        //ForEach(athletesListVM.athletes, id: \.self) { athlete in
+                                        let enumerated = Array(zip(athletesListVM.athletes.indices, athletesListVM.athletes))
+                                        ForEach(enumerated, id: \.1) { index, athlete in
+                                            VStack{
+                                                ZStack{
+                                                ZStack{
+                                                    Circle()
+                                                        .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey1)
+                                                        .frame(height: 45)
+                                                    Text(getInitials(firstName: athlete.firstName, lastName: athlete.lastName))
+                                                        .font(.subheadline)
+                                                        .fontWeight(.semibold)
+                                                        .foregroundColor(.cardProfileLetter)
+                                                }
+                                                .opacity(self.selectedIndices.contains(index) ? 0.3 : 1.0)
+                                                    Image(systemName: "checkmark")
+                                                        .resizable()
+                                                        .foregroundColor(.accentBigButton)
+                                                        .frame(width: 21, height: 16, alignment: .center)
+                                                        .opacity(self.selectedIndices.contains(index) ? 1.0 : 0.0)
+                                                }
+                                               
+                                                
+                                                Text("\(athlete.firstName)")
+                                                    .font(.caption)
+                                                    .opacity(self.selectedIndices.contains(index) ? 0.5 : 1.0)
+                                            }
+                                            .onTapGesture {
+                                                if self.selectedIndices.contains(index) {
+                                                            self.selectedIndices.remove(index)
+                                                          } else {
+                                                            self.selectedIndices.insert(index)
+                                                          }
+                                            }
+
+                                        }
+                                    }
+                                    
+//                            LazyHStack() {
+//                                ForEach(athletesListVM.athletes.suffix(athletesListVM.athletes.count % 4), id: \.self) { athlete in
+//                                            VStack{
+//                                                Circle()
+//                                                    .frame(height: 45)
+//                                                Text("\(athlete.firstName)")
+//                                                    .font(.caption)
+//                                            }
+//                                        }
+//                                    }
+//                            .padding(.top, 8)
+                                }
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
+                        .padding()
+                        
+                        
+//                            ZStack {
+//
+//
+//                                Rectangle()
+//                                    .background(Color.accentMidGround)
+//                                    .foregroundColor(.accentMidGround)
+//                                    .frame(maxWidth: .infinity)
+//                                    .cornerRadius(10)
+//                                    .padding()
+//
+//
+//
+//
+//
+//
+//
+//                            }
+                            
+                            
+                            
+                            //ZStack that has padding but is clear so it is just for view formatting
+//                            ZStack {
+//                                Rectangle()
+//                                    .foregroundColor(.clear)
+//                                    .frame(width: 105, height: 40)
+//                                    .cornerRadius(10)
+//                            }
+//                            .padding(.horizontal, 8)
+//                            //ZStack for View formatting
+//                            ZStack {
+//                                Rectangle()
+//                                    .foregroundColor(.clear)
+//                                    .frame(width: 105, height: 40)
+//                                    .cornerRadius(10)
+//                            }
+//                        //}
+//                        .padding()
+                    }
+                    .padding(.top)
+                    
+                    
+             //AddSessionButton
+                    
+                    addSessionButton
+                    
+                    
+//                    Text("Sessions Date+Time: \(datesVM.mergeTimeAndDate(time: selectedTime, date: selectedDate))")
+//                        .padding()
+//                    Text("Today: \(String(todayIsSelected))")
+//                        .padding()
+//                    Text("Tomorrow: \(String(tomorrowIsSelected))")
+//                        .padding()
+//                    Text("Date: \(selectedDate)")
+//
+//
+//                    Text("Today: \(Date())")
+//
+//                    Text("Tomorrow: \(datesVM.setDateToTomorrow())")
                         
                     Spacer()
                 }
@@ -234,7 +365,7 @@ struct AddSessionView: View {
                         .frame(maxWidth: 250)
                         .frame(height: 220, alignment: .center)
                         .padding(.horizontal)
-                    MyDatePicker(selection: $selectedTime, minuteInterval: 5, displayedComponents: .hourAndMinute)
+                    MyTimePicker(selection: $selectedTime, minuteInterval: 5, displayedComponents: .hourAndMinute)
                             .frame(maxWidth: 250)
                             .frame(height: 220, alignment: .center)
                     }
@@ -340,7 +471,7 @@ struct TimePicker: View {
     }
 }
 
-struct MyDatePicker: UIViewRepresentable {
+struct MyTimePicker: UIViewRepresentable {
 
     @Binding var selection: Date
     let minuteInterval: Int
@@ -350,7 +481,7 @@ struct MyDatePicker: UIViewRepresentable {
         return Coordinator(self)
     }
 
-    func makeUIView(context: UIViewRepresentableContext<MyDatePicker>) -> UIDatePicker {
+    func makeUIView(context: UIViewRepresentableContext<MyTimePicker>) -> UIDatePicker {
         let picker = UIDatePicker()
         
         // listen to changes coming from the date picker, and use them to update the state variable
@@ -359,7 +490,7 @@ struct MyDatePicker: UIViewRepresentable {
         return picker
     }
 
-    func updateUIView(_ picker: UIDatePicker, context: UIViewRepresentableContext<MyDatePicker>) {
+    func updateUIView(_ picker: UIDatePicker, context: UIViewRepresentableContext<MyTimePicker>) {
         picker.minuteInterval = minuteInterval
         picker.date = selection
 
@@ -376,8 +507,8 @@ struct MyDatePicker: UIViewRepresentable {
     }
 
     class Coordinator {
-        let datePicker: MyDatePicker
-        init(_ datePicker: MyDatePicker) {
+        let datePicker: MyTimePicker
+        init(_ datePicker: MyTimePicker) {
             self.datePicker = datePicker
         }
 
@@ -418,8 +549,27 @@ struct DateSeläctör: View {
     }
 }
 
-struct AddSessionView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddSessionView()
+var addSessionButton: some View{
+Button(action: {
+  
+    }) {
+    HStack{
+        Image(systemName: "plus")
+            .font(.system(size: 20))
+        Text("Add Session")
+            .font(.headline)
     }
+    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 55, maxHeight: 55)
+    .background(Color.accentBigButton)
+    .foregroundColor(Color.white)
+    .cornerRadius(10)
+    .padding()
 }
+.frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
+}
+
+//struct AddSessionView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddSessionView(vm: AthletesListViewModel(context: NSManagedObjectContext))
+//    }
+//}

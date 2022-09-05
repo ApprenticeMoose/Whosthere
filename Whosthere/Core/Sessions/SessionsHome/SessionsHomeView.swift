@@ -9,11 +9,12 @@ import SwiftUI
 
 struct SessionsHomeView: View {
     
-    @ObservedObject var sessionsVM: SessionsViewModel
+    @ObservedObject var datesVM: DatesViewModel
     
     
-    init(){
-        self.sessionsVM = SessionsViewModel()
+    init(vm: AthletesListViewModel){
+        self.datesVM = DatesViewModel()
+        self.athletesListVM = vm
     }
     
     //MARK: - Variables for DateSelection
@@ -22,6 +23,9 @@ struct SessionsHomeView: View {
     @State var showAddSessionSheet: Bool = false
     
     var calendar = Calendar.current
+    
+    @ObservedObject private var athletesListVM: AthletesListViewModel
+    @Environment(\.managedObjectContext) var viewContext
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -44,7 +48,7 @@ struct SessionsHomeView: View {
                                      calendarShow: $showCalendar,
                                      addSessionShow: $showAddSessionSheet)
                                     .fullScreenCover(isPresented: $showAddSessionSheet,
-                                                     content: {AddSessionView()
+                                                     content: {AddSessionView(vm: AthletesListViewModel(context: viewContext))
                                         
                                     })
                 
@@ -61,25 +65,25 @@ struct SessionsHomeView: View {
                             .onTapGesture {
                                 showCalendar.toggle()
                             }
-                        ForEach(0..<sessionsVM.wholeWeeks.count, id: \.self) { i in
+                        ForEach(0..<datesVM.wholeWeeks.count, id: \.self) { i in
                             //
-                            DateSelectionButton(checkIfSelected: sessionsVM.checkCurrentWeek(dates: sessionsVM.wholeWeeks[i], dateSelected: sessionsVM.selectedDay),
+                            DateSelectionButton(checkIfSelected: datesVM.checkCurrentWeek(dates: datesVM.wholeWeeks[i], dateSelected: datesVM.selectedDay),
                                                 colorText: Color.header,
                                                 colorBackground: Color.accentMidGround,
-                                                textKW: "KW " + "\(sessionsVM.extractWeek(date: sessionsVM.wholeWeeks[i][0]))",
-                                                textfirstDayOfWeek: sessionsVM.extractDate(date: sessionsVM.wholeWeeks[i][0], format: "dd") + ". -",
-                                                textlastDayOfWeek: sessionsVM.extractDate(date: sessionsVM.wholeWeeks[i][6], format: "dd. MMM"),
+                                                textKW: "KW " + "\(datesVM.extractWeek(date: datesVM.wholeWeeks[i][0]))",
+                                                textfirstDayOfWeek: datesVM.extractDate(date: datesVM.wholeWeeks[i][0], format: "dd") + ". -",
+                                                textlastDayOfWeek: datesVM.extractDate(date: datesVM.wholeWeeks[i][6], format: "dd. MMM"),
                                                 id: i)
                             
                             .onTapGesture {
-                                sessionsVM.selectedDay = sessionsVM.wholeWeeks[i][0]
-                                sessionsVM.scrollToIndex = i
+                                datesVM.selectedDay = datesVM.wholeWeeks[i][0]
+                                datesVM.scrollToIndex = i
                             }
                         }
                         .onAppear(perform: {
-                            proxy.scrollTo(sessionsVM.scrollToIndex, anchor: .center)
+                            proxy.scrollTo(datesVM.scrollToIndex, anchor: .center)
                         })
-                        .onChange(of: sessionsVM.scrollToIndex) { value in
+                        .onChange(of: datesVM.scrollToIndex) { value in
                             withAnimation(.spring()) {
                                 proxy.scrollTo(value, anchor: .center)
                             }
@@ -97,9 +101,9 @@ struct SessionsHomeView: View {
             
             Spacer()
             
-            Text("\(sessionsVM.extractWeek(date: sessionsVM.selectedDay))")
-            Text("\(sessionsVM.extractDate(date: sessionsVM.selectedDay, format: "dd MMM"))")
-            Text("\(sessionsVM.scrollToIndex)")
+            Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
+            Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
+            Text("\(datesVM.scrollToIndex)")
             
             
             Spacer()
@@ -116,11 +120,11 @@ struct SessionsHomeView: View {
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture { showCalendar.toggle() }
                 
-                PopoverCalendar(selectedDate: $sessionsVM.selectedDay, show: $showCalendar)
-                    .onChange(of: sessionsVM.selectedDay) { _ in            //to fetch new dates for the buttons when random dates is selected from calendar
-                        sessionsVM.wholeWeeks.removeAll()
-                        sessionsVM.fetchAllDays()
-                        sessionsVM.scrollToIndex = 3
+                PopoverCalendar(selectedDate: $datesVM.selectedDay, show: $showCalendar)
+                    .onChange(of: datesVM.selectedDay) { _ in            //to fetch new dates for the buttons when random dates is selected from calendar
+                        datesVM.wholeWeeks.removeAll()
+                        datesVM.fetchAllDays()
+                        datesVM.scrollToIndex = 3
                         
                     }
             }
@@ -172,12 +176,12 @@ struct PopoverCalendar: View {
     @Binding var selectedDate: Date
     @Binding var show: Bool
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var sessionsVM: SessionsViewModel
+    @ObservedObject var sessionsVM: DatesViewModel
     
     init(selectedDate: Binding<Date>, show: Binding<Bool>) {
         self._selectedDate = selectedDate
         self._show = show
-        self.sessionsVM = SessionsViewModel()
+        self.sessionsVM = DatesViewModel()
     }
     
     var body: some View {
@@ -268,8 +272,8 @@ struct DateSelectionButton: View {
 }
 
 
-struct SessionsHomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        SessionsHomeView()
-    }
-}
+//struct SessionsHomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SessionsHomeView()
+//    }
+//}
