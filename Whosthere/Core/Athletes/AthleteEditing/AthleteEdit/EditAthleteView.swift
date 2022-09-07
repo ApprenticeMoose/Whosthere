@@ -17,12 +17,13 @@ struct EditAthleteView: View {
     @Environment(\.presentationMode) var presentationMode                           //For dismissing views
     @Environment(\.colorScheme) var colorScheme                                     //DarkMode
  
-    @ObservedObject var editVM: EditAthleteViewModel                                //Accessing the variables for editing
+    @ObservedObject var editVM: AthleteEditorViewModel                                //Accessing the variables for editing
 
     @EnvironmentObject var appState: AppState                                       //For Navigation
     @EnvironmentObject var tabDetail: TabDetailVM                                   //For TabBar hiding
-    private (set) var context: NSManagedObjectContext                               //Core Data moc
-    @ObservedObject var athlete: AthleteViewModel                                   //Accessing the athletes
+    //private (set) var context: NSManagedObjectContext                               //Core Data moc
+    
+    //@ObservedObject var athlete: AthleteViewModel                                   //Accessing the athletes
     
     
     let goBackToRoot: () -> Void                                                    //For pop to root
@@ -33,20 +34,21 @@ struct EditAthleteView: View {
     @State var nonbinary = false
 
 
-    init(athlete: AthleteViewModel, context: NSManagedObjectContext, goBackToRoot: @escaping () -> Void) {
+    init(athlete: Athlete?, dataManager: DataManager = DataManager.shared, goBackToRoot: @escaping () -> Void) {
         self.goBackToRoot = goBackToRoot
-        self.context = context
-        self.athlete = athlete
+//        self.context = context
+//        self.athlete = athlete
         
-        self.editVM = EditAthleteViewModel(athlete, context: context)
-        if editVM.gender == "male" {
+        self.editVM = AthleteEditorViewModel(athlete: athlete, dataManager: dataManager)
+        
+        if editVM.addedAthlete.gender == "male" {
             self._male = State(wrappedValue: true)
-        } else if editVM.gender == "female" {
+        } else if editVM.addedAthlete.gender == "female" {
             self._female = State(wrappedValue: true)
-        } else if editVM.gender == "nonbinary" {
+        } else if editVM.addedAthlete.gender == "nonbinary" {
             self._nonbinary = State(wrappedValue: true)
         }
-        print("Initializing Edit View for: \(String(describing: athlete.firstName))")
+        print("Initializing Edit View for: \(String(describing: athlete?.firstName))")
     }
 
     //Toggle
@@ -75,16 +77,16 @@ struct EditAthleteView: View {
                             profilePicture
                             
 
-                            LongTextField(textFieldDescription: "First Name",  firstNameTF: $editVM.firstName)
+                            LongTextField(textFieldDescription: "First Name",  firstNameTF: $editVM.addedAthlete.firstName)
 
                             Spacer()
                                 .frame(minHeight: 0, idealHeight: 40, maxHeight: 50)
                             
-                            LongTextField(textFieldDescription: "Last Name", firstNameTF: $editVM.lastName)
+                            LongTextField(textFieldDescription: "Last Name", firstNameTF: $editVM.addedAthlete.lastName)
 
                             HStack {
-                                BirthdayField(show: $show, selectedDate: $editVM.birthDate, showYear: $editVM.showYear)
-                                EditGenderButtons(gender: $editVM.gender, male: $male, female: $female, nonbinary: $nonbinary)
+                                BirthdayField(show: $show, selectedDate: $editVM.addedAthlete.birthday, showYear: $editVM.addedAthlete.showYear)
+                                EditGenderButtons(gender: $editVM.addedAthlete.gender, male: $male, female: $female, nonbinary: $nonbinary)
                             }
 
                             Spacer()
@@ -117,9 +119,9 @@ struct EditAthleteView: View {
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture { show.toggle() }
 
-                        Popover(selectedDate: $editVM.birthDate.bound, show: $show, selectedYear: $editVM.birthYear, showYear: $editVM.showYear)
-                            .onChange(of: editVM.birthDate.bound) { _ in
-                                print(editVM.birthDate.bound)
+                        Popover(selectedDate: $editVM.addedAthlete.birthday, show: $show, selectedYear: $editVM.birthYear, showYear: $editVM.addedAthlete.showYear)
+                            .onChange(of: editVM.addedAthlete.birthday) { _ in
+                                print(editVM.addedAthlete.birthday)
                             }
                         }
                     }
@@ -134,17 +136,17 @@ struct EditAthleteView: View {
     
     //MARK: -Functions
     //-MARK: Insert Core Data here
-    func editAthlete(athlete: AthleteViewModel) {
-        
-        editVM.editAthlete(athleteId: athlete.id)
-
-        appState.path.removeLast()
-        
-    }
+//    func editAthlete(athlete: AthleteViewModel) {
+//        
+//        editVM.saveAthlete()
+//
+//        appState.path.removeLast()
+//        
+//    }
     
-    func deleteAthletePressed(athlete: AthleteViewModel) {
+    func deleteAthletePressed() {
 
-        editVM.deleteAthlete(athleteId: athlete.id)
+        editVM.deleteAthlete()
         //withAnimation(.spring(dampingFraction: 1.0)){
         tabDetail.showDetail = false
         //}
@@ -179,7 +181,8 @@ struct EditAthleteView: View {
         Spacer(minLength: 0)
 
         Button(action: {
-           editAthlete(athlete: athlete)
+            editVM.saveAthlete()
+            appState.path.removeLast()
         }){
             //NavigationButtonSystemName(iconName: "checkmark")
             Image(systemName: "checkmark")
@@ -289,7 +292,7 @@ struct EditAthleteView: View {
                           message: Text("This action cannot be undone!"),
                           primaryButton: .destructive(Text("Delete"),
                           action: {
-                           deleteAthletePressed(athlete: athlete)
+                           deleteAthletePressed()
                         }),
                           secondaryButton: .cancel())
                     })

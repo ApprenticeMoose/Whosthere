@@ -18,17 +18,16 @@ struct AthleteDetailView: View {
     @Environment(\.colorScheme) var colorScheme                             //DarkMode
     
 
-    @Environment(\.managedObjectContext) var context                        //Core Data moc
-    @EnvironmentObject var appState: AppState                               //Accessing the athletes
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var tabDetail: TabDetailVM
-    
     
     @State private var birthToggle: Bool = false                          //Variable to switch between displaying birthdate and birthyear
     
-    private var athlete: AthleteViewModel
+    
+    private var athlete: Athlete
     
     
-    init(athlete: AthleteViewModel) {
+    init(athlete: Athlete) {
         self.athlete = athlete
         print("Initializing Detail View for: \(String(describing: athlete.firstName))")
     }
@@ -37,11 +36,9 @@ struct AthleteDetailView: View {
     //MARK: -Body
     
     var body: some View {
-//        ZStack{
-//            Color.mainBackground.edgesIgnoringSafeArea(.all)                        //Grey background
-            
+
             VStack{
-                                                                                     //Header
+//Header
                 VStack{
                     
                     AthleteDetailHeaderButtons
@@ -53,17 +50,12 @@ struct AthleteDetailView: View {
                 
                     nameAndBirthday
                 
-                        }
-//                        .background(Color.accentGreen
-//                                        .clipShape(CustomShape(corners: [.bottomLeft, .bottomRight], radius: 20))
-//                                        .edgesIgnoringSafeArea(.top))
+                }
                 
                     Spacer()
                 
                 }
             .background(Color.appBackground)
-            
-//            }//end of ZStack for Color
             .navigationBarHidden(true)
         }//end of Body
     
@@ -186,7 +178,6 @@ struct AthleteDetailView: View {
                 .resizable()
                 .frame(width: 42, height: 42, alignment: .center)
                 .foregroundColor(colorScheme == .light ? .cardGrey2 : .cardProfileLetter)
-                //.foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
         }
     }
 }

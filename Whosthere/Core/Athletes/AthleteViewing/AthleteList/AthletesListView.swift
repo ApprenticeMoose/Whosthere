@@ -9,8 +9,8 @@ import SwiftUI
 import NavigationBackport
 
 enum Route: Hashable {
-    case detail(AthleteViewModel)
-    case edit(AthleteViewModel)
+    case detail(Athlete)
+    case edit(Athlete)
     //case test(AthleteViewModel)
 }
 class AppState: ObservableObject {
@@ -24,51 +24,38 @@ struct AthletesListView: View {
     
     @Environment(\.colorScheme) var colorScheme                             //DarkMode
     
-    @State private var refreshID = UUID()                                   //For manually refreshing the list after update
+    //@State private var refreshID = UUID()                                   //For manually refreshing the list after update
     @State private var showAddSheet: Bool = false                           //Bool for AddSheet
     
-    
+    @EnvironmentObject var tabDetail: TabDetailVM
     @EnvironmentObject var appState: AppState                               //For Navigation
-    @Environment(\.managedObjectContext) var viewContext                    //Core Data moc
-    @ObservedObject private var athletesListVM: AthletesListViewModel       //Accessing the athletes
-    @EnvironmentObject var tabDetail: TabDetailVM                           //For hiding tabbar
     
+    
+    @StateObject var athletesListVM = AthleteListVM()               //Accessing the athletes
+
     //MARK: -Body
     
     var body: some View {
         NBNavigationStack(path: $appState.path){                            //NavigationStack
-//        ZStack{
-//            Color.accentGreen.edgesIgnoringSafeArea(.all)                   //GreenAccentHeader
-        
-//            VStack{
-                                                                            //Header
-               
-                
-                
-                                                                            //Screen body
+
                 VStack{
                     
                     HStack{
                         ScreenHeaderTextOnly(screenTitle: "Athletes")
                         athleteListButtonRow
                             .fullScreenCover(isPresented: $showAddSheet,
-                                             content: {AddAthleteView(vm: AddAthleteViewModel(context: viewContext))})
+                                             //content: {AddAthleteView(athlete: nil, vm: AddAthleteViewModel(context: viewContext))})
+                                             content: {AddAthleteView(athlete: nil)})
                         
                     }
 
-                                                                            //Shows picture when list is empty
+//Shows picture when list is empty
                     if athletesListVM.athletes.isEmpty {
 
                         emptyListPicture
-                                                                            //Shows List if it has componenets
-                    } else {
-                                                                            //AthletesList
-//                        List(athletesListVM.athletes) { athlete in
-//                            NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
-//                        }
-//                        .listRowBackground(Color.mainCard)
-//                        .id(refreshID)
                         
+                    } else {
+//AthletesList
                         ScrollView(showsIndicators: false){
                             LazyVStack{
                                 let enumerated = Array(zip(athletesListVM.athletes.indices, athletesListVM.athletes))
@@ -80,36 +67,35 @@ struct AthletesListView: View {
                                     if index != enumerated.count - 1 {
                                         Seperator()
                                     }
-
-                                    
-                                         
-                                    
-                                    
-                                    
-                                
                             }
-                            .id(refreshID)
+                            //.id(refreshID)
                             }
                             .padding(8)
                             .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.accentMidGround))
                             .padding(.horizontal)
                         }
+                        .onAppear{
+                            withAnimation {
+                                athletesListVM.fetchAthletes()
+                            }
+                                
+                            
+                            }
                         
                         .nbNavigationDestination(for: Route.self) { route in
                                     switch route {
                                     case let .detail(athlete):
                                         AthleteDetailView(athlete: athlete)
-                                            .environmentObject(AthletesListViewModel(context: viewContext))
+                                            //.environmentObject(AthletesListViewModel(context: viewContext))
                                             .onAppear(perform:
                                                         //{withAnimation(.spring())
                                                 {self.tabDetail.showDetail = true}
                                             //}
                                             )
-                                            .onDisappear(perform: {self.refreshID = UUID()})
+                                            //.onDisappear(perform: {self.refreshID = UUID()})
                                     case let .edit(athlete):
-                                        EditAthleteView(athlete: athlete
-                                                        , context: viewContext
-                                                        , goBackToRoot: { appState.path.removeLast(appState.path.count)})
+                                        EditAthleteView(athlete: athlete,
+                                                        goBackToRoot: { appState.path.removeLast(appState.path.count)})
                                       
                                     }
                                 }
@@ -123,9 +109,8 @@ struct AthletesListView: View {
                 .background(Color.appBackground
                     .edgesIgnoringSafeArea(.all))
                 
-                
-//            }//VStack to seperate header and bodysheet
-//        }//ZStack for background
+            
+
         .navigationBarTitle("My Title")
         .navigationBarHidden(true)
         
@@ -198,12 +183,11 @@ struct AthletesListView: View {
 }
     
     //initializer for adjusting List View to look as intended
-    init(vm: AthletesListViewModel) {
+    init() {
         UITableView.appearance().backgroundColor = .clear
 //    UITableViewCell.appearance().backgroundColor = .clear
         UITableView.appearance().tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
 
-    self.athletesListVM = vm
     }
     
 }//Struct
@@ -218,7 +202,7 @@ struct AthletesListView: View {
         @Environment(\.colorScheme) var colorScheme
         
         //changes may be needed
-        let athlete: AthleteViewModel
+        let athlete: Athlete
         
         var body: some View {
             VStack{
@@ -283,7 +267,7 @@ struct ScreenHeaderTextOnly: View {
 
 struct RowView: View {
     //so the detail view can observe the model and can update immediately
-    @ObservedObject var athlete: AthleteViewModel
+    var athlete: Athlete
 
     var body: some View {
         ListRowView(athlete: athlete)

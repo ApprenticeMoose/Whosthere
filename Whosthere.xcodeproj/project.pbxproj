@@ -43,6 +43,13 @@
 		BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */; };
 		BCB4211627FA4CC000B939DA /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211527FA4CC000B939DA /* ImagePicker.swift */; };
 		BCB4211827FA4ECE00B939DA /* PicturePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB4211727FA4ECE00B939DA /* PicturePicker.swift */; };
+		BCD2CAAC28C766AF0017CCFB /* PersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CAAB28C766AF0017CCFB /* PersistentStore.swift */; };
+		BCD2CAAE28C767EE0017CCFB /* Athlete.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CAAD28C767EE0017CCFB /* Athlete.swift */; };
+		BCD2CAB028C76F290017CCFB /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CAAF28C76F290017CCFB /* Session.swift */; };
+		BCD2CAB228C76FDD0017CCFB /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CAB128C76FDD0017CCFB /* DataManager.swift */; };
+		BCD2CAB528C770150017CCFB /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = BCD2CAB428C770150017CCFB /* OrderedCollections */; };
+		BCD2CAB928C795FA0017CCFB /* AthleteEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CAB828C795FA0017CCFB /* AthleteEditorViewModel.swift */; };
+		BCD2CABB28C8AAF00017CCFB /* AthleteListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */; };
 		BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */; };
 		BCD9654928B916C3008DEE7F /* DatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD9654828B916C3008DEE7F /* DatesViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -85,6 +92,12 @@
 		BCB4211327F9BFED00B939DA /* BindingWhereValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingWhereValue.swift; sourceTree = "<group>"; };
 		BCB4211527FA4CC000B939DA /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BCB4211727FA4ECE00B939DA /* PicturePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturePicker.swift; sourceTree = "<group>"; };
+		BCD2CAAB28C766AF0017CCFB /* PersistentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStore.swift; sourceTree = "<group>"; };
+		BCD2CAAD28C767EE0017CCFB /* Athlete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Athlete.swift; sourceTree = "<group>"; };
+		BCD2CAAF28C76F290017CCFB /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		BCD2CAB128C76FDD0017CCFB /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		BCD2CAB828C795FA0017CCFB /* AthleteEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteEditorViewModel.swift; sourceTree = "<group>"; };
+		BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteListVM.swift; sourceTree = "<group>"; };
 		BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
 		BCD9654828B916C3008DEE7F /* DatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCD2CAB528C770150017CCFB /* OrderedCollections in Frameworks */,
 				BC9D00D4288B0BF10024B4AC /* NavigationBackport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,22 +119,18 @@
 			isa = PBXGroup;
 			children = (
 				BCB4211727FA4ECE00B939DA /* PicturePicker.swift */,
-				BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */,
 				BC6F5F6D2892FA7000523280 /* AthleteBaseModel.swift */,
 				BC6F246728C6312600679360 /* SessionBaseModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		BC3F255A2767C1C000465551 /* ViewModels */ = {
+		BC3F255A2767C1C000465551 /* AthleteList */ = {
 			isa = PBXGroup;
 			children = (
-				BC6F5F692892F45400523280 /* AthletesListViewModel.swift */,
-				BC146A2427E5D25D0034A9B2 /* AddAthleteViewModel.swift */,
-				BC146A2627E5D32E0034A9B2 /* EditAthleteViewModel.swift */,
-				BC9D00D02889B58A0024B4AC /* CoreDataManager.swift */,
+				BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */,
 			);
-			path = ViewModels;
+			path = AthleteList;
 			sourceTree = "<group>";
 		};
 		BC409A5027493F980096CD12 = {
@@ -143,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				BC409A5C27493F980096CD12 /* AthleteApp.swift */,
+				BCD2CAAA28C765B50017CCFB /* DataManager */,
 				BC798DB7278B85AD0022881E /* Extensions */,
 				BC3F25552767B39E00465551 /* Models */,
 				BC525F4827AAD7310032B99F /* Core */,
@@ -189,8 +200,8 @@
 		BC525F4927AAD78C0032B99F /* Athletes */ = {
 			isa = PBXGroup;
 			children = (
-				BC3F255A2767C1C000465551 /* ViewModels */,
-				BCA3A77F275BB2C6003D5F1C /* Views */,
+				BCD2CABD28C8B5EC0017CCFB /* AthleteViewing */,
+				BCD2CABC28C8B54E0017CCFB /* AthleteEditing */,
 			);
 			path = Athletes;
 			sourceTree = "<group>";
@@ -240,19 +251,18 @@
 				BCB4211527FA4CC000B939DA /* ImagePicker.swift */,
 				BC6F5F6B2892FA3500523280 /* Athlete+Extension.swift */,
 				BC6F246928C6364700679360 /* Session+Extension.swift */,
+				BC6F5F692892F45400523280 /* AthletesListViewModel.swift */,
+				BC9D00D02889B58A0024B4AC /* CoreDataManager.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		BCA3A77F275BB2C6003D5F1C /* Views */ = {
+		BCA3A77F275BB2C6003D5F1C /* AthleteDetail */ = {
 			isa = PBXGroup;
 			children = (
-				BCA3A780275BB2E6003D5F1C /* AthletesListView.swift */,
-				BC3F2576276C9A4700465551 /* AddAthleteView.swift */,
 				BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */,
-				BC525F4627AA995F0032B99F /* EditAthleteView.swift */,
 			);
-			path = Views;
+			path = AthleteDetail;
 			sourceTree = "<group>";
 		};
 		BCA3A789275E034A003D5F1C /* Components */ = {
@@ -261,6 +271,56 @@
 				BC4DA003278A265C0064A350 /* Buttons */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		BCD2CAAA28C765B50017CCFB /* DataManager */ = {
+			isa = PBXGroup;
+			children = (
+				BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */,
+				BCD2CAAB28C766AF0017CCFB /* PersistentStore.swift */,
+				BCD2CAB128C76FDD0017CCFB /* DataManager.swift */,
+				BCD2CAAD28C767EE0017CCFB /* Athlete.swift */,
+				BCD2CAAF28C76F290017CCFB /* Session.swift */,
+			);
+			path = DataManager;
+			sourceTree = "<group>";
+		};
+		BCD2CAB628C794770017CCFB /* AthleteAdd */ = {
+			isa = PBXGroup;
+			children = (
+				BC146A2427E5D25D0034A9B2 /* AddAthleteViewModel.swift */,
+				BC3F2576276C9A4700465551 /* AddAthleteView.swift */,
+			);
+			path = AthleteAdd;
+			sourceTree = "<group>";
+		};
+		BCD2CAB728C794810017CCFB /* AthleteEdit */ = {
+			isa = PBXGroup;
+			children = (
+				BC146A2627E5D32E0034A9B2 /* EditAthleteViewModel.swift */,
+				BC525F4627AA995F0032B99F /* EditAthleteView.swift */,
+			);
+			path = AthleteEdit;
+			sourceTree = "<group>";
+		};
+		BCD2CABC28C8B54E0017CCFB /* AthleteEditing */ = {
+			isa = PBXGroup;
+			children = (
+				BCD2CAB828C795FA0017CCFB /* AthleteEditorViewModel.swift */,
+				BCD2CAB728C794810017CCFB /* AthleteEdit */,
+				BCD2CAB628C794770017CCFB /* AthleteAdd */,
+			);
+			path = AthleteEditing;
+			sourceTree = "<group>";
+		};
+		BCD2CABD28C8B5EC0017CCFB /* AthleteViewing */ = {
+			isa = PBXGroup;
+			children = (
+				BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */,
+				BC3F255A2767C1C000465551 /* AthleteList */,
+				BCA3A77F275BB2C6003D5F1C /* AthleteDetail */,
+			);
+			path = AthleteViewing;
 			sourceTree = "<group>";
 		};
 		BCD8E74E28BE4C4C00EA9A93 /* AddSessions */ = {
@@ -300,6 +360,7 @@
 			name = Whosthere;
 			packageProductDependencies = (
 				BC9D00D3288B0BF10024B4AC /* NavigationBackport */,
+				BCD2CAB428C770150017CCFB /* OrderedCollections */,
 			);
 			productName = Photopickertest;
 			productReference = BC409A5927493F980096CD12 /* Whosthere.app */;
@@ -330,6 +391,7 @@
 			mainGroup = BC409A5027493F980096CD12;
 			packageReferences = (
 				BC9D00D2288B0BF10024B4AC /* XCRemoteSwiftPackageReference "NavigationBackport" */,
+				BCD2CAB328C770150017CCFB /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = BC409A5A27493F980096CD12 /* Products */;
 			projectDirPath = "";
@@ -378,19 +440,25 @@
 				BC146A2527E5D25D0034A9B2 /* AddAthleteViewModel.swift in Sources */,
 				BCA3A78F275E0496003D5F1C /* NavigationButtonSystemName.swift in Sources */,
 				BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */,
+				BCD2CABB28C8AAF00017CCFB /* AthleteListVM.swift in Sources */,
 				BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */,
 				BC78F34E289C9B3E00F6BC34 /* SessionsHomeView.swift in Sources */,
 				BC3F25512760D1A800465551 /* FrameButton.swift in Sources */,
 				BC3F2577276C9A4700465551 /* AddAthleteView.swift in Sources */,
+				BCD2CAB928C795FA0017CCFB /* AthleteEditorViewModel.swift in Sources */,
+				BCD2CAAE28C767EE0017CCFB /* Athlete.swift in Sources */,
 				BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */,
+				BCD2CAAC28C766AF0017CCFB /* PersistentStore.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 				BC78F352289C9CF000F6BC34 /* SettingsOverView.swift in Sources */,
+				BCD2CAB028C76F290017CCFB /* Session.swift in Sources */,
 				BC6F5F6E2892FA7000523280 /* AthleteBaseModel.swift in Sources */,
 				BC6F246C28C639E800679360 /* SessionsHomeViewModel.swift in Sources */,
 				BC78F350289C9C4D00F6BC34 /* StatisticsOverview.swift in Sources */,
 				BCB4211427F9BFED00B939DA /* BindingWhereValue.swift in Sources */,
 				BC6F5F6A2892F45400523280 /* AthletesListViewModel.swift in Sources */,
 				BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */,
+				BCD2CAB228C76FDD0017CCFB /* DataManager.swift in Sources */,
 				BC9D00CF2889B3B90024B4AC /* WhosThere.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -590,6 +658,14 @@
 				minimumVersion = 0.2.1;
 			};
 		};
+		BCD2CAB328C770150017CCFB /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -597,6 +673,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BC9D00D2288B0BF10024B4AC /* XCRemoteSwiftPackageReference "NavigationBackport" */;
 			productName = NavigationBackport;
+		};
+		BCD2CAB428C770150017CCFB /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BCD2CAB328C770150017CCFB /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 /* End XCSwiftPackageProductDependency section */
 

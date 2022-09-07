@@ -13,13 +13,13 @@ class AthletesListViewModel: NSObject, ObservableObject {
     
     @Published var athletes = [AthleteViewModel]()
     @Published var showDetail: Bool = false
-    private let fetchResultsController: NSFetchedResultsController<Athlete>
+    private let fetchResultsController: NSFetchedResultsController<AthleteEntity>
     private (set) var context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext) {
         
         self.context = context
-        fetchResultsController = NSFetchedResultsController(fetchRequest: Athlete.all, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        fetchResultsController = NSFetchedResultsController(fetchRequest: AthleteEntity.all, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         super.init()
         fetchResultsController.delegate = self
         
@@ -39,7 +39,7 @@ class AthletesListViewModel: NSObject, ObservableObject {
 
 extension AthletesListViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let athletes = controller.fetchedObjects as? [Athlete] else {
+        guard let athletes = controller.fetchedObjects as? [AthleteEntity] else {
             return
         }
         
@@ -56,9 +56,9 @@ class AthleteViewModel: Identifiable, ObservableObject, Hashable, Equatable {
            hasher.combine(firstName)
        }
     
-    private var athlete: Athlete
+    private var athlete: AthleteEntity
     
-    init(athlete: Athlete) {
+    init(athlete: AthleteEntity) {
         self.athlete = athlete
     }
     

@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("selectedTab") var selectedTab: Tab = .sessions
-    @Environment(\.managedObjectContext) var viewContext
-    @EnvironmentObject var athletesListVM: AthletesListViewModel
+//    @Environment(\.managedObjectContext) var viewContext
+//    @EnvironmentObject var athletesListVM: AthletesListViewModel
     @EnvironmentObject var tabDetail: TabDetailVM
 
     var body: some View {
@@ -18,11 +18,12 @@ struct ContentView: View {
             
                 switch selectedTab {
                 case .sessions:
-                    SessionsHomeView(vmA: AthletesListViewModel(context: viewContext), vmS: SessionsViewModel(context: viewContext))
+                    Text("Hello World")
+                    //SessionsHomeView(vmA: AthletesListViewModel(context: viewContext), vmS: SessionsViewModel(context: viewContext))
                 case .statistics:
                     StatisticsOverview()
                 case .athletes:
-                    AthletesListView(vm: AthletesListViewModel(context: viewContext))
+                    AthletesListView()
                 case .settings:
                     SettingsOverView()
                 }

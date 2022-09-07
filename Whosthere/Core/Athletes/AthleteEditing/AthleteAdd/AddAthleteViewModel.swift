@@ -26,7 +26,7 @@ class AddAthleteViewModel: ObservableObject {
     
     func save() {
         do {
-            let newAthlete = Athlete(context: context)
+            let newAthlete = AthleteEntity(context: context)
             newAthlete.id = UUID()
             newAthlete.firstName = firstName
             newAthlete.lastName = lastName
@@ -39,23 +39,9 @@ class AddAthleteViewModel: ObservableObject {
             print(error)
         }
     }
+
     
-    //PhotoPickerStuff
-    /*
-    //@Published var image: UIImage?
-    //@Published var showPicker: Bool = false
-    //@Published var showActionSheet: Bool = false
-    //@Published var source: PicturePicker.Source = .library
-    
-    func showPhotoPicker() {
-        if source == .camera {
-            if !PicturePicker.checkPermissions() {
-                print("There is no camera on this device")
-                return
-            }
-        }
-        showPicker = true
-    }*/
+    // MARK: Functions
     
     func textIsAppropriate() -> Bool {
         if firstName.count >= 2 && lastName.count >= 1 {
@@ -63,4 +49,16 @@ class AddAthleteViewModel: ObservableObject {
         }
         return false
     }
+    
+   
+
+    //function to adjust the year variable according to the selected birthdate variable->is called when add athlete button is pressed
+    func getBirthYear() -> Int {
+        if birthDate != Date()
+            {
+            birthYear = Calendar.current.component(.year, from: birthDate ?? Date())
+            }
+        return birthYear
+    }
 }
+

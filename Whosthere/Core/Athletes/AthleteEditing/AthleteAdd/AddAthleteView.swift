@@ -16,10 +16,10 @@ struct AddAthleteView: View {
     @Environment(\.colorScheme) var colorScheme                                 //DarkMode
 
     
-    @ObservedObject var addVM: AddAthleteViewModel                              //Accessing the variables for adding
+    @ObservedObject var addVM: AthleteEditorViewModel                              //Accessing the variables for adding
     
-    init(vm: AddAthleteViewModel) {
-        self.addVM = vm
+    init(athlete: Athlete?, dataManager: DataManager = DataManager.shared) {
+        self.addVM = AthleteEditorViewModel(athlete: athlete, dataManager: dataManager)
     }
 
 
@@ -49,15 +49,15 @@ struct AddAthleteView: View {
 
                             profilePicture
 
-                            LongTextField(textFieldDescription: "First Name",  firstNameTF: $addVM.firstName)
+                            LongTextField(textFieldDescription: "First Name",  firstNameTF: $addVM.addedAthlete.firstName)
                             
                         
 
-                            LongTextField(textFieldDescription: "Last Name", firstNameTF: $addVM.lastName)
+                            LongTextField(textFieldDescription: "Last Name", firstNameTF: $addVM.addedAthlete.lastName)
 
                             HStack {
-                                BirthdayField(show: $show, selectedDate: $addVM.birthDate, showYear: $addVM.showYear)
-                                GenderButtons(gender: $addVM.gender)
+                                BirthdayField(show: $show, selectedDate: $addVM.addedAthlete.birthday, showYear: $addVM.addedAthlete.showYear)
+                                GenderButtons(gender: $addVM.addedAthlete.gender)
                             }
 
 //Spacer to define the body-sheets size
@@ -81,7 +81,7 @@ struct AddAthleteView: View {
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture { show.toggle() }
 
-                        Popover(selectedDate: $addVM.birthDate.bound, show: $show, selectedYear: $addVM.birthYear, showYear: $addVM.showYear)
+                        Popover(selectedDate: $addVM.addedAthlete.birthday, show: $show, selectedYear: $addVM.birthYear, showYear: $addVM.addedAthlete.showYear)
                         }
                     }
                     .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)
@@ -93,16 +93,7 @@ struct AddAthleteView: View {
 
 
 
-    // MARK: Functions
-
-    //function to adjust the year variable according to the selected birthdate variable->is called when add athlete button is pressed
-    func getBirthYear() -> Int {
-        if addVM.birthDate != Date()
-            {
-            addVM.birthYear = Calendar.current.component(.year, from: addVM.birthDate ?? Date())
-            }
-        return addVM.birthYear
-    }
+    
 
 
 
@@ -113,9 +104,9 @@ struct AddAthleteView: View {
     Button(action: {
         if addVM.textIsAppropriate()
             {
-            if addVM.showYear == false {addVM.birthYear = getBirthYear()}
+            if addVM.addedAthlete.showYear == false {addVM.birthYear = addVM.getBirthYear()}
             
-            addVM.save()
+            addVM.saveAthlete()
             presentationMode.wrappedValue.dismiss()
         }
     }){
@@ -252,7 +243,7 @@ struct AddAthleteView: View {
 
             Button(action: {
                 if addVM.textIsAppropriate() {
-                    addVM.save()
+                    addVM.saveAthlete()
                     presentationMode.wrappedValue.dismiss()
                 }
             }){
@@ -328,7 +319,7 @@ struct BirthdayField: View {
 
     @Binding var show: Bool
 
-    @Binding var selectedDate: Date?
+    @Binding var selectedDate: Date
 
     @Binding var showYear: Bool
 
@@ -363,14 +354,14 @@ struct BirthdayField: View {
 
 
                 if self.showYear {
-                    Text(String(Calendar.current.component(.year, from: selectedDate ?? Date())))
+                    Text(String(Calendar.current.component(.year, from: selectedDate)))
                         .font(.body)
                         .foregroundColor(makeClear() ? Color.clear : Color.midTitle)
                         .fontWeight(.semibold)
                 }
                 else{
                     VStack{
-                        Text(dateFormatter.string(from: selectedDate ?? Date()))
+                        Text(dateFormatter.string(from: selectedDate))
                         .font(.body)
                         .foregroundColor(makeClear() ? Color.clear : Color.midTitle)
                         .fontWeight(.semibold)
@@ -389,7 +380,7 @@ struct BirthdayField: View {
     
     //function to check if the selected date is not today so if another date is selected the birthday header can be grayed out with a tertiary statement in the foregroundcolor modifier
     func changeOpacity() -> Bool {
-        if Calendar.current.isDateInToday(selectedDate ?? Date()) {
+        if Calendar.current.isDateInToday(selectedDate) {
             return false
         }
         return true
@@ -397,7 +388,7 @@ struct BirthdayField: View {
 
     //function to check if the selected date is not today so the birthdayfield can be clear at the beginning
     func makeClear() -> Bool {
-        if Calendar.current.isDateInToday(selectedDate ?? Date()) {
+        if Calendar.current.isDateInToday(selectedDate) {
             return true
         }
         return false
