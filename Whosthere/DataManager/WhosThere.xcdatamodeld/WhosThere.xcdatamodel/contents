@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="AthleteEntity" representedClassName="AthleteEntity" syncable="YES" codeGenerationType="class">
+    <entity name="AthleteMO" representedClassName="AthleteMO" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="gender" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="showYear" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <relationship name="sessionEntity" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SessionEntity" inverseName="athleteEntity" inverseEntity="SessionEntity"/>
+        <relationship name="sessionMOs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SessionMO" inverseName="athleteMOs" inverseEntity="SessionMO"/>
     </entity>
-    <entity name="SessionEntity" representedClassName="SessionEntity" syncable="YES" codeGenerationType="class">
+    <entity name="SessionMO" representedClassName="SessionMO" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <relationship name="athleteEntity" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AthleteEntity" inverseName="sessionEntity" inverseEntity="AthleteEntity"/>
+        <relationship name="athleteMOs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AthleteMO" inverseName="sessionMOs" inverseEntity="AthleteMO"/>
     </entity>
     <elements>
-        <element name="AthleteEntity" positionX="-63" positionY="-18" width="128" height="134"/>
-        <element name="SessionEntity" positionX="-63" positionY="27" width="128" height="74"/>
+        <element name="AthleteMO" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="SessionMO" positionX="-63" positionY="27" width="128" height="74"/>
     </elements>
 </model>

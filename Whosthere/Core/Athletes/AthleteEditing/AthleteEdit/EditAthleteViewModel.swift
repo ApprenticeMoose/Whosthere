@@ -32,7 +32,7 @@ class EditAthleteViewModel: ObservableObject {
     
     func deleteAthlete(athleteId: NSManagedObjectID) {
         do {
-            guard let athlete = try context.existingObject(with: athleteId) as? AthleteEntity else {
+            guard let athlete = try context.existingObject(with: athleteId) as? AthleteMO else {
                 return
             }
             
@@ -44,7 +44,7 @@ class EditAthleteViewModel: ObservableObject {
     
     func editAthlete(athleteId: NSManagedObjectID) {
         do {
-            guard let athlete = try context.existingObject(with: athleteId) as? AthleteEntity else {
+            guard let athlete = try context.existingObject(with: athleteId) as? AthleteMO else {
                 return
             }
             

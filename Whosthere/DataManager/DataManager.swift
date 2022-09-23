@@ -31,8 +31,8 @@ class DataManager: NSObject, ObservableObject {
     }
     
     fileprivate var managedObjectContext: NSManagedObjectContext
-    private let athletesFRC: NSFetchedResultsController<AthleteEntity>
-    private let sessionsFRC: NSFetchedResultsController<SessionEntity>
+    private let athletesFRC: NSFetchedResultsController<AthleteMO>
+    private let sessionsFRC: NSFetchedResultsController<SessionMO>
     
     private init(type: DataManagerType) {
         switch type {
@@ -43,7 +43,7 @@ class DataManager: NSObject, ObservableObject {
             let persistentStore = PersistentStore(inMemory: true)
             self.managedObjectContext = persistentStore.context
             for i in 0..<10 {
-                let newAthlete = AthleteEntity(context: managedObjectContext)
+                let newAthlete = AthleteMO(context: managedObjectContext)
                 newAthlete.firstName = "first name \(i)"
                 newAthlete.lastName = "last name \(i)"
                 newAthlete.birthday = Date()
@@ -52,7 +52,7 @@ class DataManager: NSObject, ObservableObject {
                 newAthlete.id = UUID()
             }
             for _ in 0..<4 {
-                let newSession = SessionEntity(context: managedObjectContext)
+                let newSession = SessionMO(context: managedObjectContext)
                 newSession.date = Date()
                 newSession.id = UUID()
             }
@@ -62,14 +62,14 @@ class DataManager: NSObject, ObservableObject {
             self.managedObjectContext = persistentStore.context
         }
         
-        let athleteFR: NSFetchRequest<AthleteEntity> = AthleteEntity.fetchRequest()
-        athleteFR.sortDescriptors = [NSSortDescriptor(key: "firstName", ascending: false)]
+        let athleteFR: NSFetchRequest<AthleteMO> = AthleteMO.fetchRequest()
+        athleteFR.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
         athletesFRC = NSFetchedResultsController(fetchRequest: athleteFR,
                                               managedObjectContext: managedObjectContext,
                                               sectionNameKeyPath: nil,
                                               cacheName: nil)
         
-        let sessionFR: NSFetchRequest<SessionEntity> = SessionEntity.fetchRequest()
+        let sessionFR: NSFetchRequest<SessionMO> = SessionMO.fetchRequest()
         sessionFR.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         sessionsFRC = NSFetchedResultsController(fetchRequest: sessionFR,
                                                  managedObjectContext: managedObjectContext,
@@ -82,13 +82,13 @@ class DataManager: NSObject, ObservableObject {
         athletesFRC.delegate = self
         try? athletesFRC.performFetch()
         if let newAthletes = athletesFRC.fetchedObjects {
-            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({($0.id!, Athlete(athleteEntity: $0)) } ))
+            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({($0.id!, Athlete(athleteMO: $0)) } ))
         }
         
         sessionsFRC.delegate = self
         try? sessionsFRC.performFetch()
         if let newSessions = sessionsFRC.fetchedObjects {
-            self.sessions = OrderedDictionary(uniqueKeysWithValues: newSessions.map({ ($0.id!, Session(sessionEntity: $0)) }))
+            self.sessions = OrderedDictionary(uniqueKeysWithValues: newSessions.map({ ($0.id!, Session(sessionMO: $0)) }))
         }
     }
     
@@ -106,13 +106,51 @@ class DataManager: NSObject, ObservableObject {
 extension DataManager: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let newAthletes = controller.fetchedObjects as? [AthleteEntity] {
-            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({ ($0.id!, Athlete(athleteEntity: $0)) }))
-        } else if let newSessions = controller.fetchedObjects as? [SessionEntity] {
-            print(newSessions)
-            self.sessions = OrderedDictionary(uniqueKeysWithValues: newSessions.map({ ($0.id!, Session(sessionEntity: $0)) }))
+        if let newAthletes = controller.fetchedObjects as? [AthleteMO] {
+            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({ ($0.id!, Athlete(athleteMO: $0)) }))
+        } else if let newSessions = controller.fetchedObjects as? [SessionMO] {
+            self.sessions = OrderedDictionary(uniqueKeysWithValues: newSessions.map({ ($0.id!, Session(sessionMO: $0)) }))
         }
     }
+    
+   
+    
+    func fetchAthletes(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) {
+        if let predicate = predicate {
+            athletesFRC.fetchRequest.predicate = predicate
+        }
+        if let sortDescriptors = sortDescriptors {
+            athletesFRC.fetchRequest.sortDescriptors = sortDescriptors
+        }
+        try? athletesFRC.performFetch()
+        if let newAthletes = athletesFRC.fetchedObjects {
+            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({ ($0.id!, Athlete(athleteMO: $0)) }))
+        }
+    }
+    
+    func fetchSessions(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) {
+        if let predicate = predicate {
+            sessionsFRC.fetchRequest.predicate = predicate
+        }
+        if let sortDescriptors = sortDescriptors {
+            sessionsFRC.fetchRequest.sortDescriptors = sortDescriptors
+        }
+        try? sessionsFRC.performFetch()
+        if let newSessions = sessionsFRC.fetchedObjects {
+            self.sessions = OrderedDictionary(uniqueKeysWithValues: newSessions.map({ ($0.id!, Session(sessionMO: $0)) }))
+        }
+    }
+    //reset Fetch Function
+    /*
+    func resetFetch() {
+        athletesFRC.fetchRequest.sortDescriptors = [NSSortDescriptor(key: "firstName", ascending: true)]
+        athletesFRC.fetchRequest.predicate = nil
+        try? athletesFRC.performFetch()
+        if let newAthletes = athletesFRC.fetchedObjects {
+            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({ ($0.id!, Athlete(athleteEntity: $0)) }))
+        }
+    }
+    */
     
     private func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?) -> Result<T?, Error> {
         let request = objectType.fetchRequest()
@@ -126,43 +164,23 @@ extension DataManager: NSFetchedResultsControllerDelegate {
         }
     }
     
-    func fetchAthletes(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) {
-        if let predicate = predicate {
-            athletesFRC.fetchRequest.predicate = predicate
-        }
-        if let sortDescriptors = sortDescriptors {
-            athletesFRC.fetchRequest.sortDescriptors = sortDescriptors
-        }
-        try? athletesFRC.performFetch()
-        if let newAthletes = athletesFRC.fetchedObjects {
-            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({ ($0.id!, Athlete(athleteEntity: $0)) }))
-        }
-    }
     
-    func resetFetch() {
-        athletesFRC.fetchRequest.sortDescriptors = [NSSortDescriptor(key: "firstName", ascending: true)]
-        athletesFRC.fetchRequest.predicate = nil
-        try? athletesFRC.performFetch()
-        if let newAthletes = athletesFRC.fetchedObjects {
-            self.athletes = OrderedDictionary(uniqueKeysWithValues: newAthletes.map({ ($0.id!, Athlete(athleteEntity: $0)) }))
-        }
-    }
 
 }
 
-//MARK: - Todo Methods
+//MARK: - Athlete Methods
 extension Athlete {
     
-    fileprivate init(athleteEntity: AthleteEntity) {
-        self.id = athleteEntity.id ?? UUID()
-        self.firstName = athleteEntity.firstName ?? ""
-        self.lastName = athleteEntity.lastName ?? ""
-        self.birthday = athleteEntity.birthday ?? Date()
-        self.gender = athleteEntity.gender ?? ""
-        self.showYear = athleteEntity.showYear
-        if let sessionEntities = athleteEntity.sessionEntity as? Set<SessionEntity> {
-            let sessionEntitiesArray = sessionEntities.sorted(by: {$0.date! < $1.date!})
-            self.sessionIDs = sessionEntitiesArray.compactMap({$0.id})
+    fileprivate init(athleteMO: AthleteMO) {
+        self.id = athleteMO.id ?? UUID()
+        self.firstName = athleteMO.firstName ?? ""
+        self.lastName = athleteMO.lastName ?? ""
+        self.birthday = athleteMO.birthday ?? Date()
+        self.gender = athleteMO.gender ?? ""
+        self.showYear = athleteMO.showYear
+        if let sessionMOs = athleteMO.sessionMOs as? Set<SessionMO> {
+            let sessionMOsArray = sessionMOs.sorted(by: {$0.date! < $1.date!})
+            self.sessionIDs = sessionMOsArray.compactMap({$0.id})
         }
     }
 }
@@ -171,11 +189,11 @@ extension DataManager {
     
     func updateAndSave(athlete: Athlete) {
         let predicate = NSPredicate(format: "id = %@", athlete.id as CVarArg)
-        let result = fetchFirst(AthleteEntity.self, predicate: predicate)
+        let result = fetchFirst(AthleteMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let athleteMO = managedObject {
-                update(athleteEntity: athleteMO, from: athlete)
+                update(athleteMO: athleteMO, from: athlete)
             } else {
                 athleteMO(from: athlete)
             }
@@ -188,14 +206,14 @@ extension DataManager {
     
     func delete(athlete: Athlete) {
         let predicate = NSPredicate(format: "id = %@", athlete.id as CVarArg)
-        let result = fetchFirst(AthleteEntity.self, predicate: predicate)
+        let result = fetchFirst(AthleteMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let athleteMo = managedObject {
                 managedObjectContext.delete(athleteMo)
             }
         case .failure(_):
-            print("Couldn't fetch AthleteEntity to save")
+            print("Couldn't fetch TodoMO to save")
         }
         saveData()
     }
@@ -205,26 +223,26 @@ extension DataManager {
     }
     
     private func athleteMO(from athlete: Athlete) {
-        let athleteEntity = AthleteEntity(context: managedObjectContext)
-        athleteEntity.id = athlete.id
-        update(athleteEntity: athleteEntity, from: athlete)
+        let athleteMO = AthleteMO(context: managedObjectContext)
+        athleteMO.id = athlete.id
+        update(athleteMO: athleteMO, from: athlete)
     }
     
-    private func update(athleteEntity: AthleteEntity, from athlete: Athlete) {
-        athleteEntity.firstName = athlete.firstName
-        athleteEntity.lastName = athlete.lastName
-        athleteEntity.birthday = athlete.birthday
-        athleteEntity.gender = athlete.gender
-        athleteEntity.showYear = athlete.showYear
-        let sessionEntities = athlete.sessionIDs.compactMap({getSessionEntity(from:getSession(with: $0))})
-        athleteEntity.sessionEntity = NSSet(array: sessionEntities)
+    private func update(athleteMO: AthleteMO, from athlete: Athlete) {
+        athleteMO.firstName = athlete.firstName
+        athleteMO.lastName = athlete.lastName
+        athleteMO.birthday = athlete.birthday
+        athleteMO.gender = athlete.gender
+        athleteMO.showYear = athlete.showYear
+        let sessionMOs = athlete.sessionIDs.compactMap({getSessionMO(from:getSession(with: $0))})
+        athleteMO.sessionMOs = NSSet(array: sessionMOs)
     }
     
     ///Get's the AthleteEntity that corresponds to the athlete. If no AthleteEntity is found, returns nil.
-    private func getAthleteEntity(from athlete: Athlete?) -> AthleteEntity? {
+    private func getAthleteMO(from athlete: Athlete?) -> AthleteMO? {
         guard let athlete = athlete else { return nil }
         let predicate = NSPredicate(format: "id = %@", athlete.id as CVarArg)
-        let result = fetchFirst(AthleteEntity.self, predicate: predicate)
+        let result = fetchFirst(AthleteMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let athleteMO = managedObject {
@@ -242,12 +260,12 @@ extension DataManager {
 
 //MARK: - Project Methods
 extension Session {
-    fileprivate init(sessionEntity: SessionEntity) {
-        self.id = sessionEntity.id ?? UUID()
-        self.date = sessionEntity.date ?? Date()
-        if let athleteEntities = sessionEntity.athleteEntity as? Set<AthleteEntity> {
-            let athleteEntitiesArray = athleteEntities.sorted(by: {$0.firstName! < $1.firstName!})
-            self.athleteIDs = athleteEntitiesArray.compactMap({$0.id})
+    fileprivate init(sessionMO: SessionMO) {
+        self.id = sessionMO.id ?? UUID()
+        self.date = sessionMO.date ?? Date()
+        if let athleteMOs = sessionMO.athleteMOs as? Set<AthleteMO> {
+            let athleteMOsArray = athleteMOs.sorted(by: {$0.firstName! < $1.firstName!})
+            self.athleteIDs = athleteMOsArray.compactMap({$0.id})
         }
     }
 }
@@ -255,13 +273,13 @@ extension Session {
 extension DataManager {
     func updateAndSave(session: Session) {
         let predicate = NSPredicate(format: "id = %@", session.id as CVarArg)
-        let result = fetchFirst(SessionEntity.self, predicate: predicate)
+        let result = fetchFirst(SessionMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let sessionMO = managedObject {
-                update(sessionEntity: sessionMO, from: session)
+                update(sessionMO: sessionMO, from: session)
             } else {
-                createSessionEntity(from: session)
+                createSessionMO(from: session)
             }
         case .failure(_):
             print("Couldn't fetch SessionEntity to save")
@@ -272,14 +290,14 @@ extension DataManager {
     
     func delete(session: Session) {
         let predicate = NSPredicate(format: "id = %@", session.id as CVarArg)
-        let result = fetchFirst(SessionEntity.self, predicate: predicate)
+        let result = fetchFirst(SessionMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let sessionMo = managedObject {
                 managedObjectContext.delete(sessionMo)
             }
         case .failure(_):
-            print("Couldn't fetch SessionEntity to save")
+            print("Couldn't fetch TodoMO to save")
         }
         saveData()
     }
@@ -288,23 +306,23 @@ extension DataManager {
         return sessions[id]
     }
     
-    private func createSessionEntity(from session: Session) {
-        let sessionEntity = SessionEntity(context: managedObjectContext)
-        sessionEntity.id = session.id
-        update(sessionEntity: sessionEntity, from: session)
+    private func createSessionMO(from session: Session) {
+        let sessionMO = SessionMO(context: managedObjectContext)
+        sessionMO.id = session.id
+        update(sessionMO: sessionMO, from: session)
     }
     
-    private func update(sessionEntity: SessionEntity, from session: Session) {
-        sessionEntity.date = session.date
-        let sessionEntities = session.athleteIDs.compactMap({getAthleteEntity(from:getAthlete(with: $0))})
-        sessionEntity.athleteEntity = NSSet(array: sessionEntities)
+    private func update(sessionMO: SessionMO, from session: Session) {
+        sessionMO.date = session.date
+        let sessionMOs = session.athleteIDs.compactMap({getAthleteMO(from:getAthlete(with: $0))})
+        sessionMO.athleteMOs = NSSet(array: sessionMOs)
     }
     
     ///Get's the SessionEntity that corresponds to the sessoin. If no SessionEntity is found, returns nil.
-    private func getSessionEntity(from session: Session? ) -> SessionEntity? {
+    private func getSessionMO(from session: Session? ) -> SessionMO? {
         guard let session = session else { return nil }
         let predicate = NSPredicate(format: "id = %@", session.id as CVarArg)
-        let result = fetchFirst(SessionEntity.self, predicate: predicate)
+        let result = fetchFirst(SessionMO.self, predicate: predicate)
         switch result {
         case .success(let managedObject):
             if let sessionMO = managedObject {

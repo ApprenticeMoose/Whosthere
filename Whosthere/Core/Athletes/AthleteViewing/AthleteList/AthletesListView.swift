@@ -77,6 +77,7 @@ struct AthletesListView: View {
                         .onAppear{
                             withAnimation {
                                 athletesListVM.fetchAthletes()
+                                print("Athletes were fetched")
                             }
                                 
                             
@@ -86,12 +87,8 @@ struct AthletesListView: View {
                                     switch route {
                                     case let .detail(athlete):
                                         AthleteDetailView(athlete: athlete)
-                                            //.environmentObject(AthletesListViewModel(context: viewContext))
-                                            .onAppear(perform:
-                                                        //{withAnimation(.spring())
-                                                {self.tabDetail.showDetail = true}
-                                            //}
-                                            )
+                                            
+                                           
                                             //.onDisappear(perform: {self.refreshID = UUID()})
                                     case let .edit(athlete):
                                         EditAthleteView(athlete: athlete,
@@ -108,7 +105,9 @@ struct AthletesListView: View {
                 }
                 .background(Color.appBackground
                     .edgesIgnoringSafeArea(.all))
-                
+                .onDisappear(perform: {
+                    print("\(tabDetail.showDetail)")
+                })
             
 
         .navigationBarTitle("My Title")

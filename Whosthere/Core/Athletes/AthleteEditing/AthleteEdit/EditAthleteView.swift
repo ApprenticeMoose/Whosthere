@@ -135,17 +135,9 @@ struct EditAthleteView: View {
 
     
     //MARK: -Functions
-    //-MARK: Insert Core Data here
-//    func editAthlete(athlete: AthleteViewModel) {
-//        
-//        editVM.saveAthlete()
-//
-//        appState.path.removeLast()
-//        
-//    }
+
     
     func deleteAthletePressed() {
-
         editVM.deleteAthlete()
         //withAnimation(.spring(dampingFraction: 1.0)){
         tabDetail.showDetail = false

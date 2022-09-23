@@ -26,7 +26,7 @@ class AddAthleteViewModel: ObservableObject {
     
     func save() {
         do {
-            let newAthlete = AthleteEntity(context: context)
+            let newAthlete = AthleteMO(context: context)
             newAthlete.id = UUID()
             newAthlete.firstName = firstName
             newAthlete.lastName = lastName

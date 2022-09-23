@@ -8,10 +8,10 @@
 import Foundation
 import CoreData
 
-extension SessionEntity: SessionBaseModel {
+extension SessionMO: SessionBaseModel {
     
-    static var all: NSFetchRequest<SessionEntity> {
-        let request = SessionEntity.fetchRequest()
+    static var all: NSFetchRequest<SessionMO> {
+        let request = SessionMO.fetchRequest()
         request.sortDescriptors = []
         return request
     }

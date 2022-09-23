@@ -50,6 +50,7 @@
 		BCD2CAB528C770150017CCFB /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = BCD2CAB428C770150017CCFB /* OrderedCollections */; };
 		BCD2CAB928C795FA0017CCFB /* AthleteEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CAB828C795FA0017CCFB /* AthleteEditorViewModel.swift */; };
 		BCD2CABB28C8AAF00017CCFB /* AthleteListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */; };
+		BCD2CABF28C9D0B70017CCFB /* AthleteDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */; };
 		BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */; };
 		BCD9654928B916C3008DEE7F /* DatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD9654828B916C3008DEE7F /* DatesViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -98,6 +99,7 @@
 		BCD2CAB128C76FDD0017CCFB /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		BCD2CAB828C795FA0017CCFB /* AthleteEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteEditorViewModel.swift; sourceTree = "<group>"; };
 		BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteListVM.swift; sourceTree = "<group>"; };
+		BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailVM.swift; sourceTree = "<group>"; };
 		BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
 		BCD9654828B916C3008DEE7F /* DatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -261,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */,
+				BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */,
 			);
 			path = AthleteDetail;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */,
 				BCD2CAAC28C766AF0017CCFB /* PersistentStore.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
+				BCD2CABF28C9D0B70017CCFB /* AthleteDetailVM.swift in Sources */,
 				BC78F352289C9CF000F6BC34 /* SettingsOverView.swift in Sources */,
 				BCD2CAB028C76F290017CCFB /* Session.swift in Sources */,
 				BC6F5F6E2892FA7000523280 /* AthleteBaseModel.swift in Sources */,

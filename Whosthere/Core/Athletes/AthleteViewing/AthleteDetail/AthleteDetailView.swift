@@ -24,11 +24,11 @@ struct AthleteDetailView: View {
     @State private var birthToggle: Bool = false                          //Variable to switch between displaying birthdate and birthyear
     
     
-    private var athlete: Athlete
+    @ObservedObject var detailVM: AthleteDetailVM
     
     
-    init(athlete: Athlete) {
-        self.athlete = athlete
+    init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
+        self.detailVM = AthleteDetailVM(athlete: athlete, dataManager: dataManager)
         print("Initializing Detail View for: \(String(describing: athlete.firstName))")
     }
   
@@ -51,10 +51,14 @@ struct AthleteDetailView: View {
                     nameAndBirthday
                 
                 }
+                .onAppear {
+                    detailVM.fetchAthletes()
+                }
                 
                     Spacer()
                 
                 }
+            .onAppear(perform: { self.tabDetail.showDetail = true })
             .background(Color.appBackground)
             .navigationBarHidden(true)
         }//end of Body
@@ -75,18 +79,18 @@ struct AthleteDetailView: View {
     
     VStack(spacing: UIScreen.main.bounds.height/80){
         HStack(spacing: 6) {
-            Text(athlete.firstName)
+            Text(detailVM.detailAthlete.firstName)
                 .font(.title3)
                 .fontWeight(.bold)
-            Text(athlete.lastName)
+            Text(detailVM.detailAthlete.lastName)
                 .font(.title3)
                 .fontWeight(.bold)
             }
             .foregroundColor(Color.header)
         VStack{
            
-            if let dateOfBirth = athlete.birthday {
-                if athlete.showYear {
+            if let dateOfBirth = detailVM.detailAthlete.birthday {
+                if detailVM.detailAthlete.showYear {
                     Text("\(String(describing: Calendar.current.component(.year, from: dateOfBirth)))")
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -147,7 +151,7 @@ struct AthleteDetailView: View {
         
         Spacer(minLength: 0)
         
-            NBNavigationLink(value: Route.edit(athlete)) {
+        NBNavigationLink(value: Route.edit(detailVM.detailAthlete)) {
                 Image("PenIcon")
                     .resizable()
                     .foregroundColor(.header)

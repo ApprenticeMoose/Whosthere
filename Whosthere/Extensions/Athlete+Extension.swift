@@ -8,10 +8,10 @@
 import Foundation
 import CoreData
 
-extension AthleteEntity: AthleteBaseModel {
+extension AthleteMO: AthleteBaseModel {
     
-    static var all: NSFetchRequest<AthleteEntity> {
-        let request = AthleteEntity.fetchRequest()
+    static var all: NSFetchRequest<AthleteMO> {
+        let request = AthleteMO.fetchRequest()
         request.sortDescriptors = []
         return request
     }

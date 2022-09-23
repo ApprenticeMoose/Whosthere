@@ -38,6 +38,9 @@ final class AthleteEditorViewModel: ObservableObject {
             dataManager.delete(athlete: addedAthlete)
     }
 
+    func fetchAthletes() {
+        dataManager.fetchAthletes()
+    }
     
     func textIsAppropriate() -> Bool {
         if addedAthlete.firstName.count >= 2 && addedAthlete.lastName.count >= 1 {

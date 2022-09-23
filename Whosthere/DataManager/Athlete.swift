@@ -9,7 +9,7 @@ import SwiftUI
 
 /**
  This is the view-facing `Athlete` struct. Views should have no idea that this struct is
- backed up by a CoreData Managed Object: `AthleteEntity`. The `DataManager`
+ backed up by a CoreData Managed Object: `AthleteMO`. The `DataManager`
  handles keeping this in sync via `NSFetchedResultsControllerDelegate`.
  */
 struct Athlete: Identifiable, Hashable, Equatable {
@@ -31,7 +31,6 @@ struct Athlete: Identifiable, Hashable, Equatable {
     }
     
     static func ==(lhs: Athlete, rhs: Athlete) -> Bool {
-        return lhs.id == rhs.id
-        //&& lhs.firstName == rhs.firstName
+        return lhs.id == rhs.id && lhs.firstName == rhs.firstName
     }
 }
