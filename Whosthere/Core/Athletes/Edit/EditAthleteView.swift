@@ -17,7 +17,7 @@ struct EditAthleteView: View {
     @Environment(\.presentationMode) var presentationMode                           //For dismissing views
     @Environment(\.colorScheme) var colorScheme                                     //DarkMode
  
-    @ObservedObject var editVM: AthleteEditorViewModel                                //Accessing the variables for editing
+    @ObservedObject var editVM: EditAthleteVM                           //Accessing the variables for editing
 
     @EnvironmentObject var appState: AppState                                       //For Navigation
     @EnvironmentObject var tabDetail: TabDetailVM                                   //For TabBar hiding
@@ -39,7 +39,7 @@ struct EditAthleteView: View {
 //        self.context = context
 //        self.athlete = athlete
         
-        self.editVM = AthleteEditorViewModel(athlete: athlete, dataManager: dataManager)
+        self.editVM = EditAthleteVM(athlete: athlete, dataManager: dataManager)
         
         if editVM.addedAthlete.gender == "male" {
             self._male = State(wrappedValue: true)

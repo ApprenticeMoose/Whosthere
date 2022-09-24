@@ -16,14 +16,12 @@ struct AddAthleteView: View {
     @Environment(\.colorScheme) var colorScheme                                 //DarkMode
 
     
-    @ObservedObject var addVM: AthleteEditorViewModel                              //Accessing the variables for adding
+    @ObservedObject var addVM: AddAthleteVM                              //Accessing the variables for adding
     
-    init(athlete: Athlete?, dataManager: DataManager = DataManager.shared) {
-        self.addVM = AthleteEditorViewModel(athlete: athlete, dataManager: dataManager)
+    init(dataManager: DataManager = DataManager.shared) {
+        self.addVM = AddAthleteVM(dataManager: dataManager)
     }
-
-
-                                                                                
+                                                                         
     @State var show: Bool = false                                               //Bool for showing Birthdaypicker
     @State var buttonFarbe : Color = .orangeAccentColor                         //Color for Button
 
@@ -126,23 +124,6 @@ struct AddAthleteView: View {
 }
 
     var profilePicture: some View {
-//        ZStack {
-//            if let image = addVM.image {
-//                ZStack{
-//                    Rectangle()
-//                        .frame(minWidth: 100, maxWidth: 100, minHeight: 100, maxHeight: 100)
-//                        .foregroundColor(Color.textUnchangedColor)
-//                        .clipShape(Circle())
-//                        .padding()
-//
-//                    Image(uiImage: image)
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(minWidth: 0, maxWidth: 96, minHeight: 0, maxHeight: 96)
-//                        .clipShape(Circle())
-//                        .padding()
-//                    }
-//            } else {
 
             ZStack {
 
@@ -182,43 +163,6 @@ struct AddAthleteView: View {
                     .offset(x: 40, y: -30)
                 }
           }
-    
-    //PhotoPicker Stuff
-    /*.onTapGesture {
-            addVM.showActionSheet.toggle()
-        }
-        //.actionSheet(isPresented: $addVM.showActionSheet, content: getActionSheet)
-        .sheet(isPresented: $addVM.showPicker) {
-            ImagePicker(sourceType: addVM.source == .library ? .photoLibrary : .camera, selectedImage: $addVM.image)
-                .ignoresSafeArea()
-        }
-        .confirmationDialog("", isPresented: $addVM.showActionSheet, titleVisibility: .hidden) {
-                         Button("Camera") {
-                         }
-                         Button("Library") {
-                         }
-                         Button("Cancel", role: .cancel) {
-                         }
-                    }
-
-
-}
-
-    func getActionSheet() -> ActionSheet {
-
-        let cameraButton: ActionSheet.Button = .default(Text("Camera")) {
-            addVM.source = .camera
-            addVM.showPhotoPicker()
-        }
-        let libraryButton: ActionSheet.Button = .default(Text("Library")) {
-            addVM.source = .library
-            addVM.showPhotoPicker()
-        }
-
-        let cancelButton: ActionSheet.Button = .cancel()
-
-        return ActionSheet(title: Text("How would you like to add the picture?"), buttons: [cameraButton, libraryButton, cancelButton])
-    }*/
 
     var addAthleteHeader: some View {
         HStack{

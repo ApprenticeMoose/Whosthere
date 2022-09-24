@@ -27,9 +27,9 @@ struct AthleteDetailView: View {
     @ObservedObject var detailVM: AthleteDetailVM
     
     
-    init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
-        self.detailVM = AthleteDetailVM(athlete: athlete, dataManager: dataManager)
-        print("Initializing Detail View for: \(String(describing: athlete.firstName))")
+    init(athleteIndex: Int, dataManager: DataManager = DataManager.shared) {
+        self.detailVM = AthleteDetailVM(athleteIndex: athleteIndex)
+        print("Initializing Detail View for: \(String(describing: detailVM.detailAthlete.firstName))")
     }
   
     
@@ -51,9 +51,7 @@ struct AthleteDetailView: View {
                     nameAndBirthday
                 
                 }
-                .onAppear {
-                    detailVM.fetchAthletes()
-                }
+                
                 
                     Spacer()
                 

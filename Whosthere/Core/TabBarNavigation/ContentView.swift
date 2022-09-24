@@ -23,7 +23,7 @@ struct ContentView: View {
                 case .statistics:
                     StatisticsOverview()
                 case .athletes:
-                    AthletesListView()
+                    AthleteListView()
                 case .settings:
                     SettingsOverView()
                 }

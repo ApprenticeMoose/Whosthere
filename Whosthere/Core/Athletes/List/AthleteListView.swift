@@ -9,7 +9,7 @@ import SwiftUI
 import NavigationBackport
 
 enum Route: Hashable {
-    case detail(Athlete)
+    case detail(Int)
     case edit(Athlete)
     //case test(AthleteViewModel)
 }
@@ -18,7 +18,7 @@ class AppState: ObservableObject {
 }
 
 
-struct AthletesListView: View {
+struct AthleteListView: View {
     
     //MARK: -Properties
     
@@ -31,7 +31,7 @@ struct AthletesListView: View {
     @EnvironmentObject var appState: AppState                               //For Navigation
     
     
-    @StateObject var athletesListVM = AthleteListVM()               //Accessing the athletes
+    @StateObject var athletesListVM = AthleteListVM()                       //Accessing the athletes
 
     //MARK: -Body
     
@@ -45,7 +45,7 @@ struct AthletesListView: View {
                         athleteListButtonRow
                             .fullScreenCover(isPresented: $showAddSheet,
                                              //content: {AddAthleteView(athlete: nil, vm: AddAthleteViewModel(context: viewContext))})
-                                             content: {AddAthleteView(athlete: nil)})
+                                             content: {AddAthleteView()})
                         
                     }
 
@@ -62,7 +62,7 @@ struct AthletesListView: View {
                                 ForEach(enumerated, id: \.1) { index, athlete in
                                 
                             
-                                    NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
+                                    NBNavigationLink(value: Route.detail(index), label: {RowView(athlete: athlete)})
                                   
                                     if index != enumerated.count - 1 {
                                         Seperator()
@@ -85,8 +85,8 @@ struct AthletesListView: View {
                         
                         .nbNavigationDestination(for: Route.self) { route in
                                     switch route {
-                                    case let .detail(athlete):
-                                        AthleteDetailView(athlete: athlete)
+                                    case let .detail(index):
+                                        AthleteDetailView(athleteIndex: index)
                                             
                                            
                                             //.onDisappear(perform: {self.refreshID = UUID()})

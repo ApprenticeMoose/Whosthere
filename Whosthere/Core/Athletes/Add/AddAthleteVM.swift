@@ -1,16 +1,17 @@
 //
-//  AthleteEditorViewModel.swift
+//  AddAthleteVM.swift
 //  Whosthere
 //
-//  Created by Moose on 06.09.22.
+//  Created by Moose on 23.09.22.
 //
+
 import SwiftUI
 import Combine
 
 @MainActor
-final class AthleteEditorViewModel: ObservableObject {
+final class AddAthleteVM: ObservableObject {
     
-    @Published var addedAthlete: Athlete
+    @Published var addedAthlete: Athlete = Athlete()
     
     @Published var birthYear = Calendar.current.component(.year, from: Date())
     
@@ -18,12 +19,7 @@ final class AthleteEditorViewModel: ObservableObject {
     
     var anyCancellable: AnyCancellable? = nil
     
-    init(athlete: Athlete?, dataManager: DataManager = DataManager.shared) {
-        if let athlete = athlete {
-            self.addedAthlete = athlete
-        } else {
-            self.addedAthlete = Athlete()
-        }
+    init(dataManager: DataManager = DataManager.shared) {
         self.dataManager = dataManager
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
@@ -32,14 +28,6 @@ final class AthleteEditorViewModel: ObservableObject {
     
     func saveAthlete() {
         dataManager.updateAndSave(athlete: addedAthlete)
-    }
-    
-    func deleteAthlete() {
-            dataManager.delete(athlete: addedAthlete)
-    }
-
-    func fetchAthletes() {
-        dataManager.fetchAthletes()
     }
     
     func textIsAppropriate() -> Bool {

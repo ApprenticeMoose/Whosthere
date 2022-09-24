@@ -11,22 +11,23 @@ import Combine
 @MainActor
 final class AthleteDetailVM: ObservableObject {
     
-    @Published var detailAthlete: Athlete
+    //Need to pull it from the titles array from the datamanger as a array[whateverid]
+    @Published var detailIndex: Int
     
     @Published private var dataManager: DataManager
     
     var anyCancellable: AnyCancellable? = nil
     
-    init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
-        self.detailAthlete = athlete
+    init(athleteIndex: Int, dataManager: DataManager = DataManager.shared) {
+        self.detailIndex = athleteIndex
         self.dataManager = dataManager
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
         }
     }
     
-    func fetchAthletes() {
-        dataManager.fetchAthletes()
+    var detailAthlete: Athlete {
+        dataManager.athletesArray[detailIndex]
     }
     
 }
