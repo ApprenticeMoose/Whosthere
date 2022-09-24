@@ -30,4 +30,8 @@ final class AthleteDetailVM: ObservableObject {
         dataManager.athletesArray[detailIndex]
     }
     
+    func getSessions(with id: UUID?) -> Session? {
+        guard let id = id else { return nil }
+        return dataManager.getSession(with: id)
+    }
 }

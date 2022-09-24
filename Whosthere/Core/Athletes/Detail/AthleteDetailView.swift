@@ -52,6 +52,15 @@ struct AthleteDetailView: View {
                 
                 }
                 
+                VStack {
+                    ForEach(detailVM.detailAthlete.sessionIDs, id: \.self) {sessionID in
+                        if let session = detailVM.getSessions(with: sessionID) {
+                            Text("\(session.date)")
+                        }
+                    }
+                }
+                .padding()
+                
                 
                     Spacer()
                 

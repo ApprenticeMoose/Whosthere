@@ -18,8 +18,8 @@ struct ContentView: View {
             
                 switch selectedTab {
                 case .sessions:
-                    Text("Hello World")
-                    //SessionsHomeView(vmA: AthletesListViewModel(context: viewContext), vmS: SessionsViewModel(context: viewContext))
+                    
+                    SessionsHomeView(datesVM: DatesViewModel())
                 case .statistics:
                     StatisticsOverview()
                 case .athletes:
