@@ -88,22 +88,22 @@ struct SessionsHomeView: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.bottom)
+                //.padding(.bottom)
             }//scrollview
             
-            Spacer()
-            
-            Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
-            Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
-            Text("\(datesVM.scrollToIndex)")
             
             ScrollView(showsIndicators: false){
-                LazyVStack{
+                LazyVStack(spacing: 20){
                     ForEach(sessionsViewModel.sessions, id: \.self) { session in
-                        Text("\(session.date)")
+                        SessionHomeCard(session: session, sessionVM: sessionsViewModel)
                     }
                 }
+                Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
+                Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
+                Text("\(datesVM.scrollToIndex)")
             }
+            
+            
             
             Spacer()
         } //VStack
@@ -270,7 +270,148 @@ struct DateSelectionButton: View {
     }
 }
 
+struct SessionHomeCard: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    let session: Session
+    
+    @ObservedObject var sessionVM: SessionHomeVM
+    
+    func getInitials(firstName: String, lastName: String) -> String {
+        let firstLetter = firstName.first?.uppercased() ?? ""
+        let lastLetter = lastName.first?.uppercased() ?? ""
+        return firstLetter + lastLetter
+    }
+    
+    var body: some View {
+        
+        /* if session.date.formatted(.dateTime
+        .month(.wide)
+        .day()) 
+        */
+        
+        VStack(spacing: 6){
+            HStack{
+                Text(session.date.formatDateWeekday() + ", " + session.date.formatted(
+                    .dateTime
+                    .month(.wide)
+                    .day()
+                ))
+                    .fontWeight(.medium)
+                    .foregroundColor(.cardGrey1)
+                    .padding(.horizontal, 22)
+                Spacer()
+            }
+            
+            ZStack{
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundColor(.accentMidGround)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 94)
+                    .padding(.horizontal)
+                VStack(spacing: 6){
+                    HStack{
+                        //clock time and 3point button
+                        HStack(spacing: 6){
+                        Image(systemName: "clock")
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                            Text(session.date, style: .time)
+                            .fontWeight(.semibold)
+                        }
+                        .padding(.horizontal, 18)
+                        Spacer()
+                        Button {
+                            //open little menu to dublicate delete etc
+                        } label: {
+                            HStack(spacing: 3){
+                                Circle()
+                                    .frame(width: 5, height: 5)
+                                    .foregroundColor(.cardGrey1)
+                                Circle()
+                                    .frame(width: 5, height: 5)
+                                    .foregroundColor(.cardGrey1)
+                                Circle()
+                                    .frame(width: 5, height: 5)
+                                    .foregroundColor(.cardGrey1)
+                            }
+                            .padding(.horizontal)
+                            .offset(y: -4)
+                        }
 
+                        
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 6)
+                    .padding(.bottom, 2)
+                    
+                    //Line
+                    HStack{
+                    Rectangle()
+                            .frame(width: 245, height: 1.5, alignment: .center)
+                        .foregroundColor(colorScheme == .light ? .cardGrey1.opacity(0.35) : .header.opacity(0.15))
+                        .padding(.horizontal, 26)
+                    Spacer()
+                    }
+                    HStack{
+                        //Athletes
+                        HStack(spacing: 12){
+                            if session.athleteIDs.isEmpty {
+                                VStack(spacing: 2){
+                                    ZStack{
+                                    Circle()
+                                        .frame(width: 26, height: 26)
+                                        .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                    Image(systemName: "person.badge.plus")
+                                            .resizable()
+                                            .frame(width: 12, height: 12)
+                                            .font(.caption2)
+                                            .foregroundColor(.cardProfileLetter)
+                                            .offset(x: -1)
+                                    }
+                                    
+                                    Text("Add")
+                                        .font(.caption2)
+                                        .foregroundColor(.cardText)
+                                }
+                            } else {
+                                ForEach(session.athleteIDs, id: \.self) {athleteID in
+                                    if let athlete = sessionVM.getAthletes(with: athleteID){
+                                        VStack(spacing: 2){
+                                            ZStack{
+                                            Circle()
+                                                .frame(width: 26, height: 26)
+                                                .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                            Text(getInitials(firstName: athlete.firstName, lastName: athlete.lastName))
+                                                    .font(.caption2)
+                                                    .fontWeight(.semibold)
+                                                    .foregroundColor(.cardProfileLetter)
+                                            }
+                                            Text(athlete.firstName)
+                                                .font(.caption2)
+                                                .foregroundColor(.cardText)
+                                        }
+
+                                    }
+                                        
+                                    
+                                }
+                            }
+                            
+                        
+                    }
+                        .padding(.horizontal, 34)
+                        Spacer()
+                    }
+                    
+                }
+            }
+            
+        }
+        
+    }
+}
 //struct SessionsHomeView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        SessionsHomeView()

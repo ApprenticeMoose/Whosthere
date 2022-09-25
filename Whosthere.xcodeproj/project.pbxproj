@@ -10,7 +10,7 @@
 		BC3212F62750EFA7001A689E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3212F52750EFA6001A689E /* Color.swift */; };
 		BC35BFB728DE5F99005555BE /* AddAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */; };
 		BC35BFB928DE63C6005555BE /* EditAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */; };
-		BC35BFBB28DF86DE005555BE /* SessionHomeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFBA28DF86DE005555BE /* SessionHomeCard.swift */; };
+		BC35BFBD28DFBB2E005555BE /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFBC28DFBB2E005555BE /* Date.swift */; };
 		BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */; };
 		BC3F25512760D1A800465551 /* FrameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F25502760D1A800465551 /* FrameButton.swift */; };
 		BC3F2573276C991300465551 /* BigAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F2572276C991300465551 /* BigAddButton.swift */; };
@@ -49,7 +49,7 @@
 		BC3212F52750EFA6001A689E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAthleteVM.swift; sourceTree = "<group>"; };
 		BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteVM.swift; sourceTree = "<group>"; };
-		BC35BFBA28DF86DE005555BE /* SessionHomeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHomeCard.swift; sourceTree = "<group>"; };
+		BC35BFBC28DFBB2E005555BE /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailView.swift; sourceTree = "<group>"; };
 		BC3F25502760D1A800465551 /* FrameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameButton.swift; sourceTree = "<group>"; };
 		BC3F2572276C991300465551 /* BigAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigAddButton.swift; sourceTree = "<group>"; };
@@ -247,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				BC3212F52750EFA6001A689E /* Color.swift */,
+				BC35BFBC28DFBB2E005555BE /* Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -286,7 +287,6 @@
 				BC78F34D289C9B3E00F6BC34 /* SessionsHomeView.swift */,
 				BCD9654828B916C3008DEE7F /* DatesViewModel.swift */,
 				BC6F246B28C639E800679360 /* SessionHomeVM.swift */,
-				BC35BFBA28DF86DE005555BE /* SessionHomeCard.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -371,6 +371,7 @@
 				BC35BFB728DE5F99005555BE /* AddAthleteVM.swift in Sources */,
 				BC78F347289C7AFE00F6BC34 /* TabModel.swift in Sources */,
 				BC88920427B14F6200A00047 /* MediumButton.swift in Sources */,
+				BC35BFBD28DFBB2E005555BE /* Date.swift in Sources */,
 				BC78F34A289C814300F6BC34 /* ContentView.swift in Sources */,
 				BC6F246628C62EEA00679360 /* AddSessionVM.swift in Sources */,
 				BC78F345289C78BA00F6BC34 /* TabBarView.swift in Sources */,
@@ -391,7 +392,6 @@
 				BCD2CAAC28C766AF0017CCFB /* PersistentStore.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 				BCD2CABF28C9D0B70017CCFB /* AthleteDetailVM.swift in Sources */,
-				BC35BFBB28DF86DE005555BE /* SessionHomeCard.swift in Sources */,
 				BC78F352289C9CF000F6BC34 /* SettingsOverView.swift in Sources */,
 				BCD2CAB028C76F290017CCFB /* Session.swift in Sources */,
 				BC6F246C28C639E800679360 /* SessionHomeVM.swift in Sources */,

@@ -29,4 +29,9 @@ final class SessionHomeVM: ObservableObject {
     func fetchSessions() {
         dataManager.fetchSessions()
     }
+    
+    func getAthletes(with id: UUID?) -> Athlete? {
+        guard let id = id else {return nil}
+        return dataManager.getAthlete(with: id)
+    }
 }
