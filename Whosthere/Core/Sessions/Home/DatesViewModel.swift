@@ -73,7 +73,7 @@ class DatesViewModel: ObservableObject {
     }
     
     //function to convert Dates into Strings to be used in text etc with formatting via "dd", "MMM", etc
-    func extractDate(date: Date, format: String) -> String{
+    func extractDate(date: Date, format: String) -> String {
         let formatter = DateFormatter()
         
         formatter.dateFormat = format

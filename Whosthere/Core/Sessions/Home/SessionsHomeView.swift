@@ -12,6 +12,11 @@ struct SessionsHomeView: View {
     @ObservedObject var datesVM: DatesViewModel
     @StateObject var sessionsViewModel = SessionHomeVM()
     
+    var selectedSessionsArray: [Session] {
+        sessionsViewModel.sessions.filter { session in
+            return datesVM.extractWeek(date: session.date) == datesVM.extractWeek(date: datesVM.selectedDay)
+        }
+    }
     
     //MARK: - Variables for DateSelection
     
@@ -24,6 +29,13 @@ struct SessionsHomeView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
         return formatter
+    }
+    //with set i can make sure i get all the date headlines...now i need to extract the day without time from the dates given ☑️
+    //now it is giving it out as a string in "27. Sep" Format -> need to give it our as date without time
+    func checkIfArrayIsUnique(array: [Session]) -> Set<Date> {
+        //let sessionDates = array.map({ datesVM.extractDate(date: $0.date, format: "EEEE, dd. MMMM")  })
+        let sessionDates = array.map({ $0.date.onlyDate })
+        return Set(sessionDates)
     }
     
     //MARK: - Body
@@ -78,6 +90,7 @@ struct SessionsHomeView: View {
                         .onChange(of: datesVM.scrollToIndex) { value in
                             withAnimation(.spring()) {
                                 proxy.scrollTo(value, anchor: .center)
+                                print(checkIfArrayIsUnique(array: selectedSessionsArray))
                             }
                         }
                         
@@ -94,10 +107,35 @@ struct SessionsHomeView: View {
             
             ScrollView(showsIndicators: false){
                 LazyVStack(spacing: 20){
-                    ForEach(sessionsViewModel.sessions, id: \.self) { session in
+                    //ForEach(sessionsViewModel.sessions.date.getWeek() == selectedDay.getWeek())
+                    //ForEach(sessionsViewModel.sessions, id: \.self) { session in
+//                    ForEach(sessionsViewModel.sessions, id: \.self) { session in
+//                        if datesVM.extractWeek(date: session.date) == datesVM.extractWeek(date: datesVM.selectedDay) {
+//
+//
+//                        SessionHomeCard(session: session, sessionVM: sessionsViewModel)
+//                        }
+//                    }
+                    
+                    /*
+                     
+                     ForEach(checkIfArrayIsUnique(array: selectedSessionsArray), id: \.self) { day in
+                        Text(day)
+                     
+                        ForEach(selectedSessionsArray, id: \.self) { session in
+                     if day == session.date.onlyDate {
+                     SessionHomeCard...without header
+                     }
+                     }
+                     }
+                     */
+                    ForEach(selectedSessionsArray, id: \.self) { session in
+                        
                         SessionHomeCard(session: session, sessionVM: sessionsViewModel)
+                        
                     }
                 }
+                
                 Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
                 Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
                 Text("\(datesVM.scrollToIndex)")
@@ -288,7 +326,7 @@ struct SessionHomeCard: View {
         
         /* if session.date.formatted(.dateTime
         .month(.wide)
-        .day()) 
+        .day())
         */
         
         VStack(spacing: 6){
