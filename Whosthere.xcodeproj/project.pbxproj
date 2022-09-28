@@ -13,7 +13,6 @@
 		BC35BFBD28DFBB2E005555BE /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFBC28DFBB2E005555BE /* Date.swift */; };
 		BC35BFC028E25C4B005555BE /* EditSessionVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFBF28E25C4B005555BE /* EditSessionVM.swift */; };
 		BC35BFC228E25C5F005555BE /* EditSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFC128E25C5F005555BE /* EditSessionView.swift */; };
-		BC35BFC428E3E6B0005555BE /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFC328E3E6B0005555BE /* Dictionary.swift */; };
 		BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */; };
 		BC3F25512760D1A800465551 /* FrameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F25502760D1A800465551 /* FrameButton.swift */; };
 		BC3F2573276C991300465551 /* BigAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F2572276C991300465551 /* BigAddButton.swift */; };
@@ -55,7 +54,6 @@
 		BC35BFBC28DFBB2E005555BE /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		BC35BFBF28E25C4B005555BE /* EditSessionVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSessionVM.swift; sourceTree = "<group>"; };
 		BC35BFC128E25C5F005555BE /* EditSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSessionView.swift; sourceTree = "<group>"; };
-		BC35BFC328E3E6B0005555BE /* Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailView.swift; sourceTree = "<group>"; };
 		BC3F25502760D1A800465551 /* FrameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameButton.swift; sourceTree = "<group>"; };
 		BC3F2572276C991300465551 /* BigAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigAddButton.swift; sourceTree = "<group>"; };
@@ -264,7 +262,6 @@
 			children = (
 				BC3212F52750EFA6001A689E /* Color.swift */,
 				BC35BFBC28DFBB2E005555BE /* Date.swift */,
-				BC35BFC328E3E6B0005555BE /* Dictionary.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -396,7 +393,6 @@
 				BCD9654928B916C3008DEE7F /* DatesVM.swift in Sources */,
 				BC78F34C289C8B3E00F6BC34 /* TabDetailVM.swift in Sources */,
 				BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */,
-				BC35BFC428E3E6B0005555BE /* Dictionary.swift in Sources */,
 				BC3212F62750EFA7001A689E /* Color.swift in Sources */,
 				BCA3A781275BB2E6003D5F1C /* AthleteListView.swift in Sources */,
 				BC35BFC228E25C5F005555BE /* EditSessionView.swift in Sources */,
