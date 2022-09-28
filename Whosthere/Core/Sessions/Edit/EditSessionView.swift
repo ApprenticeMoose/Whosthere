@@ -1,25 +1,32 @@
 //
-//  AddSessionView.swift
+//  EditSessionView.swift
 //  Whosthere
 //
-//  Created by Moose on 30.08.22.
+//  Created by Moose on 27.09.22.
 //
 
-import SwiftUI
 
-struct AddSessionView: View {
+import SwiftUI
+import NavigationBackport
+
+struct EditSessionView: View {
         
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     
-    @State var todayIsSelected = true
-    @State var tomorrowIsSelected = false
+    @State var todayIsSelected: Bool = false
+    @State var tomorrowIsSelected: Bool = false
     
     @State var showTimePicker: Bool = false
     @State var showDatePicker: Bool = false
         
-    @ObservedObject var addSessionVM: AddSessionVM
+    @ObservedObject var editSessionVM: EditSessionVM
     @ObservedObject var datesVM: DatesVM
+    
+    var athleteArray = [UUID]()
+    
+    @EnvironmentObject var appState: AppState                                       //For Navigation
+    @EnvironmentObject var tabDetail: TabDetailVM                                   //For Tabbar hiding
     
     let preference = [
         GridItem(.flexible()),
@@ -28,9 +35,33 @@ struct AddSessionView: View {
         GridItem(.flexible())
     ]
     
-    init(dataManager: DataManager = DataManager.shared) {
-        self.addSessionVM = AddSessionVM(dataManager: dataManager)
+    init(session: Session?, dataManager: DataManager = DataManager.shared) {
+        self.editSessionVM = EditSessionVM(session: session, dataManager: dataManager)
         self.datesVM = DatesVM()
+        
+        if editSessionVM.sessionDate == editSessionVM.mergeTimeAndDate(time: editSessionVM.sessionTime, date: Date()) {
+            self._todayIsSelected = State(wrappedValue: true)
+        } else if editSessionVM.sessionDate == editSessionVM.mergeTimeAndDate(time: editSessionVM.sessionTime, date: datesVM.setDateToTomorrow()) {
+            self._tomorrowIsSelected = State(wrappedValue: true) }
+        
+       //For initializing the checkmarks
+            //creating an array with the IDs of all the athletes so the can later be compared
+        for athlete in editSessionVM.athletes {
+            athleteArray.append(athlete.id) }
+        
+            //creating dictionary with key of index and value of id, exactly like the tuple used to select the checkmarks in the view
+        let arrayOfAthletes = Dictionary(uniqueKeysWithValues: zip(athleteArray.indices, athleteArray))
+        
+            //running through all the athletes and if the session has an athlete, the key is added to the selectedIndicies and that triggers the checkmark
+        if let session = session {
+        for (key, value) in arrayOfAthletes {
+            for id in session.athleteIDs {
+                if id == value {
+                    editSessionVM.selectedIndices.insert(key)
+                }
+            }
+        }
+    }
     }
 
     var body: some View {
@@ -61,7 +92,7 @@ struct AddSessionView: View {
                                 .cornerRadius(10)
                             
                             
-                            Text("\(datesVM.extractDate(date: datesVM.roundMinutesDown(date: addSessionVM.sessionTime), format: "HH:mm"))")
+                            Text("\(datesVM.extractDate(date: datesVM.roundMinutesDown(date: editSessionVM.sessionTime), format: "HH:mm"))")
                             //.font(.title3)
                                 .fontWeight(.semibold)
                             
@@ -73,6 +104,7 @@ struct AddSessionView: View {
                             //show time selection
                             showTimePicker.toggle()
                         }
+                        
                         
                         //ZStack that has padding but is clear so it is just for view formatting
                         ZStack {
@@ -96,6 +128,7 @@ struct AddSessionView: View {
                 
        //Date
                 
+    //FIXME: - Need to initialize the selected time and date values with the session at beginnning so stuff gets displayed
                 VStack (alignment: .leading, spacing: 0){
                     
                     Text("Date")
@@ -131,7 +164,7 @@ struct AddSessionView: View {
                         
                         .onTapGesture {
                             //show time selection
-                            addSessionVM.sessionDate = Date()
+                            editSessionVM.sessionDate = Date()
                             todayIsSelected = true
                             tomorrowIsSelected = false
                         }
@@ -159,7 +192,7 @@ struct AddSessionView: View {
                         .padding(.horizontal, 8)
                         .onTapGesture {
                             //show time selection
-                            addSessionVM.sessionDate = datesVM.setDateToTomorrow()
+                            editSessionVM.sessionDate = datesVM.setDateToTomorrow()
                             todayIsSelected = false
                             tomorrowIsSelected = true
                         }
@@ -173,7 +206,7 @@ struct AddSessionView: View {
                                 .frame(width: 105, height: 40)
                                 .cornerRadius(10)
                             
-                            Text("\(datesVM.extractDate(date: addSessionVM.sessionDate, format: "dd. MMM"))")
+                            Text("\(datesVM.extractDate(date: editSessionVM.sessionDate, format: "dd. MMM"))")
                                 .fontWeight(.semibold)
                         }
                         //.padding()
@@ -195,12 +228,13 @@ struct AddSessionView: View {
                             .fontWeight(.semibold)
                             .padding(.horizontal, 30)
                             .offset(y: 6)
-
                         
+                        
+
                         VStack {
                                     LazyVGrid(columns: preference, spacing: 16) {
                                         
-                                        let enumerated = Array(zip(addSessionVM.athletes.indices, addSessionVM.athletes))
+                                        let enumerated = Array(zip(editSessionVM.athletes.indices, editSessionVM.athletes))
                                         ForEach(enumerated, id: \.1) { index, athlete in
                                             VStack{
                                                 ZStack{
@@ -213,108 +247,41 @@ struct AddSessionView: View {
                                                         .fontWeight(.semibold)
                                                         .foregroundColor(.cardProfileLetter)
                                                 }
-                                                .opacity(addSessionVM.selectedIndices.contains(index) ? 0.3 : 1.0)
+                                                .opacity(editSessionVM.selectedIndices.contains(index) ? 0.3 : 1.0)
                                                     Image(systemName: "checkmark")
                                                         .resizable()
                                                         .foregroundColor(.accentBigButton)
                                                         .frame(width: 21, height: 16, alignment: .center)
-                                                        .opacity(addSessionVM.selectedIndices.contains(index) ? 1.0 : 0.0)
+                                                        .opacity(editSessionVM.selectedIndices.contains(index) ? 1.0 : 0.0)
                                                 }
                                                
                                                 
                                                 Text("\(athlete.firstName)")
                                                     .font(.caption)
-                                                    .opacity(addSessionVM.selectedIndices.contains(index) ? 0.5 : 1.0)
+                                                    .opacity(editSessionVM.selectedIndices.contains(index) ? 0.5 : 1.0)
                                             }
                                             .onTapGesture {
-                                                if addSessionVM.selectedIndices.contains(index) {
-                                                   addSessionVM.selectedIndices.remove(index)
+                                                if editSessionVM.selectedIndices.contains(index) {
+                                                   editSessionVM.selectedIndices.remove(index)
                                                  } else {
-                                                   addSessionVM.selectedIndices.insert(index)
+                                                   editSessionVM.selectedIndices.insert(index)
                                                  }
-                                                addSessionVM.toggleAthlete(athlete: athlete)
-                                                print(addSessionVM.selectedIndices)
+                                                editSessionVM.toggleAthlete(athlete: athlete)
+                                                print(editSessionVM.selectedIndices)
                                             }
 
                                         }
                                     }
-                                    
-//                            LazyHStack() {
-//                                ForEach(athletesListVM.athletes.suffix(athletesListVM.athletes.count % 4), id: \.self) { athlete in
-//                                            VStack{
-//                                                Circle()
-//                                                    .frame(height: 45)
-//                                                Text("\(athlete.firstName)")
-//                                                    .font(.caption)
-//                                            }
-//                                        }
-//                                    }
-//                            .padding(.top, 8)
+
                                 }
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
                         .padding()
-                        
-                        
-//                            ZStack {
-//
-//
-//                                Rectangle()
-//                                    .background(Color.accentMidGround)
-//                                    .foregroundColor(.accentMidGround)
-//                                    .frame(maxWidth: .infinity)
-//                                    .cornerRadius(10)
-//                                    .padding()
-//
-//
-//
-//
-//
-//
-//
-//                            }
-                            
-                            
-                            
-                            //ZStack that has padding but is clear so it is just for view formatting
-//                            ZStack {
-//                                Rectangle()
-//                                    .foregroundColor(.clear)
-//                                    .frame(width: 105, height: 40)
-//                                    .cornerRadius(10)
-//                            }
-//                            .padding(.horizontal, 8)
-//                            //ZStack for View formatting
-//                            ZStack {
-//                                Rectangle()
-//                                    .foregroundColor(.clear)
-//                                    .frame(width: 105, height: 40)
-//                                    .cornerRadius(10)
-//                            }
-//                        //}
-//                        .padding()
+
                     }
                     .padding(.top)
                     
-                    
-             //AddSessionButton
-                    
-                    addSessionButton
-                    
-                    
-//                    Text("Sessions Date+Time: \(datesVM.mergeTimeAndDate(time: selectedTime, date: selectedDate))")
-//                        .padding()
-//                    Text("Today: \(String(todayIsSelected))")
-//                        .padding()
-//                    Text("Tomorrow: \(String(tomorrowIsSelected))")
-//                        .padding()
-//                    Text("Date: \(selectedDate)")
-//
-//
-//                    Text("Today: \(Date())")
-//
-//                    Text("Tomorrow: \(datesVM.setDateToTomorrow())")
-                        
+            
                     Spacer()
                 }
                 
@@ -334,7 +301,7 @@ struct AddSessionView: View {
                         .frame(maxWidth: 250)
                         .frame(height: 220, alignment: .center)
                         .padding(.horizontal)
-                        MyTimePicker(selection: $addSessionVM.sessionTime, minuteInterval: 5, displayedComponents: .hourAndMinute)
+                        MyTimePicker(selection: $editSessionVM.sessionTime, minuteInterval: 5, displayedComponents: .hourAndMinute)
                             .frame(maxWidth: 250)
                             .frame(height: 220, alignment: .center)
                     }
@@ -350,8 +317,8 @@ struct AddSessionView: View {
                         .edgesIgnoringSafeArea(.all)
                         .onTapGesture { showDatePicker.toggle() }
                     
-                       DateSeläctör(selectedDate: $addSessionVM.sessionDate)
-                        .onChange(of: addSessionVM.sessionDate) { date in
+                       DateSeläctör(selectedDate: $editSessionVM.sessionDate)
+                        .onChange(of: editSessionVM.sessionDate) { date in
                             if Calendar.current.isDateInToday(date) {
                                 todayIsSelected = true
                                 tomorrowIsSelected = false
@@ -380,7 +347,8 @@ struct AddSessionView: View {
     var addSessionHeader: some View {
         HStack{
             Button(action: {
-                presentationMode.wrappedValue.dismiss()
+                appState.path.removeLast()
+                tabDetail.showDetail = false
             }){
                 //NavigationButtonSystemName(iconName: "chevron.backward")
                 Image(systemName: "arrow.backward")
@@ -399,8 +367,9 @@ struct AddSessionView: View {
             Spacer(minLength: 0)
             
             Button(action: {
-                addSessionVM.saveSession()
-                presentationMode.wrappedValue.dismiss()
+                editSessionVM.saveSession()
+                appState.path.removeLast()
+                tabDetail.showDetail = false
                 
             }){
                 Image(systemName: "checkmark")
@@ -411,142 +380,8 @@ struct AddSessionView: View {
         }//HeaderHStackEnding
         .padding(.horizontal, 22)
         .padding(.top, 15)
+        .navigationBarHidden(true)
     }
     
-    var addSessionButton: some View{
-    Button(action: {
-        addSessionVM.saveSession()
-        presentationMode.wrappedValue.dismiss()
-        }) {
-        HStack{
-            Image(systemName: "plus")
-                .font(.system(size: 20))
-            Text("Add Session")
-                .font(.headline)
-        }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 55, maxHeight: 55)
-        .background(Color.accentBigButton)
-        .foregroundColor(Color.white)
-        .cornerRadius(10)
-        .padding()
-    }
-    .frame(maxWidth: .infinity, maxHeight: 100, alignment: .bottom)
-    }
+   
 }
-
-
-struct TimePicker: View {
-    @Binding var selectedTime: Date
-    @Environment(\.colorScheme) var colorScheme
-        
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 15)
-                .foregroundColor(colorScheme == .light ? .appBackground : .accentMidGround)
-                .frame(maxWidth: 250)
-                .frame(height: 220, alignment: .center)
-                .padding(.horizontal)
-            
-            VStack(alignment: .leading ,spacing: 10) {
-                
-                
-                DatePicker("", selection: $selectedTime, displayedComponents: .hourAndMinute)
-                    .datePickerStyle(.wheel)
-                    .colorScheme(colorScheme == .light ? .light : .dark)
-                    .accentColor(.accentSmallButton)
-                    .labelsHidden()
-                    .padding(.horizontal, 30)
-                    .padding(.top, 20)
-                    .frame(height: 300)
-                    
-                
-            }
-        }
-    }
-}
-
-struct MyTimePicker: UIViewRepresentable {
-
-    @Binding var selection: Date
-    let minuteInterval: Int
-    let displayedComponents: DatePickerComponents
-
-    func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
-    }
-
-    func makeUIView(context: UIViewRepresentableContext<MyTimePicker>) -> UIDatePicker {
-        let picker = UIDatePicker()
-        
-        // listen to changes coming from the date picker, and use them to update the state variable
-        picker.addTarget(context.coordinator, action: #selector(Coordinator.dateChanged), for: .valueChanged)
-        picker.preferredDatePickerStyle = .wheels
-        return picker
-    }
-
-    func updateUIView(_ picker: UIDatePicker, context: UIViewRepresentableContext<MyTimePicker>) {
-        picker.minuteInterval = minuteInterval
-        picker.date = selection
-
-        switch displayedComponents {
-        case .hourAndMinute:
-            picker.datePickerMode = .time
-        case .date:
-            picker.datePickerMode = .date
-        case [.hourAndMinute, .date]:
-            picker.datePickerMode = .dateAndTime
-        default:
-            break
-        }
-    }
-
-    class Coordinator {
-        let datePicker: MyTimePicker
-        init(_ datePicker: MyTimePicker) {
-            self.datePicker = datePicker
-        }
-
-        @objc func dateChanged(_ sender: UIDatePicker) {
-            datePicker.selection = sender.date
-        }
-    }
-}
-
-
-struct DateSeläctör: View {
-    @Binding var selectedDate: Date
-    @Environment(\.colorScheme) var colorScheme
-    
-    
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 15)
-                .foregroundColor(colorScheme == .light ? .appBackground : .accentMidGround)
-                .frame(maxWidth: .infinity)
-                .frame(height: 315, alignment: .center)
-                .padding(.horizontal)
-            
-            VStack(alignment: .leading ,spacing: 10) {
-                
-                
-                DatePicker("", selection: $selectedDate, displayedComponents: .date)
-                    .datePickerStyle(.graphical)
-                    .colorScheme(colorScheme == .light ? .light : .dark)
-                    .accentColor(.accentSmallButton)
-                    .labelsHidden()
-                    .padding(.horizontal, 30)
-                    .padding(.top, 20)
-                    .frame(height: 300)
-                
-            }
-        }
-    }
-}
-
-
-
-//struct AddSessionView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddSessionView(vm: AthletesListViewModel(context: NSManagedObjectContext))
-//    }
-//}

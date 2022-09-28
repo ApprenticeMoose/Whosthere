@@ -6,42 +6,40 @@
 //
 
 import SwiftUI
+import NavigationBackport
+
+
 
 struct SessionsHomeView: View {
     
-    @ObservedObject var datesVM: DatesViewModel
+    @EnvironmentObject var appState: AppState                               //For Navigation
+
+    @ObservedObject var datesVM: DatesVM
     @StateObject var sessionsViewModel = SessionHomeVM()
-    
     var selectedSessionsArray: [Session] {
         sessionsViewModel.sessions.filter { session in
             return datesVM.extractWeek(date: session.date) == datesVM.extractWeek(date: datesVM.selectedDay)
         }
-    }
+    } // has only the sessions in it, that are seleceted from week button -> makes it easier to work in displaying the sessions
     
     //MARK: - Variables for DateSelection
     
     @State var showCalendar: Bool = false
     @State var showAddSessionSheet: Bool = false
     
-    var calendar = Calendar.current
-    
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
         return formatter
     }
-
-    func checkIfArrayIsUnique(array: [Session]) -> Set<Date> {
-        let sessionDates = array.map({ $0.date.onlyDate })
-        return Set(sessionDates)
-    }
     
     //MARK: - Body
     
     var body: some View {
-        
+    NBNavigationStack(path: $appState.path) {                            //NavigationStack
         VStack(spacing: 18){
-            
+ 
+//Header and Buttons
             HStack{
                 ScreenHeaderTextOnly(screenTitle: "Sessions")
                 
@@ -51,13 +49,11 @@ struct SessionsHomeView: View {
                                      calendarShow: $showCalendar,
                                      addSessionShow: $showAddSessionSheet)
                                     .fullScreenCover(isPresented: $showAddSessionSheet,
-                                                     content: {AddSessionView()
-                                    })
-                
+                                                     content: { AddSessionView() })
             }
             
             
-            
+//Week Selector Button
             ScrollView(.horizontal, showsIndicators: false) {
                 ScrollViewReader { proxy in
                     
@@ -67,6 +63,7 @@ struct SessionsHomeView: View {
                             .onTapGesture {
                                 showCalendar.toggle()
                             }
+                    
                         ForEach(0..<datesVM.wholeWeeks.count, id: \.self) { i in
                             //
                             DateSelectionButton(checkIfSelected: datesVM.checkCurrentWeek(dates: datesVM.wholeWeeks[i], dateSelected: datesVM.selectedDay),
@@ -82,15 +79,14 @@ struct SessionsHomeView: View {
                                 datesVM.scrollToIndex = i
                             }
                         }
-                        .onAppear(perform: {
-                            proxy.scrollTo(datesVM.scrollToIndex, anchor: .center)
-                        })
-                        .onChange(of: datesVM.scrollToIndex) { value in
-                            withAnimation(.spring()) {
-                                proxy.scrollTo(value, anchor: .center)
-                                print(checkIfArrayIsUnique(array: selectedSessionsArray))
-                            }
-                        }
+                    .onAppear(perform: {
+                        proxy.scrollTo(datesVM.scrollToIndex, anchor: .center)
+                    })
+                .onChange(of: datesVM.scrollToIndex) { value in
+                    withAnimation(.spring()) {
+                        proxy.scrollTo(value, anchor: .center)
+                    }
+                }
                         
                         SmallCalendarButton()
                             .onTapGesture {
@@ -102,33 +98,50 @@ struct SessionsHomeView: View {
                 //.padding(.bottom)
             }//scrollview
             
-            
+ //Sessions displayed for
             ScrollView(showsIndicators: false){
                 LazyVStack(spacing: 20){
-                    ForEach(Array(checkIfArrayIsUnique(array: selectedSessionsArray)).sorted(by: { $0 < $1 }), id: \.self) { day in
+                    ForEach(Array(sessionsViewModel.checkIfArrayIsUnique(array: selectedSessionsArray)).sorted(by: { $0 < $1 }), id: \.self) { day in
                         
                         VStack(spacing: 6){
                         SessionHomeCardHeadline(date: day)
                             ForEach(selectedSessionsArray, id: \.self) { session in
                                 if day == session.date.onlyDate {
-                                    SessionHomeCard(session: session, sessionVM: SessionHomeVM())
+                                    
+                                    NBNavigationLink(value: Route.editSession(session), label: {SessionHomeCard(session: session, sessionVM: SessionHomeVM())}
+                                    )
                                 }
                             }
                         }
                     }
                 }
-                
-//                Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
-//                Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
-//                Text("\(datesVM.scrollToIndex)")
+                /*
+                 Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
+                 Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
+                 Text("\(datesVM.scrollToIndex)")
+                 */// check the week and day selected form row of week buttons
+                Rectangle()
+                    .frame(height: 50)
+                    .foregroundColor(.clear)
             }
-            
-            
-            
+            .nbNavigationDestination(for: Route.self) { route in
+                        switch route {
+                        case let .detail(index):
+                            AthleteDetailView(athleteIndex: index)
+                                
+                        case let .edit(athlete):
+                            EditAthleteView(athlete: athlete,
+                                            goBackToRoot: { appState.path.removeLast(appState.path.count)})
+                          
+                        case let .editSession(session):
+                            EditSessionView(session: session)
+                        }
+                    }
+
             Spacer()
+            
         } //VStack
-        .background(Color.appBackground
-            .edgesIgnoringSafeArea(.all))
+        .background(Color.appBackground.edgesIgnoringSafeArea(.all))
         
         
         ZStack{
@@ -144,13 +157,12 @@ struct SessionsHomeView: View {
                         datesVM.wholeWeeks.removeAll()
                         datesVM.fetchAllDays()
                         datesVM.scrollToIndex = 3
-                        
-                    }
+                }
             }
         }
         .opacity(self.showCalendar ? 1 : 0).animation(.easeIn, value: showCalendar)
+        }//Navigation
     }//body
-    
 }//StructEnd
 
 
@@ -188,19 +200,22 @@ struct sessionsTopButtonRow: View {
         }//HStackButtonsEnd
         .padding(.horizontal, 22)
         .padding(.top, 20)
+        .navigationBarHidden(true)
     }
 }
+
+//----------------------------------------------
 
 struct PopoverCalendar: View {
     @Binding var selectedDate: Date
     @Binding var show: Bool
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var sessionsVM: DatesViewModel
+    @ObservedObject var sessionsVM: DatesVM
     
     init(selectedDate: Binding<Date>, show: Binding<Bool>) {
         self._selectedDate = selectedDate
         self._show = show
-        self.sessionsVM = DatesViewModel()
+        self.sessionsVM = DatesVM()
     }
     
     var body: some View {
@@ -222,11 +237,12 @@ struct PopoverCalendar: View {
                     .padding(.horizontal, 30)
                     .padding(.top, 20)
                     .frame(height: 300)
-                
             }
         }
     }
 }
+
+//----------------------------------------------
 
 struct SmallCalendarButton: View {
     
@@ -241,6 +257,7 @@ struct SmallCalendarButton: View {
     }
 }
 
+//----------------------------------------------
 
 struct DateSelectionButton: View {
     var checkIfSelected: Bool
@@ -290,6 +307,8 @@ struct DateSelectionButton: View {
     }
 }
 
+//----------------------------------------------
+
 struct SessionHomeCardHeadline: View {
     let date: Date
     
@@ -308,19 +327,14 @@ struct SessionHomeCardHeadline: View {
     }
 }
 
+//----------------------------------------------
+
 struct SessionHomeCard: View {
     
     @Environment(\.colorScheme) var colorScheme
     
     let session: Session
-    
     @ObservedObject var sessionVM: SessionHomeVM
-    
-    func getInitials(firstName: String, lastName: String) -> String {
-        let firstLetter = firstName.first?.uppercased() ?? ""
-        let lastLetter = lastName.first?.uppercased() ?? ""
-        return firstLetter + lastLetter
-    }
     
     var body: some View {
         
@@ -424,5 +438,12 @@ struct SessionHomeCard: View {
             }
         }
     }
+    
+    func getInitials(firstName: String, lastName: String) -> String {
+        let firstLetter = firstName.first?.uppercased() ?? ""
+        let lastLetter = lastName.first?.uppercased() ?? ""
+        return firstLetter + lastLetter
+    }
+     
 }
 

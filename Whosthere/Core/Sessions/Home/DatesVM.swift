@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DatesViewModel: ObservableObject {
+class DatesVM: ObservableObject {
     
     //MARK: - Varibales for DateSelection
     
@@ -29,16 +29,14 @@ class DatesViewModel: ObservableObject {
     
     //MARK: - DateSelectionFunctions
     
-    //used to set the selectedday as the first day of the week, so the buttons can be painted correctly concerning their selected state...could need rework in future if the start date is supposed to be todays date and not the first date of the week
     func setButtonAtLaunch() {
             let current = calendar.dateInterval(of: .weekOfYear, for: Date())?.start ?? Date()
                 selectedDay = current
 
             return scrollToIndex = 3
 
-        }
-    
-    //fetching all days from todays date current week and 3 weeks in the past and future and putting it into the wholeWeeks Array as 7 Arrays each  containting 7 Days in an Array...used to set the Buttons to select the current week dynamically
+        }//used to set the selectedday as the first day of the week, so the buttons can be painted correctly concerning their selected state...could need rework in future if the start date is supposed to be todays date and not the first date of the week
+   
     func fetchAllDays() {
         let thisWeek = calendar.dateInterval(of: .weekOfYear, for: selectedDay)
         
@@ -64,24 +62,21 @@ class DatesViewModel: ObservableObject {
             }
         }
         
-    }
+    }  //fetching all days from todays date current week and 3 weeks in the past and future and putting it into the wholeWeeks Array as 7 Arrays each  containting 7 Days in an Array...used to set the Buttons to select the current week dynamically
     
-    //get the Int of the week from any date that is entered
     func extractWeek(date: Date) -> Int {
         let week = calendar.component(.weekOfYear, from: date)
         return week
-    }
+    } //get the Int of the week from any date that is entered
     
-    //function to convert Dates into Strings to be used in text etc with formatting via "dd", "MMM", etc
     func extractDate(date: Date, format: String) -> String {
         let formatter = DateFormatter()
         
         formatter.dateFormat = format
         
         return formatter.string(from: date)
-    }
+    }//function to convert Dates into Strings to be used in text etc with formatting via "dd", "MMM", etc
     
-    //run the array of weekdates through the for loop which singles out if the currently selected date is in this array
     func checkCurrentWeek(dates: [Date], dateSelected: Date) -> Bool {
         var isInWeek: Bool = false
         
@@ -91,7 +86,8 @@ class DatesViewModel: ObservableObject {
             }
         }
         return isInWeek
-    }
+    }//run the array of weekdates through the for loop which singles out if the currently selected date is in this array
+
     
     //MARK: - DatesInAddSessionFunctions
     

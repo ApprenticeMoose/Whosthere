@@ -33,4 +33,10 @@ struct Athlete: Identifiable, Hashable, Equatable {
     static func ==(lhs: Athlete, rhs: Athlete) -> Bool {
         return lhs.id == rhs.id && lhs.firstName == rhs.firstName
     }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(firstName)
+        hasher.combine(lastName)
+    }
 }

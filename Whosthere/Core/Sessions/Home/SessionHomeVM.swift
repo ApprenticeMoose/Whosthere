@@ -34,4 +34,9 @@ final class SessionHomeVM: ObservableObject {
         guard let id = id else {return nil}
         return dataManager.getAthlete(with: id)
     }
+    
+    func checkIfArrayIsUnique(array: [Session]) -> Set<Date> {
+        let sessionDates = array.map({ $0.date.onlyDate })
+        return Set(sessionDates)
+    } // for avoiding duplicate dates and being able to display them properly
 }

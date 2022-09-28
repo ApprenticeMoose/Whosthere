@@ -19,7 +19,7 @@ struct ContentView: View {
                 switch selectedTab {
                 case .sessions:
                     
-                    SessionsHomeView(datesVM: DatesViewModel())
+                    SessionsHomeView(datesVM: DatesVM())
                 case .statistics:
                     StatisticsOverview()
                 case .athletes:

@@ -11,6 +11,9 @@
 		BC35BFB728DE5F99005555BE /* AddAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */; };
 		BC35BFB928DE63C6005555BE /* EditAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */; };
 		BC35BFBD28DFBB2E005555BE /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFBC28DFBB2E005555BE /* Date.swift */; };
+		BC35BFC028E25C4B005555BE /* EditSessionVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFBF28E25C4B005555BE /* EditSessionVM.swift */; };
+		BC35BFC228E25C5F005555BE /* EditSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFC128E25C5F005555BE /* EditSessionView.swift */; };
+		BC35BFC428E3E6B0005555BE /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFC328E3E6B0005555BE /* Dictionary.swift */; };
 		BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */; };
 		BC3F25512760D1A800465551 /* FrameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F25502760D1A800465551 /* FrameButton.swift */; };
 		BC3F2573276C991300465551 /* BigAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3F2572276C991300465551 /* BigAddButton.swift */; };
@@ -42,7 +45,7 @@
 		BCD2CABB28C8AAF00017CCFB /* AthleteListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */; };
 		BCD2CABF28C9D0B70017CCFB /* AthleteDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */; };
 		BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */; };
-		BCD9654928B916C3008DEE7F /* DatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD9654828B916C3008DEE7F /* DatesViewModel.swift */; };
+		BCD9654928B916C3008DEE7F /* DatesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD9654828B916C3008DEE7F /* DatesVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +53,9 @@
 		BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAthleteVM.swift; sourceTree = "<group>"; };
 		BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteVM.swift; sourceTree = "<group>"; };
 		BC35BFBC28DFBB2E005555BE /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		BC35BFBF28E25C4B005555BE /* EditSessionVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSessionVM.swift; sourceTree = "<group>"; };
+		BC35BFC128E25C5F005555BE /* EditSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSessionView.swift; sourceTree = "<group>"; };
+		BC35BFC328E3E6B0005555BE /* Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailView.swift; sourceTree = "<group>"; };
 		BC3F25502760D1A800465551 /* FrameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameButton.swift; sourceTree = "<group>"; };
 		BC3F2572276C991300465551 /* BigAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigAddButton.swift; sourceTree = "<group>"; };
@@ -81,7 +87,7 @@
 		BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteListVM.swift; sourceTree = "<group>"; };
 		BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailVM.swift; sourceTree = "<group>"; };
 		BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
-		BCD9654828B916C3008DEE7F /* DatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesViewModel.swift; sourceTree = "<group>"; };
+		BCD9654828B916C3008DEE7F /* DatesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,8 +106,8 @@
 		BC35BFB228DE5BAD005555BE /* List */ = {
 			isa = PBXGroup;
 			children = (
-				BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */,
 				BCA3A780275BB2E6003D5F1C /* AthleteListView.swift */,
+				BCD2CABA28C8AAF00017CCFB /* AthleteListVM.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -109,8 +115,8 @@
 		BC35BFB328DE5BC2005555BE /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */,
 				BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */,
+				BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -118,8 +124,8 @@
 		BC35BFB428DE5BCE005555BE /* Edit */ = {
 			isa = PBXGroup;
 			children = (
-				BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */,
 				BC525F4627AA995F0032B99F /* EditAthleteView.swift */,
+				BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -127,10 +133,19 @@
 		BC35BFB528DE5BD3005555BE /* Add */ = {
 			isa = PBXGroup;
 			children = (
-				BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */,
 				BC3F2576276C9A4700465551 /* AddAthleteView.swift */,
+				BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */,
 			);
 			path = Add;
+			sourceTree = "<group>";
+		};
+		BC35BFBE28E25C29005555BE /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				BC35BFC128E25C5F005555BE /* EditSessionView.swift */,
+				BC35BFBF28E25C4B005555BE /* EditSessionVM.swift */,
+			);
+			path = Edit;
 			sourceTree = "<group>";
 		};
 		BC409A5027493F980096CD12 = {
@@ -212,6 +227,7 @@
 			children = (
 				BCD8E74F28BE4C5900EA9A93 /* Home */,
 				BCD8E74E28BE4C4C00EA9A93 /* Add */,
+				BC35BFBE28E25C29005555BE /* Edit */,
 			);
 			path = Sessions;
 			sourceTree = "<group>";
@@ -248,6 +264,7 @@
 			children = (
 				BC3212F52750EFA6001A689E /* Color.swift */,
 				BC35BFBC28DFBB2E005555BE /* Date.swift */,
+				BC35BFC328E3E6B0005555BE /* Dictionary.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -285,8 +302,8 @@
 			isa = PBXGroup;
 			children = (
 				BC78F34D289C9B3E00F6BC34 /* SessionsHomeView.swift */,
-				BCD9654828B916C3008DEE7F /* DatesViewModel.swift */,
 				BC6F246B28C639E800679360 /* SessionHomeVM.swift */,
+				BCD9654828B916C3008DEE7F /* DatesVM.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -370,16 +387,19 @@
 			files = (
 				BC35BFB728DE5F99005555BE /* AddAthleteVM.swift in Sources */,
 				BC78F347289C7AFE00F6BC34 /* TabModel.swift in Sources */,
+				BC35BFC028E25C4B005555BE /* EditSessionVM.swift in Sources */,
 				BC88920427B14F6200A00047 /* MediumButton.swift in Sources */,
 				BC35BFBD28DFBB2E005555BE /* Date.swift in Sources */,
 				BC78F34A289C814300F6BC34 /* ContentView.swift in Sources */,
 				BC6F246628C62EEA00679360 /* AddSessionVM.swift in Sources */,
 				BC78F345289C78BA00F6BC34 /* TabBarView.swift in Sources */,
-				BCD9654928B916C3008DEE7F /* DatesViewModel.swift in Sources */,
+				BCD9654928B916C3008DEE7F /* DatesVM.swift in Sources */,
 				BC78F34C289C8B3E00F6BC34 /* TabDetailVM.swift in Sources */,
 				BC409A5D27493F980096CD12 /* AthleteApp.swift in Sources */,
+				BC35BFC428E3E6B0005555BE /* Dictionary.swift in Sources */,
 				BC3212F62750EFA7001A689E /* Color.swift in Sources */,
 				BCA3A781275BB2E6003D5F1C /* AthleteListView.swift in Sources */,
+				BC35BFC228E25C5F005555BE /* EditSessionView.swift in Sources */,
 				BCA3A78F275E0496003D5F1C /* NavigationButtonSystemName.swift in Sources */,
 				BC36CD2927A7E4F40031AD5E /* AthleteDetailView.swift in Sources */,
 				BCD2CABB28C8AAF00017CCFB /* AthleteListVM.swift in Sources */,

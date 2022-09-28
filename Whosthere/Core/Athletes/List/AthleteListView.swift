@@ -11,6 +11,7 @@ import NavigationBackport
 enum Route: Hashable {
     case detail(Int)
     case edit(Athlete)
+    case editSession(Session)
     //case test(AthleteViewModel)
 }
 class AppState: ObservableObject {
@@ -88,12 +89,12 @@ struct AthleteListView: View {
                                     case let .detail(index):
                                         AthleteDetailView(athleteIndex: index)
                                             
-                                           
-                                            //.onDisappear(perform: {self.refreshID = UUID()})
                                     case let .edit(athlete):
                                         EditAthleteView(athlete: athlete,
                                                         goBackToRoot: { appState.path.removeLast(appState.path.count)})
                                       
+                                    case let .editSession(session):
+                                        EditSessionView(session: session)
                                     }
                                 }
                         
