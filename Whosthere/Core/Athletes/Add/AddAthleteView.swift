@@ -317,6 +317,7 @@ struct BirthdayField: View {
                 show.toggle()
             }
             .frame(height: 44)
+            .frame(minWidth: 150, idealWidth: 150, maxWidth: 160)
         }
         .padding()
     }

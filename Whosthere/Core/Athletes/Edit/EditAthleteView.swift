@@ -79,13 +79,19 @@ struct EditAthleteView: View {
 
                             LongTextField(textFieldDescription: "First Name",  firstNameTF: $editVM.addedAthlete.firstName)
 
-                            Spacer()
-                                .frame(minHeight: 0, idealHeight: 40, maxHeight: 50)
+//                            Spacer()
+//                                .frame(minHeight: 0, idealHeight: 40, maxHeight: 50)
                             
                             LongTextField(textFieldDescription: "Last Name", firstNameTF: $editVM.addedAthlete.lastName)
+                            
+//                            Spacer()
+//                                .frame(minHeight: 0, idealHeight: 40, maxHeight: 50)
 
                             HStack {
                                 BirthdayField(show: $show, selectedDate: $editVM.addedAthlete.birthday, showYear: $editVM.addedAthlete.showYear)
+                                Spacer(minLength: 30)
+                                
+                                    //.frame(minWidth: 20 , idealWidth: 30, maxWidth: 60)
                                 EditGenderButtons(gender: $editVM.addedAthlete.gender, male: $male, female: $female, nonbinary: $nonbinary)
                             }
 
@@ -95,12 +101,16 @@ struct EditAthleteView: View {
                             
                             Spacer()
                             
-                            //HStack{
+                            HStack{
                             archiveButton
+                                Spacer()
                             deleteButton
-                            //}
+                            }
 
-                            Spacer(minLength: 25)
+                            //Spacer(minLength: 25)
+                            Rectangle()
+                                .frame(height: 12)
+                                .foregroundColor(.clear)
 
                         }
                         .padding(.top, 20)
@@ -233,25 +243,25 @@ struct EditAthleteView: View {
             //add archive function
         }){
             HStack{
-                HStack{
+                //HStack{
                     Image(systemName: "archivebox")
                         .font(.system(size: 20))
                         .padding(.horizontal, 5)
-                    Text("Archive")
-                        .font(.headline)
-                }
-                .padding(.horizontal)
-                
-                Spacer()
+//                    Text("Archive")
+//                        .font(.headline)
+//                }
+//                .padding(.horizontal)
+//
+//                Spacer()
             }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
+            .frame(width: 44, height: 44)
             .background(Color.accentMidGround)
             .foregroundColor(Color.midTitle.opacity(0.8))
             .cornerRadius(10)
             .padding(.horizontal)
             .padding(.vertical, 10)
         }
-        .frame(maxWidth: .infinity, alignment: .bottom)
+        //.frame(maxWidth: .infinity, alignment: .bottom)
     }
 }
     
@@ -262,18 +272,18 @@ struct EditAthleteView: View {
                 showAlert.toggle()
             }){
                 HStack{
-                    HStack{
+//                    HStack{
                         Image(systemName: "trash")
                             .font(.system(size: 20))
                             .padding(.horizontal, 5)
-                        Text("Delete")
-                            .font(.headline)
-                    }
-                    .padding(.horizontal)
+//                        Text("Delete")
+//                            .font(.headline)
+//                    }
+//                    .padding(.horizontal)
                     
-                    Spacer()
+//                    Spacer()
                 }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: 40)
+                .frame(width: 44, height: 44)
                 .background(Color.accentMidGround)
                 .foregroundColor(Color.red)
                 .cornerRadius(10)
@@ -289,7 +299,7 @@ struct EditAthleteView: View {
                           secondaryButton: .cancel())
                     })
                 }
-                .frame(maxWidth: .infinity, alignment: .bottom)
+                //.frame(maxWidth: .infinity, alignment: .bottom)
             }
 }
 
@@ -400,7 +410,8 @@ var body: some View{
             }
         }
     }//VStack
-    .padding()
+    .padding(.vertical)
+    //.padding(.leading)
 }
 
 func changeOpacity() -> Bool {
