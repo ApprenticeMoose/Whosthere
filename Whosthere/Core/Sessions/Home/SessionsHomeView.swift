@@ -14,7 +14,7 @@ struct SessionsHomeView: View {
     
     @EnvironmentObject var appState: AppState                               //For Navigation
 
-    @ObservedObject var datesVM: DatesVM
+    @StateObject var datesVM = DatesVM()
     @StateObject var sessionsViewModel = SessionHomeVM()
     var selectedSessionsArray: [Session] {
         sessionsViewModel.sessions.filter { session in
@@ -38,7 +38,7 @@ struct SessionsHomeView: View {
     var body: some View {
     NBNavigationStack(path: $appState.path) {                            //NavigationStack
         VStack(spacing: 18){
- 
+            
 //Header and Buttons
             HStack{
                 ScreenHeaderTextOnly(screenTitle: "Sessions")
@@ -81,6 +81,7 @@ struct SessionsHomeView: View {
                         }
                     .onAppear(perform: {
                         proxy.scrollTo(datesVM.scrollToIndex, anchor: .center)
+                        print(datesVM.selectedDay)
                     })
                 .onChange(of: datesVM.scrollToIndex) { value in
                     withAnimation(.spring()) {
@@ -115,11 +116,12 @@ struct SessionsHomeView: View {
                         }
                     }
                 }
-                /*
+                
                  Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
                  Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
                  Text("\(datesVM.scrollToIndex)")
-                 */// check the week and day selected form row of week buttons
+                
+                // check the week and day selected form row of week buttons
                 Rectangle()
                     .frame(height: 50)
                     .foregroundColor(.clear)
@@ -134,7 +136,7 @@ struct SessionsHomeView: View {
                                             goBackToRoot: { appState.path.removeLast(appState.path.count)})
                           
                         case let .editSession(session):
-                            EditSessionView(session: session)
+                            EditSessionView(session: session, selectedDay: $datesVM.selectedDay)
                         }
                     }
 
@@ -216,6 +218,7 @@ struct PopoverCalendar: View {
         self._selectedDate = selectedDate
         self._show = show
         self.sessionsVM = DatesVM()
+        
     }
     
     var body: some View {

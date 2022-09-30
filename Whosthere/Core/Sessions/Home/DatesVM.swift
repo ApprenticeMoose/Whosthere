@@ -11,6 +11,7 @@ class DatesVM: ObservableObject {
     
     //MARK: - Varibales for DateSelection
     
+    // - FIXME: need to initialuze the selectedday on every view
     @Published var selectedDay: Date =  Date()
     @Published var scrollToIndex: Int = 3
     @Published var wholeWeeks: [[Date]] = []

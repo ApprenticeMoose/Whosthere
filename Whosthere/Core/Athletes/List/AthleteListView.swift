@@ -31,7 +31,7 @@ struct AthleteListView: View {
     @EnvironmentObject var tabDetail: TabDetailVM
     @EnvironmentObject var appState: AppState                               //For Navigation
     
-    
+    @ObservedObject var datesVM: DatesVM
     @StateObject var athletesListVM = AthleteListVM()                       //Accessing the athletes
 
     //MARK: -Body
@@ -94,7 +94,7 @@ struct AthleteListView: View {
                                                         goBackToRoot: { appState.path.removeLast(appState.path.count)})
                                       
                                     case let .editSession(session):
-                                        EditSessionView(session: session)
+                                        EditSessionView(session: session, selectedDay: $datesVM.selectedDay)
                                     }
                                 }
                         
@@ -187,7 +187,7 @@ struct AthleteListView: View {
         UITableView.appearance().backgroundColor = .clear
 //    UITableViewCell.appearance().backgroundColor = .clear
         UITableView.appearance().tableHeaderView = .init(frame: .init(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
-
+        self.datesVM = DatesVM()
     }
     
 }//Struct

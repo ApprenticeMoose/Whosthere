@@ -14,6 +14,8 @@ struct EditSessionView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
     
+    @Binding var selectedDay: Date
+    
     @State var todayIsSelected: Bool = false
     @State var tomorrowIsSelected: Bool = false
     
@@ -35,9 +37,10 @@ struct EditSessionView: View {
         GridItem(.flexible())
     ]
     
-    init(session: Session?, dataManager: DataManager = DataManager.shared) {
+    init(session: Session?, dataManager: DataManager = DataManager.shared, selectedDay: Binding<Date>) {
         self.editSessionVM = EditSessionVM(session: session, dataManager: dataManager)
         self.datesVM = DatesVM()
+        self._selectedDay = selectedDay
         
         if editSessionVM.sessionDate == editSessionVM.mergeTimeAndDate(time: editSessionVM.sessionTime, date: Date()) {
             self._todayIsSelected = State(wrappedValue: true)
@@ -347,6 +350,7 @@ struct EditSessionView: View {
     var addSessionHeader: some View {
         HStack{
             Button(action: {
+                datesVM.selectedDay = editSessionVM.sessionDate
                 appState.path.removeLast()
                 tabDetail.showDetail = false
             }){
@@ -367,6 +371,7 @@ struct EditSessionView: View {
             Spacer(minLength: 0)
             
             Button(action: {
+                datesVM.selectedDay = editSessionVM.sessionDate
                 editSessionVM.saveSession()
                 appState.path.removeLast()
                 tabDetail.showDetail = false
