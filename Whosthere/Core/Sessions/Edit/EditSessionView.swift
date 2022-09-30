@@ -420,6 +420,9 @@ struct deleteSessionButton: View{
     @State var showAlert: Bool = false
     @ObservedObject var editSessionVM: EditSessionVM
     
+    @EnvironmentObject var appState: AppState                                       //For Navigation
+    @EnvironmentObject var tabDetail: TabDetailVM 
+    
     var body: some View {
     VStack{
         Button(action: {
@@ -437,11 +440,13 @@ struct deleteSessionButton: View{
             .padding(.horizontal)
             .padding(.vertical, 10)
             .alert(isPresented: $showAlert, content: {
-                Alert(title: Text("Are you sure you want to delete this profile?"),
+                Alert(title: Text("Are you sure you want to delete this session?"),
                       message: Text("This action cannot be undone!"),
                       primaryButton: .destructive(Text("Delete"),
                       action: {
                     editSessionVM.deleteSession()
+                    tabDetail.showDetail = false
+                    appState.path.removeLast()
                     }),
                       secondaryButton: .cancel())
                 })
