@@ -116,12 +116,12 @@ struct SessionsHomeView: View {
                         }
                     }
                 }
-                
+                /*
                  Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
                  Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
                  Text("\(datesVM.scrollToIndex)")
+                */ // check the week and day selected form row of week buttons
                 
-                // check the week and day selected form row of week buttons
                 Rectangle()
                     .frame(height: 50)
                     .foregroundColor(.clear)
@@ -395,7 +395,7 @@ struct SessionHomeCard: View {
                 
                 HStack{
                     
-                    HStack(spacing: 12){
+                    HStack(spacing: 15){
                         if session.athleteIDs.isEmpty {
                             VStack(spacing: 2){
                                 ZStack{
@@ -415,6 +415,7 @@ struct SessionHomeCard: View {
                                     .foregroundColor(.cardText)
                             }
                         } else {
+                            if session.athleteIDs.count < 6 {
                             ForEach(session.athleteIDs, id: \.self) {athleteID in
                                 if let athlete = sessionVM.getAthletes(with: athleteID){
                                     VStack(spacing: 2){
@@ -432,8 +433,163 @@ struct SessionHomeCard: View {
                                             .foregroundColor(.cardText)
                                     }
                                 }
+                            }} else if session.athleteIDs.count == 6 {
+                                // display the 1-4 normally
+                                ForEach(session.athleteIDs[0...3], id: \.self) {athleteID in
+                                        if let athlete = sessionVM.getAthletes(with: athleteID){
+                                            VStack(spacing: 2){
+                                                ZStack{
+                                                    Circle()
+                                                        .frame(width: 26, height: 26)
+                                                        .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                                    Text(getInitials(firstName: athlete.firstName, lastName: athlete.lastName))
+                                                        .font(.caption2)
+                                                        .fontWeight(.semibold)
+                                                        .foregroundColor(.cardProfileLetter)
+                                                }
+                                                Text(athlete.firstName)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.cardText)
+                                            }
+                                        }
+                                }
+                                    // display the 5th + 6th
+                                    
+                                    if let athlete1 = sessionVM.getAthletes(with: session.athleteIDs[4]){
+                                        HStack{
+                                            VStack(spacing: 2){
+                                                ZStack{
+                                                if let athlete2 = sessionVM.getAthletes(with: session.athleteIDs[5]){
+                                                
+                                                    ZStack{
+                                                        Circle()
+                                                            .frame(width: 22, height: 22)
+                                                            .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                                        Text(getInitials(firstName: athlete2.firstName, lastName: athlete2.lastName))
+                                                            .font(.system(size: 9, weight: .light, design: .default))
+                                                            .fontWeight(.semibold)
+                                                            .foregroundColor(.cardProfileLetter)
+                                                            .offset(x: 2)
+                                                    }
+                                                    .offset(x: 16, y: -2)
+                                                }
+                                                ZStack{
+                                                    Circle()
+                                                        .frame(width: 26, height: 26)
+                                                        .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                                    Text(getInitials(firstName: athlete1.firstName, lastName: athlete1.lastName))
+                                                        .font(.caption2)
+                                                        .fontWeight(.semibold)
+                                                        .foregroundColor(.cardProfileLetter)
+                                                    }
+                                                }
+                                                
+                                                Text(athlete1.firstName)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.cardText)
+                                            }
+                                        VStack(spacing: 2){
+                                            
+                                                Rectangle()
+                                                    .frame(width: 1, height: 26)
+                                                    .foregroundColor(.clear)
+                                              
+                                            Text(" +1")
+                                                .font(.caption2)
+                                                .foregroundColor(.cardText)
+                                                .offset(x: -10)
+                                        }
+                                        }
+                                    }
+                                   
+                                        //have the text say #5 + session.athleteids.count - 5, put it in an if statement to check if it is more than 5
+                                
+                            } else {
+                                // do the circles and have it as if clause
+                                ForEach(session.athleteIDs[0...3], id: \.self) {athleteID in
+                                        if let athlete = sessionVM.getAthletes(with: athleteID){
+                                            VStack(spacing: 2){
+                                                ZStack{
+                                                    Circle()
+                                                        .frame(width: 26, height: 26)
+                                                        .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                                    Text(getInitials(firstName: athlete.firstName, lastName: athlete.lastName))
+                                                        .font(.caption2)
+                                                        .fontWeight(.semibold)
+                                                        .foregroundColor(.cardProfileLetter)
+                                                }
+                                                Text(athlete.firstName)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.cardText)
+                                            }
+                                        }
+                                }
+                                    // display the 5th + 6th + 7th
+                                    
+                                if let athlete1 = sessionVM.getAthletes(with: session.athleteIDs[4]){
+                                        HStack{
+                                            VStack(spacing: 2){
+                                                ZStack{
+                                                    if let athlete3 = sessionVM.getAthletes(with: session.athleteIDs[6]){
+                                                        ZStack{
+                                                            Circle()
+                                                                .frame(width: 18, height: 18)
+                                                                .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                                            Text(getInitials(firstName: athlete3.firstName, lastName: athlete3.lastName))
+                                                                .font(.system(size: 7, weight: .light, design: .default))
+                                                                .fontWeight(.semibold)
+                                                                .foregroundColor(.cardProfileLetter)
+                                                                .offset(x: 2)
+                                                        }.offset(x: 28, y: -4)
+                                                    }
+                                                    
+                                                        if let athlete2 = sessionVM.getAthletes(with: session.athleteIDs[5]){
+                                                            ZStack{
+                                                                Circle()
+                                                                    .frame(width: 22, height: 22)
+                                                                    .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                                                Text(getInitials(firstName: athlete2.firstName, lastName: athlete2.lastName))
+                                                                    .font(.system(size: 9, weight: .light, design: .default))
+                                                                    .fontWeight(.semibold)
+                                                                    .foregroundColor(.cardProfileLetter)
+                                                                    .offset(x: 2)
+                                                            }.offset(x: 16, y: -2)
+                                                        }
+                                                            
+                                                                    ZStack{
+                                                                        Circle()
+                                                                            .frame(width: 26, height: 26)
+                                                                            .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey3)
+                                                                        Text(getInitials(firstName: athlete1.firstName, lastName: athlete1.lastName))
+                                                                            .font(.caption2)
+                                                                            .fontWeight(.semibold)
+                                                                            .foregroundColor(.cardProfileLetter)
+                                                                        }
+                                                            }
+                                                                    
+                                                
+                                                Text(athlete1.firstName)
+                                                    .font(.caption2)
+                                                    .foregroundColor(.cardText)
+                                                            
+                                            }
+                                        VStack(spacing: 2){
+                                            
+                                                Rectangle()
+                                                    .frame(width: 1, height: 26)
+                                                    .foregroundColor(.clear)
+                                              
+                                            Text(" +\(session.athleteIDs.count - 5)")
+                                                .font(.caption2)
+                                                .foregroundColor(.cardText)
+                                                .offset(x: -10)
+                                        }
+                                        }
+                                    }
+                                   
                             }
                         }
+                        //Text("\(session.athleteIDs.count)")
                     }
                     .padding(.horizontal, 34)
                     Spacer()
