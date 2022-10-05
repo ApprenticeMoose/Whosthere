@@ -81,4 +81,9 @@ final class DuplicateSessionVM: ObservableObject {
         let mergedDate = DateComponents(calendar: dateComponents.calendar, timeZone: dateComponents.timeZone, year: dateComponents.year, month: dateComponents.month, day: dateComponents.day, hour: timeComponents.hour, minute: timeComponents.minute, weekday: dateComponents.weekday, weekOfYear: dateComponents.weekOfYear)
         return roundMinutesDown(date: calendar.date(from: mergedDate) ?? Date())
     }
+    
+    func addDaysToDate(daysToAdd: Int, date: Date) -> Date {
+        let calendar = Calendar.current
+        return calendar.date(byAdding: .day, value: daysToAdd, to: date) ?? Date()
+    }
 }

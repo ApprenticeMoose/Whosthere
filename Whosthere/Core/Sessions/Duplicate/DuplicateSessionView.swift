@@ -23,6 +23,11 @@ struct DuplicateSessionView: View {
         
         @State var showTimePicker: Bool = false
         @State var showDatePicker: Bool = false
+        
+    @State var opacity: Double = 1.0
+    @State var scale: CGFloat = 0.9
+    
+        @State var animate = false
             
         @ObservedObject var duplicateSessionVM : DuplicateSessionVM
         @ObservedObject var datesVM: DatesVM
@@ -278,9 +283,14 @@ struct DuplicateSessionView: View {
                 }
                 
                 ZStack {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.accentBigButton.opacity(0.5), lineWidth: 1.5)
+                        .frame(width: 105, height: 40)
+                        .scaleEffect(scale)
+                        .opacity(opacity)
+                        
+                    
                     Rectangle()
-                    //                        .padding(.vertical, 10)
-                    //                        .padding(.horizontal)
                         .background(Color.accentMidGround)
                         .foregroundColor(.accentMidGround)
                         .frame(width: 105, height: 40)
@@ -289,14 +299,91 @@ struct DuplicateSessionView: View {
                     Text("\(datesVM.extractDate(date: duplicateSessionVM.sessionDate, format: "dd. MMM"))")
                         .fontWeight(.semibold)
                 }
-                //.padding()
+               
                 .onTapGesture {
                     //show time selection
                     showDatePicker.toggle()
                 }
+                .onChange(of: duplicateSessionVM.sessionDate) { date in
+                    if Calendar.current.isDateInToday(date) {
+                        todayIsSelected = true
+                        tomorrowIsSelected = false
+                    } else if Calendar.current.isDateInTomorrow(date) {
+                        todayIsSelected = false
+                        tomorrowIsSelected = true
+                    } else {
+                        todayIsSelected = false
+                        tomorrowIsSelected = false
+                    }
+                }
+                
                 
             }
             .padding()
+            
+            HStack {
+                Spacer()
+                Spacer()
+                //+1 Day
+                Button {
+                    // add 1 Day to the date
+                    duplicateSessionVM.sessionDate = duplicateSessionVM.addDaysToDate(daysToAdd: 1, date: duplicateSessionVM.sessionDate)
+                    withAnimation(Animation.easeOut(duration: 0.5).repeatCount(1, autoreverses: false)) {
+                        scale = 1.3
+                        opacity = 0.0
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(501), execute: {
+                            scale = 0.9
+                            opacity = 1.0
+                        })
+                    }
+                    } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                            .frame(width: 105, height: 40)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.accentMidGround)
+                            )
+                        
+                        Text("+1 Day")
+                            .fontWeight(.semibold)
+                    }
+                }
+
+                Spacer()
+                //+1 Week
+                Button {
+                    // add 1 Week to the date
+                    duplicateSessionVM.sessionDate = duplicateSessionVM.addDaysToDate(daysToAdd: 7, date: duplicateSessionVM.sessionDate)
+                    withAnimation(Animation.easeOut(duration: 0.5).repeatCount(1, autoreverses: false)) {
+                        scale = 1.3
+                        opacity = 0.0
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(501), execute: {
+                            scale = 0.9
+                            opacity = 1.0
+                        })
+                    }
+                    
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.accentBigButton.opacity(0.3), lineWidth: 1.0)
+                            .frame(width: 105, height: 40)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.accentMidGround)
+                            )
+                        
+                        Text("+1 Week")
+                            .fontWeight(.semibold)
+                    }
+                }
+                Spacer()
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 6)
         }
     }
 
@@ -359,7 +446,7 @@ struct DuplicateSessionView: View {
                 .padding()
 
             }
-            .padding(.top)
+            .padding(.top, 8)
         }
         
         var timePicker: some View {
