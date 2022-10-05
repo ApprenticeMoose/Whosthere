@@ -89,6 +89,10 @@ class DatesVM: ObservableObject {
         return isInWeek
     }//run the array of weekdates through the for loop which singles out if the currently selected date is in this array
 
+    func setDateToStartOfWeek(date: Date) -> Date {
+        return calendar.dateInterval(of: .weekOfYear, for: date)?.start ?? Date()
+    }
+    
     
     //MARK: - DatesInAddSessionFunctions
     

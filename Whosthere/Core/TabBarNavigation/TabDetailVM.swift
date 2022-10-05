@@ -9,4 +9,5 @@ import Foundation
 
 class TabDetailVM: ObservableObject {
     @Published var showDetail: Bool = false
+    @Published var shade: Bool = false
 }

@@ -72,7 +72,7 @@ struct EditSessionView: View {
             GeometryReader { geometry in
             ScrollView{
                 VStack{
-                addSessionHeader
+                editSessionHeader
                 
                 time
 
@@ -85,7 +85,7 @@ struct EditSessionView: View {
         //Delete Butttons
                     
                 HStack{
-                    deleteSessionButton(editSessionVM: editSessionVM)
+                    duplicateSessionButton(editSessionVM: editSessionVM)
                     Spacer()
                     deleteSessionButton(editSessionVM: editSessionVM)
                 }
@@ -107,7 +107,7 @@ struct EditSessionView: View {
         return firstLetter + lastLetter
     }
     
-    var addSessionHeader: some View {
+    var editSessionHeader: some View {
         HStack{
             Button(action: {
                 datesVM.selectedDay = editSessionVM.sessionDate
@@ -131,8 +131,8 @@ struct EditSessionView: View {
             Spacer(minLength: 0)
             
             Button(action: {
-                datesVM.selectedDay = editSessionVM.sessionDate
                 editSessionVM.saveSession()
+                 selectedDay = datesVM.setDateToStartOfWeek(date: editSessionVM.sessionDate) //so it sets the selected day to the first of the week and the buttons recognize that
                 appState.path.removeLast()
                 tabDetail.showDetail = false
                 
@@ -450,6 +450,49 @@ struct deleteSessionButton: View{
                     }),
                       secondaryButton: .cancel())
                 })
+            }
+            //.frame(maxWidth: .infinity, alignment: .bottom)
+        }
+    }
+}
+
+struct duplicateSessionButton: View{
+    
+    // - TODO: let full sheet cover pop up, that has all the details copied in but has a new sessionID
+    
+    //@State var showAlert: Bool = false
+    @ObservedObject var editSessionVM: EditSessionVM
+    
+    @EnvironmentObject var appState: AppState                                       //For Navigation
+    @EnvironmentObject var tabDetail: TabDetailVM
+    
+    var body: some View {
+    VStack{
+        Button(action: {
+            //showAlert.toggle()
+        }){
+            HStack{
+                    Image(systemName: "doc.on.doc.fill")
+                        .font(.system(size: 20))
+                        .padding(.horizontal, 5)
+            }
+            .frame(width: 44, height: 44)
+            .background(Color.accentMidGround)
+            .foregroundColor(Color.midTitle.opacity(0.8))
+            .cornerRadius(10)
+            .padding(.horizontal)
+            .padding(.vertical, 10)
+//            .alert(isPresented: $showAlert, content: {
+//                Alert(title: Text("Are you sure you want to delete this session?"),
+//                      message: Text("This action cannot be undone!"),
+//                      primaryButton: .destructive(Text("Delete"),
+//                      action: {
+//                    editSessionVM.deleteSession()
+//                    tabDetail.showDetail = false
+//                    appState.path.removeLast()
+//                    }),
+//                      secondaryButton: .cancel())
+//                })
             }
             //.frame(maxWidth: .infinity, alignment: .bottom)
         }

@@ -28,10 +28,11 @@ struct ContentView: View {
                     SettingsOverView()
                 }
             
+
                 TabBar()
                     .offset(y: _tabDetail.wrappedValue.showDetail ? 200 : 62)
-            
-            
+                    
+
             
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {

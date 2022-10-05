@@ -13,6 +13,7 @@ import NavigationBackport
 struct SessionsHomeView: View {
     
     @EnvironmentObject var appState: AppState                               //For Navigation
+    @EnvironmentObject var tabDetail: TabDetailVM
 
     @StateObject var datesVM = DatesVM()
     @StateObject var sessionsViewModel = SessionHomeVM()
@@ -37,6 +38,7 @@ struct SessionsHomeView: View {
     
     var body: some View {
     NBNavigationStack(path: $appState.path) {                            //NavigationStack
+        ZStack{
         VStack(spacing: 18){
             
 //Header and Buttons
@@ -137,6 +139,11 @@ struct SessionsHomeView: View {
                           
                         case let .editSession(session):
                             EditSessionView(session: session, selectedDay: $datesVM.selectedDay)
+                                .onDisappear {
+                                    datesVM.wholeWeeks.removeAll()
+                                    datesVM.fetchAllDays()
+                                    datesVM.scrollToIndex = 3
+                                }
                         }
                     }
 
@@ -148,7 +155,7 @@ struct SessionsHomeView: View {
         
         ZStack{
             if self.showCalendar {
-                
+               
                 Color.black
                     .opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
@@ -160,9 +167,16 @@ struct SessionsHomeView: View {
                         datesVM.fetchAllDays()
                         datesVM.scrollToIndex = 3
                 }
+                    .onAppear {
+                        tabDetail.showDetail = true
+                    }
+                    .onDisappear{
+                        tabDetail.showDetail = false
+                    }
             }
         }
-        .opacity(self.showCalendar ? 1 : 0).animation(.easeIn, value: showCalendar)
+        .opacity(self.showCalendar ? 1 : 0)//.animation(.easeIn, value: showCalendar)
+    }//ZStack for Calendar
         }//Navigation
     }//body
 }//StructEnd
