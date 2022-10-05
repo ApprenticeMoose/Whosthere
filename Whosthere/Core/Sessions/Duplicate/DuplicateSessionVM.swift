@@ -1,21 +1,19 @@
 //
-//  EditSessionVM.swift
+//  DuplicateSessionVM.swift
 //  Whosthere
 //
-//  Created by Moose on 27.09.22.
+//  Created by Moose on 05.10.22.
 //
 
 import SwiftUI
 import Combine
 
 @MainActor
-final class EditSessionVM: ObservableObject {
+final class DuplicateSessionVM: ObservableObject {
     
-    @Published var editedSession: Session
+    @Published var duplicatedSession: Session
+
     
-    @Published var duplicatedIsTrue = false
-    
-    @Published var selectedDayFromDuplication = Date() //that maddness is to control whcich sessions are shown after going back...the normal ones or the duplicated session
     
     @Published var sessionTime: Date
     @Published var sessionDate: Date
@@ -28,9 +26,9 @@ final class EditSessionVM: ObservableObject {
     
     init(session: Session?, dataManager: DataManager = DataManager.shared) {
         if let session = session {
-            self.editedSession = session
+            self.duplicatedSession = session
         } else {
-            self.editedSession = Session()
+            self.duplicatedSession = Session()
         }
         self.sessionDate = session?.date ?? Date()
         self.sessionTime = session?.date ?? Date()
@@ -47,10 +45,10 @@ final class EditSessionVM: ObservableObject {
     
     func toggleAthlete(athlete: Athlete) {
         ///if toggled add it to the addedChapter.titleIDs Array and if it is already in there remove it from the array
-        if editedSession.athleteIDs.contains(athlete.id) {
-            editedSession.athleteIDs = editedSession.athleteIDs.filter({$0 != athlete.id})
+        if duplicatedSession.athleteIDs.contains(athlete.id) {
+            duplicatedSession.athleteIDs = duplicatedSession.athleteIDs.filter({$0 != athlete.id})
         } else {
-            editedSession.athleteIDs.append(athlete.id)
+            duplicatedSession.athleteIDs.append(athlete.id)
         }
     }
     
@@ -60,12 +58,13 @@ final class EditSessionVM: ObservableObject {
     
     
     func saveSession() {
-        editedSession.date = mergeTimeAndDate(time: sessionTime, date: sessionDate)
-        dataManager.updateAndSave(session: editedSession)
+        duplicatedSession.date = mergeTimeAndDate(time: sessionTime, date: sessionDate)
+        duplicatedSession.id = UUID()
+        dataManager.updateAndSave(session: duplicatedSession)
     }
     
     func deleteSession() {
-            dataManager.delete(session: editedSession)
+            dataManager.delete(session: duplicatedSession)
     }
     
     func roundMinutesDown(date: Date) -> Date {

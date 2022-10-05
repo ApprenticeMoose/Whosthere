@@ -45,6 +45,8 @@
 		BCD2CABF28C9D0B70017CCFB /* AthleteDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */; };
 		BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */; };
 		BCD9654928B916C3008DEE7F /* DatesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD9654828B916C3008DEE7F /* DatesVM.swift */; };
+		BCEF2DF328EDB15D00CEDDED /* DuplicateSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEF2DF228EDB15D00CEDDED /* DuplicateSessionView.swift */; };
+		BCEF2DF528EDB4BE00CEDDED /* DuplicateSessionVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCEF2DF428EDB4BE00CEDDED /* DuplicateSessionVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +88,8 @@
 		BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteDetailVM.swift; sourceTree = "<group>"; };
 		BCD8E75028BE4CA200EA9A93 /* AddSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionView.swift; sourceTree = "<group>"; };
 		BCD9654828B916C3008DEE7F /* DatesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesVM.swift; sourceTree = "<group>"; };
+		BCEF2DF228EDB15D00CEDDED /* DuplicateSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateSessionView.swift; sourceTree = "<group>"; };
+		BCEF2DF428EDB4BE00CEDDED /* DuplicateSessionVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateSessionVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +230,7 @@
 				BCD8E74F28BE4C5900EA9A93 /* Home */,
 				BCD8E74E28BE4C4C00EA9A93 /* Add */,
 				BC35BFBE28E25C29005555BE /* Edit */,
+				BCEF2DF128EDB04700CEDDED /* Duplicate */,
 			);
 			path = Sessions;
 			sourceTree = "<group>";
@@ -303,6 +308,15 @@
 				BCD9654828B916C3008DEE7F /* DatesVM.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		BCEF2DF128EDB04700CEDDED /* Duplicate */ = {
+			isa = PBXGroup;
+			children = (
+				BCEF2DF228EDB15D00CEDDED /* DuplicateSessionView.swift */,
+				BCEF2DF428EDB4BE00CEDDED /* DuplicateSessionVM.swift */,
+			);
+			path = Duplicate;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -383,8 +397,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC35BFB728DE5F99005555BE /* AddAthleteVM.swift in Sources */,
+				BCEF2DF528EDB4BE00CEDDED /* DuplicateSessionVM.swift in Sources */,
 				BC78F347289C7AFE00F6BC34 /* TabModel.swift in Sources */,
 				BC35BFC028E25C4B005555BE /* EditSessionVM.swift in Sources */,
+				BCEF2DF328EDB15D00CEDDED /* DuplicateSessionView.swift in Sources */,
 				BC88920427B14F6200A00047 /* MediumButton.swift in Sources */,
 				BC35BFBD28DFBB2E005555BE /* Date.swift in Sources */,
 				BC78F34A289C814300F6BC34 /* ContentView.swift in Sources */,

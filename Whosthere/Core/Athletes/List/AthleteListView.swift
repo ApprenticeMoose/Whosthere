@@ -76,12 +76,9 @@ struct AthleteListView: View {
                             .padding(.horizontal)
                         }
                         .onAppear{
-                            withAnimation {
+                            //withAnimation {
                                 athletesListVM.fetchAthletes()
-                                print("Athletes were fetched")
-                            }
-                                
-                            
+                            //}
                             }
                         
                         .nbNavigationDestination(for: Route.self) { route in

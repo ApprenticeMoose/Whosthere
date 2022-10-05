@@ -15,6 +15,8 @@ struct SessionsHomeView: View {
     @EnvironmentObject var appState: AppState                               //For Navigation
     @EnvironmentObject var tabDetail: TabDetailVM
 
+    
+    
     @StateObject var datesVM = DatesVM()
     @StateObject var sessionsViewModel = SessionHomeVM()
     var selectedSessionsArray: [Session] {
@@ -84,6 +86,7 @@ struct SessionsHomeView: View {
                     .onAppear(perform: {
                         proxy.scrollTo(datesVM.scrollToIndex, anchor: .center)
                         print(datesVM.selectedDay)
+                       
                     })
                 .onChange(of: datesVM.scrollToIndex) { value in
                     withAnimation(.spring()) {

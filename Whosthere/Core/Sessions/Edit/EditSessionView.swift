@@ -15,6 +15,7 @@ struct EditSessionView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var selectedDay: Date
+    //@State var duplicatedIsTrue: Bool = false
     
     @State var todayIsSelected: Bool = false
     @State var tomorrowIsSelected: Bool = false
@@ -24,6 +25,7 @@ struct EditSessionView: View {
         
     @ObservedObject var editSessionVM: EditSessionVM
     @ObservedObject var datesVM: DatesVM
+    @ObservedObject var duplicateSessionVM: DuplicateSessionVM
     
     var athleteArray = [UUID]()
     
@@ -40,6 +42,7 @@ struct EditSessionView: View {
     init(session: Session?, dataManager: DataManager = DataManager.shared, selectedDay: Binding<Date>) {
         self.editSessionVM = EditSessionVM(session: session, dataManager: dataManager)
         self.datesVM = DatesVM()
+        self.duplicateSessionVM = DuplicateSessionVM(session: session)
         self._selectedDay = selectedDay
         
         if editSessionVM.sessionDate == editSessionVM.mergeTimeAndDate(time: editSessionVM.sessionTime, date: Date()) {
@@ -85,7 +88,7 @@ struct EditSessionView: View {
         //Delete Butttons
                     
                 HStack{
-                    duplicateSessionButton(editSessionVM: editSessionVM)
+                    duplicateSessionButton(editSessionVM: editSessionVM, datesVM: datesVM)
                     Spacer()
                     deleteSessionButton(editSessionVM: editSessionVM)
                 }
@@ -110,7 +113,15 @@ struct EditSessionView: View {
     var editSessionHeader: some View {
         HStack{
             Button(action: {
-                datesVM.selectedDay = editSessionVM.sessionDate
+                
+                if editSessionVM.duplicatedIsTrue == false {
+                     datesVM.selectedDay = editSessionVM.sessionDate
+
+                } else {
+
+                    selectedDay = datesVM.setDateToStartOfWeek(date: editSessionVM.selectedDayFromDuplication)
+
+                }//that maddness is to control whcich sessions are shown after going back...the normal ones or the duplicated session
                 appState.path.removeLast()
                 tabDetail.showDetail = false
             }){
@@ -132,7 +143,8 @@ struct EditSessionView: View {
             
             Button(action: {
                 editSessionVM.saveSession()
-                 selectedDay = datesVM.setDateToStartOfWeek(date: editSessionVM.sessionDate) //so it sets the selected day to the first of the week and the buttons recognize that
+                editSessionVM.duplicatedIsTrue = false
+                selectedDay = datesVM.setDateToStartOfWeek(date: editSessionVM.sessionDate) //so it sets the selected day to the first of the week and the buttons recognize that
                 appState.path.removeLast()
                 tabDetail.showDetail = false
                 
@@ -246,6 +258,7 @@ var dates: some View {
                 editSessionVM.sessionDate = Date()
                 todayIsSelected = true
                 tomorrowIsSelected = false
+               // print(duplicateSessionVM.duplicateIsTrue)
             }
             
             
@@ -460,8 +473,9 @@ struct duplicateSessionButton: View{
     
     // - TODO: let full sheet cover pop up, that has all the details copied in but has a new sessionID
     
-    //@State var showAlert: Bool = false
+    @State var showSheet: Bool = false
     @ObservedObject var editSessionVM: EditSessionVM
+    @ObservedObject var datesVM: DatesVM
     
     @EnvironmentObject var appState: AppState                                       //For Navigation
     @EnvironmentObject var tabDetail: TabDetailVM
@@ -469,7 +483,7 @@ struct duplicateSessionButton: View{
     var body: some View {
     VStack{
         Button(action: {
-            //showAlert.toggle()
+            showSheet.toggle()
         }){
             HStack{
                     Image(systemName: "doc.on.doc.fill")
@@ -482,6 +496,9 @@ struct duplicateSessionButton: View{
             .cornerRadius(10)
             .padding(.horizontal)
             .padding(.vertical, 10)
+            .fullScreenCover(isPresented: $showSheet, content: {
+                DuplicateSessionView(session: editSessionVM.editedSession, selectedDay: $datesVM.selectedDay, duplicateIsTrue: $editSessionVM.duplicatedIsTrue, selectedDayFromDuplicate: $editSessionVM.selectedDayFromDuplication)
+            })
 //            .alert(isPresented: $showAlert, content: {
 //                Alert(title: Text("Are you sure you want to delete this session?"),
 //                      message: Text("This action cannot be undone!"),
@@ -498,3 +515,5 @@ struct duplicateSessionButton: View{
         }
     }
 }
+
+
