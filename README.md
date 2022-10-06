@@ -1,6 +1,6 @@
 # Whosthere
 
-**Training Attendance Protocolling App**<br/> 
+## **Training Attendance Protocolling App**<br/> 
 **Written in SwiftUI using Core Data**
 
 
