@@ -15,7 +15,7 @@ struct EditSessionView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var selectedDay: Date
-    //@State var duplicatedIsTrue: Bool = false
+    @State var duplicationLabelOpacity: Double = 0.0
     
     @State var todayIsSelected: Bool = false
     @State var tomorrowIsSelected: Bool = false
@@ -88,7 +88,9 @@ struct EditSessionView: View {
         //Delete Butttons
                     
                 HStack{
-                    duplicateSessionButton(editSessionVM: editSessionVM, datesVM: datesVM)
+                    duplicateSessionButton(duplicationLabelOpacity: $duplicationLabelOpacity, editSessionVM: editSessionVM, datesVM: datesVM)
+                    Spacer()
+                    duplicationSuccessLabel
                     Spacer()
                     deleteSessionButton(editSessionVM: editSessionVM)
                 }
@@ -425,6 +427,26 @@ var dates: some View {
         
         .opacity(self.showDatePicker ? 1 : 0).animation(.easeIn, value: showDatePicker)
     }
+    
+    var duplicationSuccessLabel: some View {
+        HStack(spacing: 4){
+            Text("Session has been duplicated")
+                .font(.caption2)
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+            Image(systemName: "checkmark")
+                .resizable()
+                .foregroundColor(.white)
+                .frame(width: 8, height: 8)
+                .font(Font.title.weight(.bold))
+        }
+                    .padding(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundColor(Color.green)
+                    )
+                    .opacity(duplicationLabelOpacity)
+    }
 }
 
 
@@ -471,11 +493,12 @@ struct deleteSessionButton: View{
 
 struct duplicateSessionButton: View{
     
-    // - TODO: let full sheet cover pop up, that has all the details copied in but has a new sessionID
     
     @State var showSheet: Bool = false
+    @Binding var duplicationLabelOpacity: Double
     @ObservedObject var editSessionVM: EditSessionVM
     @ObservedObject var datesVM: DatesVM
+    //@ObservedObject var duplicateSessionVM: DuplicateSessionVM
     
     @EnvironmentObject var appState: AppState                                       //For Navigation
     @EnvironmentObject var tabDetail: TabDetailVM
@@ -497,7 +520,8 @@ struct duplicateSessionButton: View{
             .padding(.horizontal)
             .padding(.vertical, 10)
             .fullScreenCover(isPresented: $showSheet, content: {
-                DuplicateSessionView(session: editSessionVM.editedSession, selectedDay: $datesVM.selectedDay, duplicateIsTrue: $editSessionVM.duplicatedIsTrue, selectedDayFromDuplicate: $editSessionVM.selectedDayFromDuplication)
+                DuplicateSessionView(session: editSessionVM.editedSession, selectedDay: $datesVM.selectedDay, duplicateIsTrue: $editSessionVM.duplicatedIsTrue, selectedDayFromDuplicate: $editSessionVM.selectedDayFromDuplication, duplicationLabelOpacity: $duplicationLabelOpacity
+                )
             })
 //            .alert(isPresented: $showAlert, content: {
 //                Alert(title: Text("Are you sure you want to delete this session?"),

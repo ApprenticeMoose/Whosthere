@@ -14,6 +14,7 @@ struct DuplicateSessionView: View {
         @Environment(\.colorScheme) var colorScheme
         
         @Binding var selectedDay: Date
+        @Binding var duplicationLabelOpacity: Double
     
         @Binding var duplicateIsTrue: Bool
         @Binding var selectedDayFromDuplicate: Date
@@ -24,9 +25,9 @@ struct DuplicateSessionView: View {
         @State var showTimePicker: Bool = false
         @State var showDatePicker: Bool = false
         
-    @State var opacity: Double = 1.0
-    @State var scale: CGFloat = 0.9
-    
+        @State var opacity: Double = 1.0
+        @State var scale: CGFloat = 0.9
+        
         @State var animate = false
             
         @ObservedObject var duplicateSessionVM : DuplicateSessionVM
@@ -45,12 +46,15 @@ struct DuplicateSessionView: View {
             GridItem(.flexible())
         ]
         
-    init(session: Session?, dataManager: DataManager = DataManager.shared, selectedDay: Binding<Date>, duplicateIsTrue: Binding<Bool>, selectedDayFromDuplicate: Binding<Date>) {
+    init(session: Session?, dataManager: DataManager = DataManager.shared, selectedDay: Binding<Date>, duplicateIsTrue: Binding<Bool>, selectedDayFromDuplicate: Binding<Date>
+         , duplicationLabelOpacity: Binding<Double>
+    ) {
             self.duplicateSessionVM = DuplicateSessionVM(session: session, dataManager: dataManager)
             self.datesVM = DatesVM()
             self._selectedDay = selectedDay
             self._duplicateIsTrue = duplicateIsTrue
-        self._selectedDayFromDuplicate = selectedDayFromDuplicate
+            self._selectedDayFromDuplicate = selectedDayFromDuplicate
+            self._duplicationLabelOpacity = duplicationLabelOpacity
             
             if duplicateSessionVM.sessionDate == duplicateSessionVM.mergeTimeAndDate(time: duplicateSessionVM.sessionTime, date: Date()) {
                 self._todayIsSelected = State(wrappedValue: true)
@@ -136,6 +140,13 @@ struct DuplicateSessionView: View {
                     duplicateSessionVM.saveSession()
                     presentationMode.wrappedValue.dismiss()
                     duplicateIsTrue = true
+                    duplicationLabelOpacity = 1.0
+                    
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                            withAnimation(Animation.linear(duration: 0.8)) {
+                            duplicationLabelOpacity = 0.0
+                        }
+                    }
                     selectedDayFromDuplicate = datesVM.setDateToStartOfWeek(date: duplicateSessionVM.sessionDate) //so it sets the selected day to the first of the week and the buttons recognize that
                     print(duplicateIsTrue)
                     print(selectedDay)

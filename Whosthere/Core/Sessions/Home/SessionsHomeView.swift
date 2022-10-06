@@ -331,6 +331,7 @@ struct DateSelectionButton: View {
 
 struct SessionHomeCardHeadline: View {
     let date: Date
+    let todayComp = Calendar.current.dateComponents([.calendar, .year, .month, .day, .timeZone, .weekday, .weekOfYear], from: Date())
     
     var body: some View {
         HStack{
@@ -339,8 +340,9 @@ struct SessionHomeCardHeadline: View {
                 .month(.wide)
                 .day()
             ))
-                .fontWeight(.medium)
-                .foregroundColor(.cardGrey1)
+                //.fontWeight(.medium)
+                .fontWeight(Calendar.current.dateComponents([.calendar, .year, .month, .day, .timeZone, .weekday, .weekOfYear], from: date) == todayComp ? .bold : .medium)
+                .foregroundColor(Calendar.current.dateComponents([.calendar, .year, .month, .day, .timeZone, .weekday, .weekOfYear], from: date) == todayComp ? .header : .cardGrey1)
                 .padding(.horizontal, 22)
             Spacer()
         }
@@ -359,6 +361,8 @@ struct SessionHomeCard: View {
     var body: some View {
         
         ZStack{
+            //Add Pulsing if session.date == selectedDay
+            
             RoundedRectangle(cornerRadius: 10)
                 .foregroundColor(.accentMidGround)
                 .frame(maxWidth: .infinity)
