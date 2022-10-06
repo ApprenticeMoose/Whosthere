@@ -2,7 +2,7 @@
 
 **Training Attendance Protocolling App**
 
-###!This app is under construction!
+### !This app is under construction!
 
 **Written in SwiftUI using Core Data**
 
