@@ -4,7 +4,7 @@
 **Written in SwiftUI using Core Data**
 
 
-### !This app is under construction!
+### 🚧 This app is under construction 🚧
 
 
 This is my first long term project with the aim of learning IOS Development.
