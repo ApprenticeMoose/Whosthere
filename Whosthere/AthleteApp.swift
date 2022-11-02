@@ -10,16 +10,36 @@ import SwiftUI
 @main
 struct AthleteApp: App {
     
+    @Environment(\.scenePhase) private var scenePhase
+    
+    var dataManager = DataManager.shared
+    
+    init() {
+        UserDefaults.standard.register(defaults: ["launchedOnce": true])
+        UserDefaults.standard.set(true, forKey: "launchedOnce")
+        }
+    
     var body: some Scene {
         WindowGroup {
             
-            let viewContext = CoreDataManager.shared.persistentStoreContainer.viewContext
-            
-                AthletesListView(vm: AthletesListViewModel(context: viewContext))
+            ContentView()
                     .environmentObject(AppState())
-                    .environment(\.managedObjectContext, viewContext)
+                    .environmentObject(TabDetailVM())
             
-            
+        }
+        .onChange(of: scenePhase) { phase in
+            switch phase {
+            case .active:
+                print("Active")
+            case .inactive:
+                print("Inactive")
+                dataManager.saveData()
+            case .background:
+                print("background")
+                dataManager.saveData()
+            default:
+                print("unknown")
+            }
         }
     }
 }
