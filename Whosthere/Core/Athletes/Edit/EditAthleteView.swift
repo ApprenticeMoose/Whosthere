@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 02.02.22.
 //
-
 import SwiftUI
 import CoreData
 import NavigationBackport
@@ -13,22 +12,14 @@ import NavigationBackport
 struct EditAthleteView: View {
 
 //MARK: -Properties
-
     @Environment(\.presentationMode) var presentationMode                           //For dismissing views
     @Environment(\.colorScheme) var colorScheme                                     //DarkMode
  
-    @ObservedObject var editVM: EditAthleteVM                           //Accessing the variables for editing
-
+    @ObservedObject var editVM: EditAthleteVM                                       //Accessing the variables for editing
     @EnvironmentObject var appState: AppState                                       //For Navigation
     @EnvironmentObject var tabDetail: TabDetailVM                                   //For TabBar hiding
-    //private (set) var context: NSManagedObjectContext                               //Core Data moc
-    
-    //@ObservedObject var athlete: AthleteViewModel                                   //Accessing the athletes
-    
     
     let goBackToRoot: () -> Void                                                    //For pop to root
-
-
     @State var male = false                                                         //For triggering the gender Buttons
     @State var female = false
     @State var nonbinary = false
@@ -56,9 +47,7 @@ struct EditAthleteView: View {
     @State var buttonFarbe : Color = .accentGold                                //Color for Button
     @State var showAlert: Bool = false                                          //Bool for Delete Alert
 
-
 //MARK: -Body
-
     var body: some View {
 
         GeometryReader { _ in                               //GeometryReader so the View doesnt move uppwards once the keyboard is actived
@@ -73,7 +62,6 @@ struct EditAthleteView: View {
                     ZStack {
                         VStack(spacing: 0) {
                             //all that is in the screen body
-
                             profilePicture
                             
 
@@ -86,7 +74,6 @@ struct EditAthleteView: View {
                             
 //                            Spacer()
 //                                .frame(minHeight: 0, idealHeight: 40, maxHeight: 50)
-
                             HStack {
                                 BirthdayField(show: $show, selectedDate: $editVM.addedAthlete.birthday, showYear: $editVM.addedAthlete.showYear)
                                 Spacer(minLength: 30)
@@ -142,10 +129,8 @@ struct EditAthleteView: View {
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
     }//Body End
-
     
     //MARK: -Functions
-
     
     func deleteAthletePressed() {
         editVM.deleteAthlete()
@@ -158,7 +143,6 @@ struct EditAthleteView: View {
         
     
     //MARK: -Outsourced Components
-
     var editAthleteHeader: some View {
     
     HStack{
@@ -290,7 +274,7 @@ struct EditAthleteView: View {
                 .padding(.horizontal)
                 .padding(.vertical, 10)
                 .alert(isPresented: $showAlert, content: {
-                    Alert(title: Text("Are you sure you want to delete this profile?"),
+                    Alert(title: Text("Are you sure you want to delete this profile?\nAll references from sessions will be removed"),
                           message: Text("This action cannot be undone!"),
                           primaryButton: .destructive(Text("Delete"),
                           action: {
@@ -303,7 +287,7 @@ struct EditAthleteView: View {
             }
 }
 
-    struct EditGenderButtons: View {
+struct EditGenderButtons: View {
 
 @Binding var gender : String
 @Binding var male : Bool
@@ -352,6 +336,8 @@ var body: some View{
                     }
                   
                     Image("MaleIcon")
+                        .resizable()
+                        .frame(width: 22, height: 22)
                         .foregroundColor(male ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                 }
             }
@@ -379,6 +365,8 @@ var body: some View{
                     }
                   
                     Image("FemaleIcon")
+                        .resizable()
+                        .frame(width: 15, height: 23.1)
                         .foregroundColor(female ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                 }
             }
@@ -418,6 +406,7 @@ func changeOpacity() -> Bool {
         if  male || female || nonbinary == true { return true }
         return false
     }
+        
 }
     
     struct Popover: View {
@@ -432,7 +421,6 @@ func changeOpacity() -> Bool {
         
         let endingDate: Date = Date()
         
-        
         init(selectedDate: Binding<Date>, show: Binding<Bool>, selectedYear: Binding<Int>, showYear: Binding<Bool>) {
             self._selectedDate = selectedDate
             self._show = show
@@ -443,13 +431,12 @@ func changeOpacity() -> Bool {
            
         }
 
-        
         func adjustYear(year: Int, date: Date) -> Date {
-            var j = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
-            j.year = year
-            selectedDate = Calendar.current.date(from: j) ?? selectedDate
-            return selectedDate
-        }
+        var j = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
+        j.year = year
+        selectedDate = Calendar.current.date(from: j) ?? selectedDate
+        return selectedDate
+    }
         
         var body: some View {
             ZStack {

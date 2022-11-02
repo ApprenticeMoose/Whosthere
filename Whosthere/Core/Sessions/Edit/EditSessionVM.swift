@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 27.09.22.
 //
-
 import SwiftUI
 import Combine
 
@@ -15,35 +14,46 @@ final class EditSessionVM: ObservableObject {
     
     @Published var duplicatedIsTrue = false
     
-    @Published var selectedDayFromDuplication = Date() //that maddness is to control whcich sessions are shown after going back...the normal ones or the duplicated session
+    //@Published var selectedDayFromDuplication = Date() //that maddness is to control whcich sessions are shown after going back...the normal ones or the duplicated session
     
     @Published var sessionTime: Date
     @Published var sessionDate: Date
     @Published var selectedIndices = Set<Int>()
+    @Published var selectedAthletes = Set<UUID>()
     //@Published var selectedIndices = [Int]()
     
     @Published private var dataManager: DataManager
     
     var anyCancellable: AnyCancellable? = nil
     
+    @Published var station: Station = Station()
+    
     init(session: Session?, dataManager: DataManager = DataManager.shared) {
         if let session = session {
             self.editedSession = session
+            
         } else {
             self.editedSession = Session()
         }
         self.sessionDate = session?.date ?? Date()
         self.sessionTime = session?.date ?? Date()
+       
         //self.selectedIndices = Set(session.athleteIDs.indices ?? Array(Set<Int>()))
         self.dataManager = dataManager
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
+        }
+        if let session = session {
+            for athlete in session.athleteIDs {
+                self.selectedAthletes.insert(athlete)
+            }
         }
     }
     
     var athletes: [Athlete] {
         dataManager.athletesArray
     }
+      
     
     func toggleAthlete(athlete: Athlete) {
         ///if toggled add it to the addedChapter.titleIDs Array and if it is already in there remove it from the array
@@ -53,8 +63,6 @@ final class EditSessionVM: ObservableObject {
             editedSession.athleteIDs.append(athlete.id)
         }
     }
-    
-    //let enumerated = Array(zip(editSessionVM.athletes.indices, editSessionVM.athletes))
     
     
     

@@ -19,15 +19,17 @@ struct Athlete: Identifiable, Hashable, Equatable {
     var birthday: Date
     var gender: String
     var showYear: Bool
+    var dateAdded: Date
     var sessionIDs = [UUID]()
     
-    init(firstName: String = "", lastName: String = "", birthday: Date = Date(), gender: String = "", showYear: Bool = false) {
+    init(firstName: String = "", lastName: String = "", birthday: Date = Date(), gender: String = "", showYear: Bool = false, dateAdded: Date = Date()) {
         self.id = UUID()
         self.firstName = firstName
         self.lastName = lastName
         self.birthday = birthday
         self.gender = gender
         self.showYear = showYear
+        self.dateAdded = dateAdded
     }
     
     static func ==(lhs: Athlete, rhs: Athlete) -> Bool {

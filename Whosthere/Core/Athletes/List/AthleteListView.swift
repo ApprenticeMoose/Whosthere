@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 04.12.21.
 //
-
 import SwiftUI
 import NavigationBackport
 
@@ -33,12 +32,10 @@ struct AthleteListView: View {
     
     @ObservedObject var datesVM: DatesVM
     @StateObject var athletesListVM = AthleteListVM()                       //Accessing the athletes
-
     //MARK: -Body
     
     var body: some View {
         NBNavigationStack(path: $appState.path){                            //NavigationStack
-
                 VStack{
                     
                     HStack{
@@ -91,7 +88,7 @@ struct AthleteListView: View {
                                                         goBackToRoot: { appState.path.removeLast(appState.path.count)})
                                       
                                     case let .editSession(session):
-                                        EditSessionView(session: session, selectedDay: $datesVM.selectedDay)
+                                        EditSessionView(session: session, selectedDay: $datesVM.selectedDay, scrollToIndexOfSessions: $datesVM.scrollToIndexOfSessions)
                                     }
                                 }
                         
@@ -113,7 +110,6 @@ struct AthleteListView: View {
         
         }//NavigationStack
     }//Body
-
     
     //MARK: -Functions
     
@@ -191,53 +187,60 @@ struct AthleteListView: View {
 
 
 
-
         //MARK: Subviews
-
-    struct ListRowView: View {
-        
-        @Environment(\.colorScheme) var colorScheme
-        
-        //changes may be needed
-        let athlete: Athlete
-        
-        var body: some View {
-            VStack{
-            HStack {
-                emptyProfilePicture
-                
-                Text(athlete.firstName)
-                    .foregroundColor(.mainText)
-                    .font(.title3)
-                Spacer()
-            }
-            .padding(.bottom, 4)
-             
-            }
-            .padding(.top, 5)
-            .background(
-                Color.accentMidGround
-            )
+struct ListRowView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    //changes may be needed
+    let athlete: Athlete
+    
+    var body: some View {
+        VStack{
+        HStack {
+            emptyProfilePicture
             
+            Text(athlete.firstName)
+                .foregroundColor(.mainText)
+                .font(.title3)
+            Spacer()
         }
-        
-        
-        
-        var emptyProfilePicture: some View {
-            ZStack {
-                Circle()
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey1)
-                    //.foregroundColor(.sheetButton)
-                    .padding(.horizontal, 10)
-                Image(systemName: "person.fill")
-                    .resizable()
-                    .frame(width: 20, height: 20, alignment: .center)
-                    //.foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
-                    .foregroundColor(colorScheme == .light ? .cardGrey2 : .cardProfileLetter)
-            }
+        .padding(.bottom, 4)
+         
         }
+        .padding(.top, 5)
+        .background(
+            Color.accentMidGround
+        )
+        
     }
+    
+    var emptyProfilePicture: some View {
+    ZStack {
+        Circle()
+            .frame(width: 40, height: 40)
+            .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey1)
+            //.foregroundColor(.sheetButton)
+            .padding(.horizontal, 10)
+        Text(getInitials(firstName: athlete.firstName, lastName: athlete.lastName))
+            .font(.body)
+            .fontWeight(.semibold)
+            .foregroundColor(.cardProfileLetter)
+//                Image(systemName: "person")
+//                    .resizable()
+//                    .frame(width: 20, height: 20, alignment: .center)
+//                    //.foregroundColor(colorScheme == .light ? .greyTwoColor : .greyOneColor)
+//                    .foregroundColor(.cardProfileLetter)
+    }
+}
+    
+    func getInitials(firstName: String, lastName: String) -> String {
+        let firstLetter = firstName.first?.uppercased() ?? ""
+        let lastLetter = lastName.first?.uppercased() ?? ""
+        return firstLetter + lastLetter
+    }
+
+}
 
 struct ScreenHeaderTextOnly: View {
     
@@ -271,7 +274,6 @@ struct RowView: View {
 //                .listRowInsets(.init(top: 10, leading: 5, bottom: 10, trailing: 10))
 //                .listRowBackground(Color.mainCard)
     }
-
 }
 
 
@@ -288,5 +290,4 @@ struct Seperator: View {
         }
         .padding(.top, 0)
     }
-    
 }

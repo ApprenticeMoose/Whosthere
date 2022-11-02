@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 06.09.22.
 //
-
 import Foundation
 import CoreData
 import OrderedCollections
@@ -178,6 +177,7 @@ extension Athlete {
         self.birthday = athleteMO.birthday ?? Date()
         self.gender = athleteMO.gender ?? ""
         self.showYear = athleteMO.showYear
+        self.dateAdded = athleteMO.dateAdded ?? Date()
         if let sessionMOs = athleteMO.sessionMOs as? Set<SessionMO> {
             let sessionMOsArray = sessionMOs.sorted(by: {$0.date! < $1.date!})
             self.sessionIDs = sessionMOsArray.compactMap({$0.id})
@@ -234,6 +234,7 @@ extension DataManager {
         athleteMO.birthday = athlete.birthday
         athleteMO.gender = athlete.gender
         athleteMO.showYear = athlete.showYear
+        athleteMO.dateAdded = athlete.dateAdded
         let sessionMOs = athlete.sessionIDs.compactMap({getSessionMO(from:getSession(with: $0))})
         athleteMO.sessionMOs = NSSet(array: sessionMOs)
     }
@@ -335,4 +336,3 @@ extension DataManager {
         }
     }
 }
-

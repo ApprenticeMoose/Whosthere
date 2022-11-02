@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 26.08.22.
 //
-
 import Foundation
 
 class DatesVM: ObservableObject {
@@ -15,6 +14,12 @@ class DatesVM: ObservableObject {
     @Published var selectedDay: Date =  Date()
     @Published var scrollToIndex: Int = 3
     @Published var wholeWeeks: [[Date]] = []
+    
+    @Published var scrollToIndexOfSessions: Date =  Date()
+    @Published var indexOfToday: Date = Date()
+    @Published var dayToScrollTo: Date = Date()
+    
+    @Published var station: Station = Station()
     
     var calendar = Calendar.current
     
@@ -78,6 +83,12 @@ class DatesVM: ObservableObject {
         return formatter.string(from: date)
     }//function to convert Dates into Strings to be used in text etc with formatting via "dd", "MMM", etc
     
+    func extractDateWithoutTime(date: Date) -> Date {
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.calendar, .year, .month, .day, .timeZone, .weekday, .weekOfYear], from: date)
+        return calendar.date(from: DateComponents(calendar: dateComponents.calendar, timeZone: dateComponents.timeZone, year: dateComponents.year, month: dateComponents.month, day: dateComponents.day)) ?? Date()
+    }
+    
     func checkCurrentWeek(dates: [Date], dateSelected: Date) -> Bool {
         var isInWeek: Bool = false
         
@@ -88,7 +99,6 @@ class DatesVM: ObservableObject {
         }
         return isInWeek
     }//run the array of weekdates through the for loop which singles out if the currently selected date is in this array
-
     func setDateToStartOfWeek(date: Date) -> Date {
         return calendar.dateInterval(of: .weekOfYear, for: date)?.start ?? Date()
     }
@@ -116,4 +126,3 @@ class DatesVM: ObservableObject {
         return calendar.date(byAdding: .day, value: 1, to: Date()) ?? Date()
     }
 }
-

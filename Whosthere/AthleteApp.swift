@@ -14,6 +14,11 @@ struct AthleteApp: App {
     
     var dataManager = DataManager.shared
     
+    init() {
+        UserDefaults.standard.register(defaults: ["launchedOnce": true])
+        UserDefaults.standard.set(true, forKey: "launchedOnce")
+        }
+    
     var body: some Scene {
         WindowGroup {
             

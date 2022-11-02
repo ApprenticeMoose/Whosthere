@@ -42,6 +42,7 @@ extension Color {
     
     static let appBackground = Color("AppBackground")
     static let deleteButton = Color("DeleteButton")
+    static let successLabel = Color("SuccessLabel")
     
     static let cardGrey1 = Color("CardGrey1")
     static let cardGrey2 = Color("CardGrey2")

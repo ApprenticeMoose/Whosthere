@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 05.09.22.
 //
-
 import SwiftUI
 import Combine
 
@@ -16,6 +15,7 @@ final class AddSessionVM: ObservableObject {
     @Published var sessionTime: Date = Date()
     @Published var sessionDate: Date = Date()
     @Published var selectedIndices = Set<Int>()
+    @Published var selectedAthletes = Set<UUID>()
     
     @Published private var dataManager: DataManager
     

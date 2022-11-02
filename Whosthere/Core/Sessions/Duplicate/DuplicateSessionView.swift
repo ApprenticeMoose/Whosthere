@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 05.10.22.
 //
-
 import SwiftUI
 import NavigationBackport
 
@@ -16,8 +15,7 @@ struct DuplicateSessionView: View {
         @Binding var selectedDay: Date
         @Binding var duplicationLabelOpacity: Double
     
-        @Binding var duplicateIsTrue: Bool
-        @Binding var selectedDayFromDuplicate: Date
+        
         
         @State var todayIsSelected: Bool = false
         @State var tomorrowIsSelected: Bool = false
@@ -46,14 +44,12 @@ struct DuplicateSessionView: View {
             GridItem(.flexible())
         ]
         
-    init(session: Session?, dataManager: DataManager = DataManager.shared, selectedDay: Binding<Date>, duplicateIsTrue: Binding<Bool>, selectedDayFromDuplicate: Binding<Date>
+    init(session: Session?, dataManager: DataManager = DataManager.shared, selectedDay: Binding<Date>
          , duplicationLabelOpacity: Binding<Double>
     ) {
             self.duplicateSessionVM = DuplicateSessionVM(session: session, dataManager: dataManager)
             self.datesVM = DatesVM()
             self._selectedDay = selectedDay
-            self._duplicateIsTrue = duplicateIsTrue
-            self._selectedDayFromDuplicate = selectedDayFromDuplicate
             self._duplicationLabelOpacity = duplicationLabelOpacity
             
             if duplicateSessionVM.sessionDate == duplicateSessionVM.mergeTimeAndDate(time: duplicateSessionVM.sessionTime, date: Date()) {
@@ -139,7 +135,7 @@ struct DuplicateSessionView: View {
                 Button(action: {
                     duplicateSessionVM.saveSession()
                     presentationMode.wrappedValue.dismiss()
-                    duplicateIsTrue = true
+                    
                     duplicationLabelOpacity = 1.0
                     
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
@@ -147,8 +143,8 @@ struct DuplicateSessionView: View {
                             duplicationLabelOpacity = 0.0
                         }
                     }
-                    selectedDayFromDuplicate = datesVM.setDateToStartOfWeek(date: duplicateSessionVM.sessionDate) //so it sets the selected day to the first of the week and the buttons recognize that
-                    print(duplicateIsTrue)
+                    // selectedDayFromDuplicate = datesVM.setDateToStartOfWeek(date: duplicateSessionVM.sessionDate) //so it sets the selected day to the first of the week and the buttons recognize that
+               
                     print(selectedDay)
                     //appState.path.removeLast()
                     //tabDetail.showDetail = false
@@ -172,6 +168,7 @@ struct DuplicateSessionView: View {
                 Text("Time")
                     .font(.title3)
                     .fontWeight(.semibold)
+                    .foregroundColor(.midTitle)
                     .padding(.horizontal, 30)
                     .offset(y: 6)
                 
@@ -192,6 +189,7 @@ struct DuplicateSessionView: View {
                         Text("\(datesVM.extractDate(date: datesVM.roundMinutesDown(date: duplicateSessionVM.sessionTime), format: "HH:mm"))")
                         //.font(.title3)
                             .fontWeight(.semibold)
+                            .foregroundColor(.midTitle)
                         
                         
                         
@@ -230,8 +228,10 @@ struct DuplicateSessionView: View {
             Text("Date")
                 .font(.title3)
                 .fontWeight(.semibold)
+                .foregroundColor(.midTitle)
                 .padding(.horizontal, 30)
                 .offset(y: 6)
+            
             
             
             HStack{
@@ -295,7 +295,7 @@ struct DuplicateSessionView: View {
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.accentBigButton.opacity(0.5), lineWidth: 1.5)
+                        .stroke(Color.midTitle.opacity(0.5), lineWidth: 1.5)
                         .frame(width: 105, height: 40)
                         .scaleEffect(scale)
                         .opacity(opacity)
@@ -309,6 +309,7 @@ struct DuplicateSessionView: View {
                     
                     Text("\(datesVM.extractDate(date: duplicateSessionVM.sessionDate, format: "dd. MMM"))")
                         .fontWeight(.semibold)
+                        .foregroundColor(.midTitle)
                 }
                
                 .onTapGesture {
@@ -359,6 +360,7 @@ struct DuplicateSessionView: View {
                         
                         Text("+1 Day")
                             .fontWeight(.semibold)
+                            .foregroundColor(.midTitle)
                     }
                 }
 
@@ -388,6 +390,8 @@ struct DuplicateSessionView: View {
                         
                         Text("+1 Week")
                             .fontWeight(.semibold)
+                            .foregroundColor(.midTitle)
+                            
                     }
                 }
                 Spacer()
@@ -404,6 +408,7 @@ struct DuplicateSessionView: View {
                 Text("Athletes")
                     .font(.title3)
                     .fontWeight(.semibold)
+                    .foregroundColor(.midTitle)
                     .padding(.horizontal, 30)
                     .offset(y: 6)
                 
@@ -428,7 +433,7 @@ struct DuplicateSessionView: View {
                                         .opacity(duplicateSessionVM.selectedIndices.contains(index) ? 0.3 : 1.0)
                                             Image(systemName: "checkmark")
                                                 .resizable()
-                                                .foregroundColor(.accentBigButton)
+                                                .foregroundColor(.midTitle)
                                                 .frame(width: 21, height: 16, alignment: .center)
                                                 .opacity(duplicateSessionVM.selectedIndices.contains(index) ? 1.0 : 0.0)
                                         }
@@ -437,6 +442,7 @@ struct DuplicateSessionView: View {
                                         Text("\(athlete.firstName)")
                                             .font(.caption)
                                             .opacity(duplicateSessionVM.selectedIndices.contains(index) ? 0.5 : 1.0)
+                                            .foregroundColor(.cardText)
                                     }
                                     .onTapGesture {
                                         if duplicateSessionVM.selectedIndices.contains(index) {

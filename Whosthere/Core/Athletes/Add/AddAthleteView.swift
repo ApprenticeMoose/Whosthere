@@ -4,17 +4,14 @@
 //
 //  Created by Moose on 20.11.21.
 //
-
 import SwiftUI
 
 
 struct AddAthleteView: View {
 
     //MARK: Properties
-
     @Environment(\.presentationMode) var presentationMode                       //For dismissing views
     @Environment(\.colorScheme) var colorScheme                                 //DarkMode
-
     
     @ObservedObject var addVM: AddAthleteVM                              //Accessing the variables for adding
     
@@ -26,16 +23,13 @@ struct AddAthleteView: View {
     @State var buttonFarbe : Color = .orangeAccentColor                         //Color for Button
 
 
-
     //MARK: Body
-
     var body: some View {
         //GeometryReader so the View doesnt move upwards once the keyboard is actived
         GeometryReader { _ in
 //        ZStack{
 //
 //            Color.accentColor.edgesIgnoringSafeArea(.all)
-
             ZStack{
                 VStack{
                     //header
@@ -44,7 +38,6 @@ struct AddAthleteView: View {
                     ZStack {
                         VStack(spacing: 0) {
                             //all that is in the screen body
-
                             profilePicture
 
                             LongTextField(textFieldDescription: "First Name",  firstNameTF: $addVM.addedAthlete.firstName)
@@ -58,46 +51,23 @@ struct AddAthleteView: View {
                                 GenderButtons(gender: $addVM.addedAthlete.gender)
                             }
 
-//Spacer to define the body-sheets size
-//                      Spacer().frame(maxWidth: .infinity)
-
                             Spacer()
 
                             addButton
                         }
                         .padding(.top, 20)
-//                        .background(Color.backgroundColor
-//                                        .clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20))
-//                                        .edgesIgnoringSafeArea(.bottom))
                     } //ZStack for Popover
                 }//VStack to seperate Header and ScreenBody/content
                 .background(Color.appBackground.edgesIgnoringSafeArea(.all))
-                ZStack{
-                    if self.show {
-                        Color.black
-                            .opacity(0.4)
-                            .edgesIgnoringSafeArea(.all)
-                            .onTapGesture { show.toggle() }
-
-                        Popover(selectedDate: $addVM.addedAthlete.birthday, show: $show, selectedYear: $addVM.birthYear, showYear: $addVM.addedAthlete.showYear)
-                        }
-                    }
-                    .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)
+                
+                calendarPopover
             }//ZStackforpopover
 //        }//ZStack End
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }//Body End
 
-
-
-    
-
-
-
-
     //MARK: Outsourced components
-
     var addButton: some View{
     Button(action: {
         if addVM.textIsAppropriate()
@@ -149,7 +119,6 @@ struct AddAthleteView: View {
 
 
 
-
                 ZStack{
                     Circle()
                         .strokeBorder(Color.header, lineWidth: 1)
@@ -161,8 +130,7 @@ struct AddAthleteView: View {
                         .foregroundColor(.white)
                     }
                     .offset(x: 40, y: -30)
-                }
-          }
+                }}
 
     var addAthleteHeader: some View {
         HStack{
@@ -207,12 +175,24 @@ struct AddAthleteView: View {
     var buttonDisabledColor: Color {
         return colorScheme == .light ? .greyTwoColor : .darkModeDisabledButtonColor
 }
+    
+    var calendarPopover: some View {
+        ZStack{
+            if self.show {
+                Color.black
+                    .opacity(0.4)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture { show.toggle() }
+
+                Popover(selectedDate: $addVM.addedAthlete.birthday, show: $show, selectedYear: $addVM.birthYear, showYear: $addVM.addedAthlete.showYear)
+                }
+            }
+            .opacity(self.show ? 1 : 0).animation(.easeIn, value: show)
+    }
 
 }//Struct End
 
-
     // MARK: Subviews
-
 struct LongTextField: View {
 
     @Environment(\.colorScheme) var colorScheme
@@ -385,6 +365,8 @@ struct GenderButtons: View {
                         }
                       
                         Image("MaleIcon")
+                            .resizable()
+                            .frame(width: 22, height: 22)
                             .foregroundColor(male ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                     }
                 }
@@ -411,6 +393,8 @@ struct GenderButtons: View {
                         }
                       
                         Image("FemaleIcon")
+                            .resizable()
+                            .frame(width: 15, height: 23.1)
                             .foregroundColor(female ? Color.white: colorScheme == .light ? Color.detailGray2 : Color.cardGrey1)
                     }
                 }

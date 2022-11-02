@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AthleteMO" representedClassName="AthleteMO" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateAdded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="gender" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -15,7 +16,7 @@
         <relationship name="athleteMOs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AthleteMO" inverseName="sessionMOs" inverseEntity="AthleteMO"/>
     </entity>
     <elements>
-        <element name="AthleteMO" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="AthleteMO" positionX="-63" positionY="-18" width="128" height="149"/>
         <element name="SessionMO" positionX="-63" positionY="27" width="128" height="74"/>
     </elements>
 </model>

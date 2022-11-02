@@ -4,7 +4,6 @@
 //
 //  Created by Moose on 05.09.22.
 //
-
 import SwiftUI
 import Combine
 
@@ -12,6 +11,7 @@ import Combine
 final class SessionHomeVM: ObservableObject {
     
     @Published var dataManager: DataManager
+    
     
     var anyCancellable: AnyCancellable? = nil
     
@@ -24,6 +24,10 @@ final class SessionHomeVM: ObservableObject {
     
     var sessions: [Session] {
         dataManager.sessionsArray
+    }
+    
+    func deleteSession(session: Session) {
+            dataManager.delete(session: session)
     }
     
     func fetchSessions() {
