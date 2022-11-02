@@ -11,6 +11,7 @@ struct FrameButton: View {
     
     let iconName: String
     let iconColor: Color
+    let backgroundColor: Color
     
     var body: some View {
         Image(iconName)
@@ -19,7 +20,9 @@ struct FrameButton: View {
             .frame(width: 30, height: 30)
             .background(
                 RoundedRectangle(cornerRadius: 5)
-                    .stroke(Color.textColor, lineWidth: 2.0)
+                    
+                    .foregroundColor(backgroundColor)
+                    //.stroke(Color.textColor, lineWidth: 2.0)
                     //.foregroundColor(iconColor)
                     
             )
@@ -30,10 +33,10 @@ struct FrameButton: View {
 struct FrameButton_Previews: PreviewProvider {
     static var previews: some View {
         Group{
-        FrameButton(iconName: "plus", iconColor: .textColor)
+            FrameButton(iconName: "plus", iconColor: .textColor, backgroundColor: .accentGold)
             .padding()
             .previewLayout(.sizeThatFits)
-        FrameButton(iconName: "plus", iconColor: .textColor)
+            FrameButton(iconName: "plus", iconColor: .textColor, backgroundColor: .accentGold)
             .padding()
             .previewLayout(.sizeThatFits)
             .preferredColorScheme(.dark)
