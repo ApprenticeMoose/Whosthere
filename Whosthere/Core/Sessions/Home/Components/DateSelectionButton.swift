@@ -8,6 +8,15 @@ import SwiftUI
 
 struct DateSelectionButton: View {
     var checkIfSelected: Bool
+    var currentWeek: Int
+    var weekThatContainsToday: Int
+    var dateIsToday: Bool {
+        if currentWeek == weekThatContainsToday {
+            return true
+        } else {
+            return false
+        }
+    }
     var colorText: Color
     var colorBackground: Color
     var textKW: String
@@ -16,7 +25,10 @@ struct DateSelectionButton: View {
     var id: Int
     
     var body: some View {
+        VStack{
         ZStack{
+            
+                        
             if checkIfSelected {
                 ZStack{
                     RoundedRectangle(cornerRadius: 5)
@@ -38,18 +50,34 @@ struct DateSelectionButton: View {
                 Text(textKW)
                     .font(.footnote)
                     .fontWeight(.semibold)
+                    
                 HStack(spacing: 0){
                     Text(textfirstDayOfWeek)
                         .font(.caption2)
                         .fontWeight(.regular)
+                        
                         .id(id)
                     
                     Text(textlastDayOfWeek)
                         .font(.caption2)
                         .fontWeight(.regular)
+                        
                 }
             }
-            .foregroundColor(checkIfSelected ? colorText : colorText.opacity(0.3))
+            .foregroundColor(
+                //dateIsToday && !checkIfSelected ? colorText.opacity(0.8) :
+                                checkIfSelected ? colorText : colorText.opacity(0.3) )
+            
+        }
+                Capsule()
+                    .frame(width: 4, height: 4)
+                    .foregroundColor(dateIsToday ? colorText : .clear)
+                    .offset(y: -3)
+        
+            
+           
         }
     }
 }
+
+

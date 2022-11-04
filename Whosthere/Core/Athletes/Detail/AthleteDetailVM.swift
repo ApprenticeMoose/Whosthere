@@ -12,22 +12,58 @@ import Combine
 final class AthleteDetailVM: ObservableObject {
     
     //Need to pull it from the titles array from the datamanger as a array[whateverid]
-    @Published var detailIndex: Int
+    //@Published var detailIndex: Int
     
     @Published private var dataManager: DataManager
     
+    @Published var detailAthlete: Athlete
+    
     var anyCancellable: AnyCancellable? = nil
     
-    init(athleteIndex: Int, dataManager: DataManager = DataManager.shared) {
-        self.detailIndex = athleteIndex
+    init?(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
+        //self.detailIndex = athleteIndex
+        self.detailAthlete = athlete
         self.dataManager = dataManager
+        
+        if let indexus = dataManager.athletesArray.firstIndex(where: { $0.id == detailAthlete.id })
+        {
+            print(indexus)
+            self.index = indexus
+            
+        }
+        else {
+            print("no index")
+            self.index = 0
+        }
+
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
         }
+        print("DetailVM initialized")
     }
     
-    var detailAthlete: Athlete {
-        dataManager.athletesArray[detailIndex]
+    init(athlete2: Athlete, dataManager2: DataManager = DataManager.shared) {
+        //self.detailIndex = athleteIndex
+        self.detailAthlete = athlete2
+        self.dataManager = dataManager2
+
+        anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
+            self?.objectWillChange.send()
+        }
+        print("DetailVM initialized")
+    }
+
+    
+    var index: Int = 0
+//    {
+//
+//    }
+    
+    var detailedAthlete: Athlete {
+        
+            dataManager.athletesArray[index]
+       
+       
     }
     
     func getSessions(with id: UUID?) -> Session? {

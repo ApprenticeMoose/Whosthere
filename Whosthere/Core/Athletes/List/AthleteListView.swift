@@ -8,7 +8,7 @@ import SwiftUI
 import NavigationBackport
 
 enum Route: Hashable {
-    case detail(Int)
+    case detail(Athlete)
     case edit(Athlete)
     case editSession(Session)
     //case test(AthleteViewModel)
@@ -57,10 +57,10 @@ struct AthleteListView: View {
                         ScrollView(showsIndicators: false){
                             LazyVStack{
                                 let enumerated = Array(zip(athletesListVM.athletes.indices, athletesListVM.athletes))
-                                ForEach(enumerated, id: \.1) { index, athlete in
+                                ForEach(enumerated, id: \.1) {index, athlete in
                                 
                             
-                                    NBNavigationLink(value: Route.detail(index), label: {RowView(athlete: athlete)})
+                                    NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
                                   
                                     if index != enumerated.count - 1 {
                                         Seperator()
@@ -80,8 +80,8 @@ struct AthleteListView: View {
                         
                         .nbNavigationDestination(for: Route.self) { route in
                                     switch route {
-                                    case let .detail(index):
-                                        AthleteDetailView(athleteIndex: index)
+                                    case let .detail(athlete):
+                                        AthleteDetailView(athlete: athlete)
                                             
                                     case let .edit(athlete):
                                         EditAthleteView(athlete: athlete,

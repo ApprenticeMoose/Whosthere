@@ -27,8 +27,8 @@ struct AthleteDetailView: View {
     @ObservedObject var detailVM: AthleteDetailVM
     
     
-    init(athleteIndex: Int, dataManager: DataManager = DataManager.shared) {
-        self.detailVM = AthleteDetailVM(athleteIndex: athleteIndex)
+    init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
+        self.detailVM = AthleteDetailVM(athlete: athlete) ?? AthleteDetailVM(athlete2: athlete)
         print("Initializing Detail View for: \(String(describing: detailVM.detailAthlete.firstName))")
     }
   
@@ -50,6 +50,9 @@ struct AthleteDetailView: View {
                 
                     nameAndBirthday
                 
+                }
+                .onAppear{
+                    print("detail reloaded")
                 }
                 
                 VStack {
@@ -86,18 +89,18 @@ struct AthleteDetailView: View {
     
     VStack(spacing: UIScreen.main.bounds.height/80){
         HStack(spacing: 6) {
-            Text(detailVM.detailAthlete.firstName)
+            Text(detailVM.detailedAthlete.firstName)
                 .font(.title3)
                 .fontWeight(.bold)
-            Text(detailVM.detailAthlete.lastName)
+            Text(detailVM.detailedAthlete.lastName)
                 .font(.title3)
                 .fontWeight(.bold)
             }
             .foregroundColor(Color.header)
         VStack{
            
-            if let dateOfBirth = detailVM.detailAthlete.birthday {
-                if detailVM.detailAthlete.showYear {
+            if let dateOfBirth = detailVM.detailedAthlete.birthday {
+                if detailVM.detailedAthlete.showYear {
                     Text("\(String(describing: Calendar.current.component(.year, from: dateOfBirth)))")
                         .font(.subheadline)
                         .fontWeight(.semibold)

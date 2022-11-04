@@ -33,6 +33,7 @@ struct SessionsHomeView: View {
         return formatter
     }
     
+ 
     //MARK: - Body
     
     var body: some View {
@@ -68,6 +69,10 @@ struct SessionsHomeView: View {
                                 ForEach(0..<datesVM.wholeWeeks.count, id: \.self) { i in
                                     //
                                     DateSelectionButton(checkIfSelected: datesVM.checkCurrentWeek(dates: datesVM.wholeWeeks[i], dateSelected: datesVM.selectedDay),
+                                                        //dateIsToday: datesVM.checkCurrentWeek(dates: Date().daysOfWeek(), dateSelected: Date().noon),
+                                                        
+                                                        currentWeek: datesVM.extractWeek(date: datesVM.wholeWeeks[i][0]),
+                                                        weekThatContainsToday: datesVM.extractWeek(date: Date()),
                                                         colorText: Color.header,
                                                         colorBackground: Color.accentMidGround,
                                                         textKW: "KW " + "\(datesVM.extractWeek(date: datesVM.wholeWeeks[i][0]))",
@@ -147,8 +152,8 @@ struct SessionsHomeView: View {
                     }
                     .nbNavigationDestination(for: Route.self) { route in
                         switch route {
-                        case let .detail(index):
-                            AthleteDetailView(athleteIndex: index)
+                        case let .detail(athlete):
+                            AthleteDetailView(athlete: athlete)
                             
                         case let .edit(athlete):
                             EditAthleteView(athlete: athlete,

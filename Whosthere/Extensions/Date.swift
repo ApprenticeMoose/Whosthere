@@ -22,6 +22,5 @@ extension Date {
                 return calender.date(from: dateComponents) ?? Date()
             }
         }
-    
 }
 
