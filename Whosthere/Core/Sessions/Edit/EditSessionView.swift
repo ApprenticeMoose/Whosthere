@@ -124,6 +124,8 @@ struct EditSessionView: View {
 
                 }.frame(minHeight: geometry.size.height)
             }.frame(width: geometry.size.width)
+            .background(Color.appBackground.edgesIgnoringSafeArea(.all))
+                
                 VStack{
                     Spacer()
                     
@@ -378,7 +380,7 @@ struct EditSessionView: View {
                         .foregroundColor(Color.midTitle)
                         .padding(.horizontal, 24)
                         .padding(.vertical, 6)
-                        .offset(y: 9)
+                        .offset(y: 8)
                 }
 
             }

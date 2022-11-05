@@ -39,6 +39,7 @@ struct SessionsHomeView: View {
     var body: some View {
         NBNavigationStack(path: $appState.path) {                            //NavigationStack
             ZStack{
+                VStack(spacing: 12){
                 VStack(spacing: 18){
                     
 //Header and Buttons
@@ -104,7 +105,7 @@ struct SessionsHomeView: View {
                         }
                         .padding(.horizontal)
                     }//scrollview
-                    
+                }
 //Sessions
                     ScrollView(.vertical, showsIndicators: false){
                         ScrollViewReader { proxy in
@@ -172,6 +173,7 @@ struct SessionsHomeView: View {
                     Spacer()
                     
                 } //VStack
+           // }//VStack oben und athleten
                 .background(Color.appBackground.edgesIgnoringSafeArea(.all))
                 
 //Calendar Overlay

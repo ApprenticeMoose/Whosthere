@@ -74,7 +74,7 @@ struct AddSessionView: View {
                     
                 }.frame(minHeight: geometry.size.height)
             }.frame(width: geometry.size.width)
-                
+            .background(Color.appBackground.edgesIgnoringSafeArea(.all))
                 
                     timePicker
                     .opacity(self.showTimePicker ? 1 : 0).animation(.easeIn, value: showTimePicker)

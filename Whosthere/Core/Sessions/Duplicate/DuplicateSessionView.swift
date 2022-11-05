@@ -96,7 +96,9 @@ struct DuplicateSessionView: View {
 
                     }.frame(minHeight: geometry.size.height)
                 }.frame(width: geometry.size.width)
-
+                .background(Color.appBackground.edgesIgnoringSafeArea(.all))
+                    
+                    
                 timePicker
                 
                 datePicker
