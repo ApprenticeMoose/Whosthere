@@ -29,13 +29,21 @@ final class AthleteDetailVM: ObservableObject {
         {
             print(indexus)
             self.index = indexus
-            
         }
         else {
             print("no index")
             self.index = 0
         }
-
+        
+        if dataManager.athletesArray.isEmpty{
+            self.detailedAthlete = Athlete()
+            
+        } else {
+            self.detailedAthlete = dataManager.athletesArray[index]
+            
+        }
+        
+        
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
         }
@@ -59,12 +67,7 @@ final class AthleteDetailVM: ObservableObject {
 //
 //    }
     
-    var detailedAthlete: Athlete {
-        
-            dataManager.athletesArray[index]
-       
-       
-    }
+    var detailedAthlete: Athlete = Athlete()
     
     func getSessions(with id: UUID?) -> Session? {
         guard let id = id else { return nil }

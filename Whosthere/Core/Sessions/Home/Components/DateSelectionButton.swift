@@ -77,6 +77,7 @@ struct DateSelectionButton: View {
             
            
         }
+        .padding(.bottom, 0)
     }
 }
 

@@ -131,6 +131,7 @@ struct AthleteListView: View {
             
         
         Text("Start growing your team")
+            .fontWeight(.semibold)
            // .padding(.bottom, 10)
         
         Button {
@@ -138,10 +139,12 @@ struct AthleteListView: View {
         } label: {
             MediumButton(icon: "plus",
                             description: "Add athlete now",
-                            textColor: .textColor,
-                         backgroundColor: .middlegroundColor);
+                            textColor: .middlegroundColor,
+                         backgroundColor: .textColor);
         }
+        Spacer()
     }
+        
 }
         
 

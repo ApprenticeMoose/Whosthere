@@ -17,6 +17,7 @@ struct AthleteApp: App {
     init() {
         UserDefaults.standard.register(defaults: ["launchedOnce": true])
         UserDefaults.standard.set(true, forKey: "launchedOnce")
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .systemBlue
         }
     
     var body: some Scene {

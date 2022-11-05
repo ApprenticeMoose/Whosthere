@@ -283,7 +283,6 @@ struct EditAthleteView: View {
                           secondaryButton: .cancel())
                     })
                 }
-                //.frame(maxWidth: .infinity, alignment: .bottom)
             }
 }
 

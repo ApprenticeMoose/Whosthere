@@ -413,6 +413,7 @@ struct EditSessionView: View {
                                     
                                     Text("\(athlete.firstName)")
                                         .font(.caption)
+                                        .foregroundColor(.cardText)
                                         .opacity(editSessionVM.selectedAthletes.contains(athlete.id) ? 0.5 : 1.0)
                                 }
                                 .onTapGesture {
@@ -444,6 +445,7 @@ struct EditSessionView: View {
                                     
                                     Text("Add")
                                         .font(.caption)
+                                        .foregroundColor(.cardText)
                                 }
                                 .fullScreenCover(isPresented: $showAddAthleteSheet, content: {
                                     AddAthleteView()
