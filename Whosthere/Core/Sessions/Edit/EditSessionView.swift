@@ -31,7 +31,7 @@ struct EditSessionView: View {
     var athleteArray = [UUID]()
     
     var athletesToCheck: [Athlete] {
-        switch datesVM.station.sortAthletes {
+    switch datesVM.station.sortAthletes {
        case .firstNameFromA:
             return editSessionVM.athletes.sorted(by: {$0.firstName < $1.firstName } )
        case .firstNameFromZ:

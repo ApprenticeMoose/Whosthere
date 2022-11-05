@@ -37,7 +37,7 @@ struct ContentView: View {
                 Spacer()
                 duplicationSuccessLabel
                     //.offset(y: 50)
-                ActionSheet(session: tabDetail.sessionForSheet, showActionSheet: $showActionSheet, sessionHomeVM: SessionHomeVM(), datesVM: DatesVM(), duplicationLabelOpacityActionSheet: $duplicationLabelOpacityActionSheet).offset(y: self.showActionSheet ? 0 : UIScreen.main.bounds.height)
+                ActionSheetDuplicateDeleteSesssion(session: tabDetail.sessionForSheet, showActionSheet: $showActionSheet, sessionHomeVM: SessionHomeVM(), datesVM: DatesVM(), duplicationLabelOpacityActionSheet: $duplicationLabelOpacityActionSheet).offset(y: self.showActionSheet ? 0 : UIScreen.main.bounds.height)
 
             }.background((showActionSheet ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
                 //tabDetail.showDetail.toggle()

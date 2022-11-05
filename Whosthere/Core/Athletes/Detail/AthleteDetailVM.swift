@@ -18,6 +18,8 @@ final class AthleteDetailVM: ObservableObject {
     
     @Published var detailAthlete: Athlete
     
+    @Published var station: Station = Station()
+    
     var anyCancellable: AnyCancellable? = nil
     
     init?(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
@@ -63,6 +65,7 @@ final class AthleteDetailVM: ObservableObject {
 
     
     var index: Int = 0
+    
 //    {
 //
 //    }

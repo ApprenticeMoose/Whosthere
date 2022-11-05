@@ -22,7 +22,7 @@ struct AthleteDetailView: View {
     @EnvironmentObject var tabDetail: TabDetailVM
     
     @State private var birthToggle: Bool = false                          //Variable to switch between displaying birthdate and birthyear
-    
+    @State var showKWPicker1: Bool = false
     
     @ObservedObject var detailVM: AthleteDetailVM
     
@@ -30,13 +30,51 @@ struct AthleteDetailView: View {
     init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
         self.detailVM = AthleteDetailVM(athlete: athlete) ?? AthleteDetailVM(athlete2: athlete)
         print("Initializing Detail View for: \(String(describing: detailVM.detailAthlete.firstName))")
+        print("\(Date().endOfWeek())")
     }
   
+    var sessionsArray: [Session] {
+        var arrayOfSessions: [Session] = []
+        //ForEach(detailVM.detailAthlete.sessionIDs, id: \.self) {sessionID in
+        for sessionID in detailVM.detailAthlete.sessionIDs {
+                if let session = detailVM.getSessions(with: sessionID) {
+                    arrayOfSessions.append(session)
+                }
+            }
+        return arrayOfSessions
+    }
+    
+    var date1ToCheck: Date {
+        var date = Date()
+        for (key, _) in detailVM.station.dateFilterAttendance {
+            date = key
+        }
+        return date
+    }
+    
+    var date2ToCheck: Date {
+        var date = Date()
+        for (_, value) in detailVM.station.dateFilterAttendance {
+            date = value
+        }
+        return date
+    }
+    
+    var selectedSessionAttendance: Int {
+        let allSessions = sessionsArray
+        let filteredSessions1 = allSessions.filter({ (session) -> Bool in
+            return session.date >= date1ToCheck
+        })
+        let filteredSessions2 = filteredSessions1.filter({ (session) -> Bool in
+            return session.date <= date2ToCheck
+        })
+        return filteredSessions2.count
+    }
     
     //MARK: -Body
     
     var body: some View {
-
+        ZStack{
             VStack{
 //Header
                 VStack{
@@ -56,11 +94,14 @@ struct AthleteDetailView: View {
                 }
                 
                 VStack {
-                    ForEach(detailVM.detailAthlete.sessionIDs, id: \.self) {sessionID in
-                        if let session = detailVM.getSessions(with: sessionID) {
-                            Text("\(session.date)")
+                    Text("\(selectedSessionAttendance)")
+                    
+                    Text("KW " + "\(date1ToCheck.extractWeek())" + " - " + "\(date2ToCheck.extractWeek())")
+                        .onTapGesture {
+                            withAnimation {
+                                showKWPicker1.toggle()
+                            }
                         }
-                    }
                 }
                 .padding()
                 
@@ -71,6 +112,21 @@ struct AthleteDetailView: View {
             .onAppear(perform: { self.tabDetail.showDetail = true })
             .background(Color.appBackground)
             .navigationBarHidden(true)
+            
+            VStack{
+                Spacer()
+                
+                ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, datesVM: DatesVM(), kw1: date1ToCheck, kw2: date2ToCheck).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
+
+            }.background((showKWPicker1 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
+                //tabDetail.showDetail.toggle()
+                withAnimation {
+                    showKWPicker1.toggle()
+                }
+            }))
+            .edgesIgnoringSafeArea(.bottom)
+           
+            }//ZStack
         }//end of Body
     
             

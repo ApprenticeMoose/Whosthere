@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct ActionSheet: View {
+struct ActionSheetDuplicateDeleteSesssion: View {
     
     @Environment(\.colorScheme) var colorScheme
     let session: Session

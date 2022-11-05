@@ -24,7 +24,7 @@ struct AthleteListView: View {
     
     @Environment(\.colorScheme) var colorScheme                             //DarkMode
     
-    //@State private var refreshID = UUID()                                   //For manually refreshing the list after update
+    //@State private var refreshID = UUID()                                 //For manually refreshing the list after update
     @State private var showAddSheet: Bool = false                           //Bool for AddSheet
     
     @EnvironmentObject var tabDetail: TabDetailVM

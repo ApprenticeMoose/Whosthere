@@ -23,15 +23,27 @@ class DatesVM: ObservableObject {
     
     var calendar = Calendar.current
     
+    @Published var arrayOfDatesToPick1: [Date] = []
+    @Published var arrayOfDatesToPick2: [Date] = []
+    
     init(){
         //Init for DateSelection
         self.calendar.firstWeekday = 2                          //To set start of week to monday
         self.calendar.minimumDaysInFirstWeek = 4
         fetchAllDays()                                          //fetches 7 arrays for the buttons each with the 7days that are
         setButtonAtLaunch()
-        
+        (-100...100).forEach { week in
+            if let days1 = calendar.date(byAdding: .weekOfYear, value: week, to: Date().startOfWeek()){
+                arrayOfDatesToPick1.append(days1)
+            }
+            if let days2 = calendar.date(byAdding: .weekOfYear, value: week, to: Date().endOfWeek()){
+                arrayOfDatesToPick2.append(days2)
+            }
+        }
     }
-
+    
+    
+    
     
     //MARK: - DateSelectionFunctions
     
