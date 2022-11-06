@@ -88,6 +88,11 @@ struct ActionSheetSelectKWDetail: View {
                         .frame(maxWidth: UIScreen.main.bounds.width / 2.25)
                         .frame(height: 160)
                         .clipped()
+                        .onChange(of: kw1) { v in
+                            if kw1 >= kw2 {
+                                kw2 = kw1.endOfWeek()
+                            }
+                        }
                 
                 Picker("", selection: $kw2) {
                     ForEach(datesVM.arrayOfDatesToPick2, id: \.self) { date in
@@ -100,6 +105,11 @@ struct ActionSheetSelectKWDetail: View {
                         .frame(maxWidth: UIScreen.main.bounds.width / 2.25)
                         .frame(height: 160)
                         .clipped()
+                        .onChange(of: kw2) { v in
+                            if kw2 <= kw1 {
+                                kw1 = kw2.startOfWeek()
+                            }
+                        }
             }
             .padding(.bottom, 6)
                 HStack{

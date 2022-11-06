@@ -93,20 +93,55 @@ struct AthleteDetailView: View {
                     print("detail reloaded")
                 }
                 
-                VStack {
+                HStack{
                     Text("\(selectedSessionAttendance)")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.headerText)
+                        .padding()
+                        .padding(.leading)
                     
-                    Text("KW " + "\(date1ToCheck.extractWeek())" + " - " + "\(date2ToCheck.extractWeek())")
-                        .onTapGesture {
-                            withAnimation {
-                                showKWPicker1.toggle()
-                            }
+                    Spacer()
+                    
+                    
+                    //Make the button a zstack instaed and have the background and chevron on seperate level so it doesnt move with the text
+                    
+                    Button {
+                        withAnimation {
+                            showKWPicker1.toggle()
                         }
+                    } label: {
+                        
+                        HStack(alignment: .lastTextBaseline){
+                            if date1ToCheck.extractWeek() == date2ToCheck.extractWeek() {
+                                Text("    KW " + "\(date1ToCheck.extractWeek())    ")
+                                    .font(.caption2)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.headerText)
+                                    
+                            } else {
+                                Text("KW " + "\(date1ToCheck.extractWeek())" + " - " + "\(date2ToCheck.extractWeek())")
+                                    .font(.caption2)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.headerText)
+                            }
+                                //Arrow down
+                                Image(systemName: "chevron.down")
+                                    .font(.caption2)
+                                    .foregroundColor(.headerText)
+                            }
+                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 100, height: 30))
+                            .padding()
+                        
+                    }
+
+                    
+                    
                 }
+                .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
                 .padding()
                 
-                
-                    Spacer()
+                 Spacer()
                 
                 }
             .onAppear(perform: { self.tabDetail.showDetail = true })
