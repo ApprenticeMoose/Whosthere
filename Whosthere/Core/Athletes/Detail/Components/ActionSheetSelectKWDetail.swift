@@ -51,7 +51,8 @@ struct ActionSheetSelectKWDetail: View {
                 //Apply button
                     Button {
                         
-                        UserDefaults.standard.dateFilterAttendance = [kw1:kw2]
+                        UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
+                        print(UserDefaults.standard.dateFilterAttendance)
                         withAnimation {
                             showActionSheet.toggle()
                         }

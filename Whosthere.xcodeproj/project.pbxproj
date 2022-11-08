@@ -31,6 +31,7 @@
 		BC78F350289C9C4D00F6BC34 /* StatisticsOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC78F34F289C9C4D00F6BC34 /* StatisticsOverview.swift */; };
 		BC78F352289C9CF000F6BC34 /* SettingsOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC78F351289C9CF000F6BC34 /* SettingsOverView.swift */; };
 		BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */; };
+		BC854DF9291837B200A87B52 /* Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC854DF8291837B200A87B52 /* Float.swift */; };
 		BC88920427B14F6200A00047 /* MediumButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC88920327B14F6200A00047 /* MediumButton.swift */; };
 		BC8E23F22912C686001F2D7D /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E23F12912C686001F2D7D /* UserDefaults+Extension.swift */; };
 		BC8E23F42912C770001F2D7D /* CustomShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E23F32912C770001F2D7D /* CustomShape.swift */; };
@@ -42,6 +43,8 @@
 		BC8E24012912CC79001F2D7D /* SessionHomeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24002912CC79001F2D7D /* SessionHomeCard.swift */; };
 		BC8E24032912CC9F001F2D7D /* SessionHomeCardHeadline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24022912CC9F001F2D7D /* SessionHomeCardHeadline.swift */; };
 		BC8E24062916CC33001F2D7D /* ActionSheetSelectKWDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */; };
+		BC8E24082917D09C001F2D7D /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24072917D09B001F2D7D /* Calendar.swift */; };
+		BC8E240A2917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */; };
 		BC9D00CF2889B3B90024B4AC /* WhosThere.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */; };
 		BC9D00D4288B0BF10024B4AC /* NavigationBackport in Frameworks */ = {isa = PBXBuildFile; productRef = BC9D00D3288B0BF10024B4AC /* NavigationBackport */; };
 		BCA3A781275BB2E6003D5F1C /* AthleteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA3A780275BB2E6003D5F1C /* AthleteListView.swift */; };
@@ -86,6 +89,7 @@
 		BC78F34F289C9C4D00F6BC34 /* StatisticsOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsOverview.swift; sourceTree = "<group>"; };
 		BC78F351289C9CF000F6BC34 /* SettingsOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOverView.swift; sourceTree = "<group>"; };
 		BC7A503827A83F81005D3934 /* NavigationButtonAssestsIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonAssestsIcon.swift; sourceTree = "<group>"; };
+		BC854DF8291837B200A87B52 /* Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Float.swift; sourceTree = "<group>"; };
 		BC88920327B14F6200A00047 /* MediumButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumButton.swift; sourceTree = "<group>"; };
 		BC8E23F12912C686001F2D7D /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 		BC8E23F32912C770001F2D7D /* CustomShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomShape.swift; sourceTree = "<group>"; };
@@ -97,6 +101,8 @@
 		BC8E24002912CC79001F2D7D /* SessionHomeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHomeCard.swift; sourceTree = "<group>"; };
 		BC8E24022912CC9F001F2D7D /* SessionHomeCardHeadline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHomeCardHeadline.swift; sourceTree = "<group>"; };
 		BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetSelectKWDetail.swift; sourceTree = "<group>"; };
+		BC8E24072917D09B001F2D7D /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
+		BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerXAttendanceDetailActionSheet.swift; sourceTree = "<group>"; };
 		BC9D00CE2889B3B90024B4AC /* WhosThere.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhosThere.xcdatamodel; sourceTree = "<group>"; };
 		BCA3A780275BB2E6003D5F1C /* AthleteListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteListView.swift; sourceTree = "<group>"; };
 		BCA3A78E275E0496003D5F1C /* NavigationButtonSystemName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationButtonSystemName.swift; sourceTree = "<group>"; };
@@ -290,6 +296,8 @@
 				BC35BFBC28DFBB2E005555BE /* Date.swift */,
 				BC8E23F12912C686001F2D7D /* UserDefaults+Extension.swift */,
 				BC8E23F32912C770001F2D7D /* CustomShape.swift */,
+				BC8E24072917D09B001F2D7D /* Calendar.swift */,
+				BC854DF8291837B200A87B52 /* Float.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -312,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */,
+				BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -469,10 +478,12 @@
 				BCD2CABB28C8AAF00017CCFB /* AthleteListVM.swift in Sources */,
 				BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */,
 				BC78F34E289C9B3E00F6BC34 /* SessionsHomeView.swift in Sources */,
+				BC8E24082917D09C001F2D7D /* Calendar.swift in Sources */,
 				BC3F25512760D1A800465551 /* FrameButton.swift in Sources */,
 				BC3F2577276C9A4700465551 /* AddAthleteView.swift in Sources */,
 				BC8E24012912CC79001F2D7D /* SessionHomeCard.swift in Sources */,
 				BCD2CAAE28C767EE0017CCFB /* Athlete.swift in Sources */,
+				BC8E240A2917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift in Sources */,
 				BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */,
 				BC8E24062916CC33001F2D7D /* ActionSheetSelectKWDetail.swift in Sources */,
 				BC8E23F72912CB17001F2D7D /* SmallCalendarButton.swift in Sources */,
@@ -485,6 +496,7 @@
 				BC78F350289C9C4D00F6BC34 /* StatisticsOverview.swift in Sources */,
 				BC7A503927A83F81005D3934 /* NavigationButtonAssestsIcon.swift in Sources */,
 				BCD2CAB228C76FDD0017CCFB /* DataManager.swift in Sources */,
+				BC854DF9291837B200A87B52 /* Float.swift in Sources */,
 				BC8E23F92912CB98001F2D7D /* SessionsTopButtonRow.swift in Sources */,
 				BC35BFB928DE63C6005555BE /* EditAthleteVM.swift in Sources */,
 				BC9D00CF2889B3B90024B4AC /* WhosThere.xcdatamodeld in Sources */,

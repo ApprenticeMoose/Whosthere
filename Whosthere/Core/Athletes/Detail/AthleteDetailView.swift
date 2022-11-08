@@ -23,53 +23,20 @@ struct AthleteDetailView: View {
     
     @State private var birthToggle: Bool = false                          //Variable to switch between displaying birthdate and birthyear
     @State var showKWPicker1: Bool = false
+    @State var showKWPicker2: Bool = false
     
     @ObservedObject var detailVM: AthleteDetailVM
     
     
     init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
         self.detailVM = AthleteDetailVM(athlete: athlete) ?? AthleteDetailVM(athlete2: athlete)
-        print("Initializing Detail View for: \(String(describing: detailVM.detailAthlete.firstName))")
-        print("\(Date().endOfWeek())")
-    }
+        print("Initializing Detail View for: \(String(describing: detailVM.detailedAthlete.firstName))")
+        print("\(detailVM.station.dateFilterAttendance)")
+        }
+
+    
   
-    var sessionsArray: [Session] {
-        var arrayOfSessions: [Session] = []
-        //ForEach(detailVM.detailAthlete.sessionIDs, id: \.self) {sessionID in
-        for sessionID in detailVM.detailAthlete.sessionIDs {
-                if let session = detailVM.getSessions(with: sessionID) {
-                    arrayOfSessions.append(session)
-                }
-            }
-        return arrayOfSessions
-    }
     
-    var date1ToCheck: Date {
-        var date = Date()
-        for (key, _) in detailVM.station.dateFilterAttendance {
-            date = key
-        }
-        return date
-    }
-    
-    var date2ToCheck: Date {
-        var date = Date()
-        for (_, value) in detailVM.station.dateFilterAttendance {
-            date = value
-        }
-        return date
-    }
-    
-    var selectedSessionAttendance: Int {
-        let allSessions = sessionsArray
-        let filteredSessions1 = allSessions.filter({ (session) -> Bool in
-            return session.date >= date1ToCheck
-        })
-        let filteredSessions2 = filteredSessions1.filter({ (session) -> Bool in
-            return session.date <= date2ToCheck
-        })
-        return filteredSessions2.count
-    }
     
     //MARK: -Body
     
@@ -94,33 +61,66 @@ struct AthleteDetailView: View {
                 }
                 
                 HStack{
-                    Text("\(selectedSessionAttendance)")
-                        .font(.headline)
+                    Text(detailVM.selectedSessionAttendance.clean)
+                        .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.headerText)
                         .padding()
                         .padding(.leading)
+                        .onChange(of: detailVM.selectedSessionAttendance) { v in
+                            print("Attendance changed")
+                        }
+                    
+                    
+                    
+                    VStack(alignment: .leading, spacing: 2){
+                        Text("Attendances")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.headerText)
+                        HStack(spacing: 4){
+                            if detailVM.station.perXAttendance == .total { Text("total") }
+                            else if detailVM.station.perXAttendance == .perMonth { Text("per Month") }
+                            else if detailVM.station.perXAttendance == .perWeek { Text("per Week") }
+                            Image(systemName: "chevron.down")
+                                .font(.system(size: 9))
+                        }
+                        .font(.caption2)
+                        .foregroundColor(.cardGrey2)
+                        .onTapGesture {
+                            withAnimation {
+                                showKWPicker2.toggle()
+                            }
+                        }
+                    }
+                    
                     
                     Spacer()
                     
-                    
-                    //Make the button a zstack instaed and have the background and chevron on seperate level so it doesnt move with the text
-                    
-                    Button {
-                        withAnimation {
-                            showKWPicker1.toggle()
-                        }
-                    } label: {
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
                         
                         HStack(alignment: .lastTextBaseline){
-                            if date1ToCheck.extractWeek() == date2ToCheck.extractWeek() {
-                                Text("    KW " + "\(date1ToCheck.extractWeek())    ")
+                                Text("KW " + "50" + " - " + "50")
+                                    .font(.caption2)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.clear)
+                           
+                                //Arrow down
+                                Image(systemName: "chevron.down")
+                                    .font(.caption2)
+                                    .foregroundColor(.headerText)
+                            }
+                        
+                        HStack(alignment: .lastTextBaseline){
+                            if detailVM.station.dateFilterAttendance.date1.extractWeek() == detailVM.station.dateFilterAttendance.date2.extractWeek() {
+                                Text("    KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())    ")
                                     .font(.caption2)
                                     .fontWeight(.semibold)
                                     .foregroundColor(.headerText)
                                     
                             } else {
-                                Text("KW " + "\(date1ToCheck.extractWeek())" + " - " + "\(date2ToCheck.extractWeek())")
+                                Text("KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())" + " - " + "\(detailVM.station.dateFilterAttendance.date2.extractWeek())")
                                     .font(.caption2)
                                     .fontWeight(.semibold)
                                     .foregroundColor(.headerText)
@@ -128,12 +128,17 @@ struct AthleteDetailView: View {
                                 //Arrow down
                                 Image(systemName: "chevron.down")
                                     .font(.caption2)
-                                    .foregroundColor(.headerText)
+                                    .foregroundColor(.clear)
                             }
-                            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 100, height: 30))
-                            .padding()
                         
                     }
+                    .onTapGesture {
+                        withAnimation {
+                            showKWPicker1.toggle()
+                        }
+                    }
+                    .padding(.horizontal, 6)
+
 
                     
                     
@@ -141,6 +146,8 @@ struct AthleteDetailView: View {
                 .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
                 .padding()
                 
+                 Spacer()
+                Text("\(detailVM.station.dateFilterAttendance.date2)")
                  Spacer()
                 
                 }
@@ -151,12 +158,25 @@ struct AthleteDetailView: View {
             VStack{
                 Spacer()
                 
-                ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, datesVM: DatesVM(), kw1: date1ToCheck, kw2: date2ToCheck).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
+                ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, datesVM: DatesVM(), kw1: detailVM.station.dateFilterAttendance.date1, kw2: detailVM.station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
 
             }.background((showKWPicker1 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
                 //tabDetail.showDetail.toggle()
                 withAnimation {
                     showKWPicker1.toggle()
+                }
+            }))
+            .edgesIgnoringSafeArea(.bottom)
+           
+            VStack{
+                Spacer()
+                PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2)
+                 .offset(y: self.showKWPicker2 ? 0 : UIScreen.main.bounds.height)
+
+            }.background((showKWPicker2 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
+                //tabDetail.showDetail.toggle()
+                withAnimation {
+                    showKWPicker2.toggle()
                 }
             }))
             .edgesIgnoringSafeArea(.bottom)
@@ -252,7 +272,7 @@ struct AthleteDetailView: View {
         
         Spacer(minLength: 0)
         
-        NBNavigationLink(value: Route.edit(detailVM.detailAthlete)) {
+        NBNavigationLink(value: Route.edit(detailVM.detailedAthlete)) {
                 Image("PenIcon")
                     .resizable()
                     .foregroundColor(.header)
