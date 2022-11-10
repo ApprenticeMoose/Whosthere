@@ -91,15 +91,22 @@ final class AthleteDetailVM: ObservableObject {
     }
     
     var selectedSessionAttendance: Float{
-       
+        //necessary so average is not diluated by a selection that is in the future, where attendance is impossible
+        var endDate: Date {
+            if station.dateFilterAttendance.date2 > Date().endOfWeek() {
+                return Date().endOfWeek()
+            } else {
+                return station.dateFilterAttendance.date2
+            }
+        }
         switch station.perXAttendance {
         case .total:
              return Float(modifiedArrayOfSessions.count)
         case .perMonth:
-            let perMonthNumber = Float(modifiedArrayOfSessions.count) / (Float(Calendar.current.numberOfDaysBetween(station.dateFilterAttendance.date1, and: station.dateFilterAttendance.date2)) / 30.436875)
+            let perMonthNumber = Float(modifiedArrayOfSessions.count) / (Float(Calendar.current.numberOfDaysBetween(station.dateFilterAttendance.date1, and: endDate)) / 30.436875)
              return round(perMonthNumber * 10) / 10.0
         case .perWeek:
-            let perWeekNumber = Float(modifiedArrayOfSessions.count) / Float(Calendar.current.numberOfDaysBetween(station.dateFilterAttendance.date1, and: station.dateFilterAttendance.date2) / 7)
+            let perWeekNumber = Float(modifiedArrayOfSessions.count) / Float(Calendar.current.numberOfDaysBetween(station.dateFilterAttendance.date1, and: endDate) / 7)
             return round(perWeekNumber * 10) / 10.0
         }
     }
