@@ -100,9 +100,7 @@ struct AthleteListView: View {
                 }
                 .background(Color.appBackground
                     .edgesIgnoringSafeArea(.all))
-                .onDisappear(perform: {
-                    print("\(tabDetail.showDetail)")
-                })
+               
             
 
         .navigationBarTitle("My Title")

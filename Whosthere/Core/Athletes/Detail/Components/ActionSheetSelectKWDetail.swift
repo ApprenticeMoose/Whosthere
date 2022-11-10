@@ -19,6 +19,7 @@ struct ActionSheetSelectKWDetail: View {
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var showActionSheet: Bool
+    @Binding var refresh: Bool
     @ObservedObject var datesVM: DatesVM    
     @State var kw1: Date
     @State var kw2: Date
@@ -50,12 +51,13 @@ struct ActionSheetSelectKWDetail: View {
                 
                 //Apply button
                     Button {
-                        
-                        UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
-                        print(UserDefaults.standard.dateFilterAttendance)
+                        refresh.toggle()
                         withAnimation {
                             showActionSheet.toggle()
                         }
+                        UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
+                        
+                        
                         
                          //do all the UserDefaults stuff
                         
@@ -146,7 +148,8 @@ struct ActionSheetSelectKWDetail: View {
 
 struct ActionSheetKWSelectDetail_Previews: PreviewProvider {
     @State static var isShowing = false
+    @State static var refresh = false
     static var previews: some View {
-        ActionSheetSelectKWDetail(showActionSheet: $isShowing, datesVM: DatesVM(), kw1: Date().startOfWeek(), kw2: Date().endOfWeek())
+        ActionSheetSelectKWDetail(showActionSheet: $isShowing, refresh: $refresh, datesVM: DatesVM(), kw1: Date().startOfWeek(), kw2: Date().endOfWeek())
     }
 }

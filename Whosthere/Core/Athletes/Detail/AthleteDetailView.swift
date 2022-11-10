@@ -27,17 +27,15 @@ struct AthleteDetailView: View {
     
     @ObservedObject var detailVM: AthleteDetailVM
     
+    @State var refresh: Bool = false
+
+    @ObservedObject var station: Station = Station()
     
     init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
         self.detailVM = AthleteDetailVM(athlete: athlete) ?? AthleteDetailVM(athlete2: athlete)
         print("Initializing Detail View for: \(String(describing: detailVM.detailedAthlete.firstName))")
-        print("\(detailVM.station.dateFilterAttendance)")
         }
 
-    
-  
-    
-    
     //MARK: -Body
     
     var body: some View {
@@ -54,132 +52,23 @@ struct AthleteDetailView: View {
                         .padding(.bottom, -15)
                 
                     nameAndBirthday
+                }
+//Body
+                attendancePanel
+                
+                Spacer()
                 
                 }
-                .onAppear{
-                    print("detail reloaded")
-                }
-                
-                HStack{
-                    Text(detailVM.selectedSessionAttendance.clean)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.headerText)
-                        .padding()
-                        .padding(.leading)
-                        .onChange(of: detailVM.selectedSessionAttendance) { v in
-                            print("Attendance changed")
-                        }
-                    
-                    
-                    
-                    VStack(alignment: .leading, spacing: 2){
-                        Text("Attendances")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.headerText)
-                        HStack(spacing: 4){
-                            if detailVM.station.perXAttendance == .total { Text("total") }
-                            else if detailVM.station.perXAttendance == .perMonth { Text("per Month") }
-                            else if detailVM.station.perXAttendance == .perWeek { Text("per Week") }
-                            Image(systemName: "chevron.down")
-                                .font(.system(size: 9))
-                        }
-                        .font(.caption2)
-                        .foregroundColor(.cardGrey2)
-                        .onTapGesture {
-                            withAnimation {
-                                showKWPicker2.toggle()
-                            }
-                        }
-                    }
-                    
-                    
-                    Spacer()
-                    
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
-                        
-                        HStack(alignment: .lastTextBaseline){
-                                Text("KW " + "50" + " - " + "50")
-                                    .font(.caption2)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.clear)
-                           
-                                //Arrow down
-                                Image(systemName: "chevron.down")
-                                    .font(.caption2)
-                                    .foregroundColor(.headerText)
-                            }
-                        
-                        HStack(alignment: .lastTextBaseline){
-                            if detailVM.station.dateFilterAttendance.date1.extractWeek() == detailVM.station.dateFilterAttendance.date2.extractWeek() {
-                                Text("    KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())    ")
-                                    .font(.caption2)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.headerText)
-                                    
-                            } else {
-                                Text("KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())" + " - " + "\(detailVM.station.dateFilterAttendance.date2.extractWeek())")
-                                    .font(.caption2)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.headerText)
-                            }
-                                //Arrow down
-                                Image(systemName: "chevron.down")
-                                    .font(.caption2)
-                                    .foregroundColor(.clear)
-                            }
-                        
-                    }
-                    .onTapGesture {
-                        withAnimation {
-                            showKWPicker1.toggle()
-                        }
-                    }
-                    .padding(.horizontal, 6)
-
-
-                    
-                    
-                }
-                .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
-                .padding()
-                
-                 Spacer()
-                Text("\(detailVM.station.dateFilterAttendance.date2)")
-                 Spacer()
-                
-                }
-            .onAppear(perform: { self.tabDetail.showDetail = true })
+            .onAppear(perform: {
+                detailVM.fetchAthlete()
+                self.tabDetail.showDetail = true })
             .background(Color.appBackground)
             .navigationBarHidden(true)
             
-            VStack{
-                Spacer()
-                
-                ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, datesVM: DatesVM(), kw1: detailVM.station.dateFilterAttendance.date1, kw2: detailVM.station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
-
-            }.background((showKWPicker1 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
-                //tabDetail.showDetail.toggle()
-                withAnimation {
-                    showKWPicker1.toggle()
-                }
-            }))
-            .edgesIgnoringSafeArea(.bottom)
-           
-            VStack{
-                Spacer()
-                PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2)
-                 .offset(y: self.showKWPicker2 ? 0 : UIScreen.main.bounds.height)
-
-            }.background((showKWPicker2 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
-                //tabDetail.showDetail.toggle()
-                withAnimation {
-                    showKWPicker2.toggle()
-                }
-            }))
-            .edgesIgnoringSafeArea(.bottom)
+            implementSelectKWSheet
+            
+            implemetPerXSheet
+            
            
             }//ZStack
         }//end of Body
@@ -304,6 +193,118 @@ struct AthleteDetailView: View {
                 .frame(width: 42, height: 42, alignment: .center)
                 .foregroundColor(colorScheme == .light ? .cardGrey2 : .cardProfileLetter)
         }
+    }
+    
+    var attendancePanel: some View {
+        HStack{
+            Text(detailVM.selectedSessionAttendance.clean)
+                .font(.title3)
+                .fontWeight(.semibold)
+                .foregroundColor(.headerText)
+                .padding()
+                .padding(.leading)
+                .onChange(of: detailVM.selectedSessionAttendance) { v in
+                    print("Attendance changed")
+                }
+            
+            
+            
+            VStack(alignment: .leading, spacing: 2){
+                Text("Attendances")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.headerText)
+                HStack(spacing: 4){
+                    if detailVM.station.perXAttendance == .total { Text("total") }
+                    else if detailVM.station.perXAttendance == .perMonth { Text("per Month") }
+                    else if detailVM.station.perXAttendance == .perWeek { Text("per Week") }
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 9))
+                }
+                .font(.caption2)
+                .foregroundColor(.cardGrey2)
+                .onTapGesture {
+                    withAnimation {
+                        showKWPicker2.toggle()
+                    }
+                }
+            }
+            .background(Color.clear.disabled(refresh))
+            
+            
+            Spacer()
+            
+            ZStack{
+                RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
+                
+                HStack(alignment: .lastTextBaseline){
+                        Text("KW " + "50" + " - " + "50")
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.clear)
+                   
+                        //Arrow down
+                        Image(systemName: "chevron.down")
+                            .font(.caption2)
+                            .foregroundColor(.headerText)
+                    }
+                
+                HStack(alignment: .lastTextBaseline){
+                    if detailVM.station.dateFilterAttendance.date1.extractWeek() == detailVM.station.dateFilterAttendance.date2.extractWeek() {
+                        Text("    KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())    ")
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.headerText)
+                            
+                    } else {
+                        Text("KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())" + " - " + "\(detailVM.station.dateFilterAttendance.date2.extractWeek())")
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.headerText)
+                    }
+                        //Arrow down
+                        Image(systemName: "chevron.down")
+                            .font(.caption2)
+                            .foregroundColor(.clear)
+                    }
+            }
+            .onTapGesture {
+                withAnimation {
+                    showKWPicker1.toggle()
+                }
+            }
+            .padding(.horizontal, 6)
+        }
+        .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
+        .padding()
+    }
+    
+    var implementSelectKWSheet: some View {
+        VStack{
+            Spacer()
+            
+            ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, refresh: $refresh, datesVM: DatesVM(), kw1: detailVM.station.dateFilterAttendance.date1, kw2: detailVM.station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
+
+        }.background((showKWPicker1 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
+            withAnimation {
+                showKWPicker1.toggle()
+            }
+        }))
+        .edgesIgnoringSafeArea(.bottom)
+    }
+    
+    var implemetPerXSheet: some View {
+        VStack{
+            Spacer()
+            PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2)
+             .offset(y: self.showKWPicker2 ? 0 : UIScreen.main.bounds.height)
+
+        }.background((showKWPicker2 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
+            withAnimation {
+                showKWPicker2.toggle()
+            }
+        }))
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
 

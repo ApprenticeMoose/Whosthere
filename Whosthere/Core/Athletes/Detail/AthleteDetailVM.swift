@@ -14,45 +14,27 @@ import Combine
 final class AthleteDetailVM: ObservableObject {
     
     //Need to pull it from the titles array from the datamanger as a array[whateverid]
-    //@Published var detailIndex: Int
-    
     @Published private var dataManager: DataManager
+    @ObservedObject var station: Station = Station()
     
-    //@Published var detailAthlete: Athlete
-    
-    @Published var station: Station = Station()
-    
+    var index: Int = 0
+    var detailedAthlete: Athlete = Athlete()
     var anyCancellable: AnyCancellable? = nil
     
+    
     init?(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
-        //self.detailIndex = athleteIndex
-        //self.detailAthlete = athlete
+        self.detailedAthlete = athlete
         self.dataManager = dataManager
         
-        if let indexus = dataManager.athletesArray.firstIndex(where: { $0.id == detailedAthlete.id })
-        {
-            print(indexus)
-            self.index = indexus
-        }else {
-            print("no index")
-            self.index = 0
-        }
-        
-        if dataManager.athletesArray.isEmpty{
-            self.detailedAthlete = Athlete()
-        } else {
-            self.detailedAthlete = dataManager.athletesArray[index]
-        }
-        
+        fetchAthlete()
+
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
         }
-        print("DetailVM initialized")
     }
     
     init(athlete2: Athlete, dataManager2: DataManager = DataManager.shared) {
-        //self.detailIndex = athleteIndex
-        //self.detailAthlete = athlete2
+        self.detailedAthlete = athlete2
         self.dataManager = dataManager2
 
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
@@ -63,65 +45,53 @@ final class AthleteDetailVM: ObservableObject {
     }
 
     
-    var index: Int = 0
-    
-    @Published var detailedAthlete: Athlete = Athlete()
-    
-    
-   //@Published
-//    var date1ToCheck: Date
-//    {
-//        return Array(station.dateFilterAttendance.keys)[0]
-//    }
-//
-//    var date2ToCheck: Date
-//    {
-//        return Array(station.dateFilterAttendance.values)[0]
-//    }
-//
-  
-            
-    
-    
-//   @Published var date2: Date = Date()
-//
-//    lazy var date2ToCheck: AnyPublisher<[Date:Date],Never> = {
-//        station.dateFilterAttendance
-//            .map { (dicDate) -> Date in
-//                return Array(dicDate.keys)[0]
-//            }
-//            .eraseToAnyPublisher()
-//    }()
-//
-//    {
-//        return Array(station.dateFilterAttendance.values)[0]
-//    }
-
-    var selectedSessionAttendance: Float{
-        var modifiedArrayOfSessions: [Session] {
-            var sessionsArray: [Session] {
-                var arrayOfSessions: [Session] = []
-                //ForEach(detailVM.detailAthlete.sessionIDs, id: \.self) {sessionID in
-                for sessionID in detailedAthlete.sessionIDs {
-                        if let session = getSessions(with: sessionID) {
-                            arrayOfSessions.append(session)
-                        }
-                    }
-                return arrayOfSessions
-            }
-            
-            print("KW")
-            let allSessions = sessionsArray
-            let filteredSessions1 = allSessions.filter({ (session) -> Bool in
-                return session.date >= station.dateFilterAttendance.date1
-            })
-            let filteredSessions2 = filteredSessions1.filter({ (session) -> Bool in
-                return session.date <= station.dateFilterAttendance.date2
-            })
-            return filteredSessions2
+    func fetchAthlete() {
+        dataManager.fetchAthletes()
+        if let indexus = dataManager.athletesArray.firstIndex(where: { $0.id == detailedAthlete.id })
+        {
+            //print(indexus)
+            self.index = indexus
+        } else {
+            print("no index")
+            self.index = 0
         }
+        
+        if dataManager.athletesArray.isEmpty{
+            self.detailedAthlete = Athlete()
+        } else {
+            self.detailedAthlete = dataManager.athletesArray[index]
+        }
+    }
+    
+    func getSessions(with id: UUID?) -> Session? {
+        guard let id = id else { return nil }
+        return dataManager.getSession(with: id)
+    }
+    
 
-        print("perX")
+    var modifiedArrayOfSessions: [Session] {
+        var sessionsArray: [Session] {
+            var arrayOfSessions: [Session] = []
+            for sessionID in detailedAthlete.sessionIDs {
+                    if let session = getSessions(with: sessionID) {
+                        arrayOfSessions.append(session)
+                    }
+                }
+            return arrayOfSessions
+        }
+        
+        let allSessions = sessionsArray
+        let filteredSessions1 = allSessions.filter({ (session) -> Bool in
+            return session.date >= station.dateFilterAttendance.date1
+        })
+        let filteredSessions2 = filteredSessions1.filter({ (session) -> Bool in
+            return session.date <= station.dateFilterAttendance.date2
+        })
+        return filteredSessions2
+    }
+    
+    var selectedSessionAttendance: Float{
+       
         switch station.perXAttendance {
         case .total:
              return Float(modifiedArrayOfSessions.count)
@@ -131,12 +101,8 @@ final class AthleteDetailVM: ObservableObject {
         case .perWeek:
             let perWeekNumber = Float(modifiedArrayOfSessions.count) / Float(Calendar.current.numberOfDaysBetween(station.dateFilterAttendance.date1, and: station.dateFilterAttendance.date2) / 7)
             return round(perWeekNumber * 10) / 10.0
-            
         }
     }
     
-    func getSessions(with id: UUID?) -> Session? {
-        guard let id = id else { return nil }
-        return dataManager.getSession(with: id)
-    }
+    
 }

@@ -89,7 +89,7 @@ struct PerXAttendanceDetailActionSheet: View {
                     totalIsSelected = false
                 } label: {
                     
-                    Text("per Week")
+                    Text("Avg. per Week")
                         .fontWeight(.semibold)
                         .foregroundColor(.midTitle)
                         .padding(.vertical, 12)
@@ -102,7 +102,7 @@ struct PerXAttendanceDetailActionSheet: View {
                     perMonthIsSelected = true
                     totalIsSelected = false
                 } label: {
-                    Text("per Month")
+                    Text("Avg. per Month")
                         .fontWeight(.semibold)
                         .foregroundColor(.midTitle)
                         .padding(.vertical, 12)
@@ -114,7 +114,7 @@ struct PerXAttendanceDetailActionSheet: View {
                     perMonthIsSelected = false
                     totalIsSelected = true
                 } label: {
-                    Text("total")
+                    Text("Total")
                         .fontWeight(.semibold)
                         .foregroundColor(.midTitle)
                         .padding(.vertical, 12)

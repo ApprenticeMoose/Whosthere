@@ -86,9 +86,6 @@ struct ActionSheetDuplicateDeleteSesssion: View {
         .padding(.horizontal)
         .background(Color.appBackground.clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20)))
         .edgesIgnoringSafeArea(.bottom)
-        .onAppear {
-            print(duplicationLabelOpacityActionSheet)
-        }
     }
     
 }
