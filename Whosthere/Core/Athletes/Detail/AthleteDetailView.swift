@@ -200,7 +200,7 @@ struct AthleteDetailView: View {
             Text(detailVM.selectedSessionAttendance.clean)
                 .font(.title3)
                 .fontWeight(.semibold)
-                .foregroundColor(.headerText)
+                .foregroundColor(.header)
                 .padding()
                 .padding(.leading)
                 .onChange(of: detailVM.selectedSessionAttendance) { v in
@@ -213,7 +213,7 @@ struct AthleteDetailView: View {
                 Text("Attendances")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(.headerText)
+                    .foregroundColor(.header)
                 HStack(spacing: 4){
                     if detailVM.station.perXAttendance == .total { Text("total") }
                     else if detailVM.station.perXAttendance == .perMonth { Text("per Month") }
@@ -246,7 +246,7 @@ struct AthleteDetailView: View {
                         //Arrow down
                         Image(systemName: "chevron.down")
                             .font(.caption2)
-                            .foregroundColor(.headerText)
+                            .foregroundColor(.header)
                     }
                 
                 HStack(alignment: .lastTextBaseline){
@@ -254,13 +254,13 @@ struct AthleteDetailView: View {
                         Text("    KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())    ")
                             .font(.caption2)
                             .fontWeight(.semibold)
-                            .foregroundColor(.headerText)
+                            .foregroundColor(.header)
                             
                     } else {
                         Text("KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())" + " - " + "\(detailVM.station.dateFilterAttendance.date2.extractWeek())")
                             .font(.caption2)
                             .fontWeight(.semibold)
-                            .foregroundColor(.headerText)
+                            .foregroundColor(.header)
                     }
                         //Arrow down
                         Image(systemName: "chevron.down")
