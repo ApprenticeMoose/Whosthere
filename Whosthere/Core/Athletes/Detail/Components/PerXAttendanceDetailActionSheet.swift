@@ -18,6 +18,8 @@ struct PerXAttendanceDetailActionSheet: View {
     @State var totalIsSelected: Bool = false
     
     @ObservedObject var station = Station()
+   // @EnvironmentObject var station: Station
+
     
     init(showActionSheet: Binding<Bool>){
         self._showActionSheet = showActionSheet

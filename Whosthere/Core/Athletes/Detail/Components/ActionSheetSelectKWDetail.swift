@@ -20,7 +20,8 @@ struct ActionSheetSelectKWDetail: View {
     
     @Binding var showActionSheet: Bool
     @Binding var refresh: Bool
-    @ObservedObject var datesVM: DatesVM    
+    @ObservedObject var datesVM: DatesVM
+    @ObservedObject var detailVM: AthleteDetailVM
     @State var kw1: Date
     @State var kw2: Date
     
@@ -52,10 +53,15 @@ struct ActionSheetSelectKWDetail: View {
                 //Apply button
                     Button {
                         refresh.toggle()
+                        
+                        UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
                         withAnimation {
+                            /*detailVM.getModifiedSession()
+                            detailVM.getAttendanceCount()
+                            detailVM.fillDistributedSessions()
+                            detailVM.fillBarHeights()*/
                             showActionSheet.toggle()
                         }
-                        UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
                         
                         
                         
@@ -146,10 +152,10 @@ struct ActionSheetSelectKWDetail: View {
     
 }
 
-struct ActionSheetKWSelectDetail_Previews: PreviewProvider {
+/*struct ActionSheetKWSelectDetail_Previews: PreviewProvider {
     @State static var isShowing = false
     @State static var refresh = false
     static var previews: some View {
-        ActionSheetSelectKWDetail(showActionSheet: $isShowing, refresh: $refresh, datesVM: DatesVM(), kw1: Date().startOfWeek(), kw2: Date().endOfWeek())
+        ActionSheetSelectKWDetail(showActionSheet: $isShowing, refresh: $refresh, datesVM: DatesVM(), detailVM: AthleteDetailVM(athlete2: Athlete()), kw1: Date().startOfWeek(), kw2: Date().endOfWeek())
     }
-}
+ }*/

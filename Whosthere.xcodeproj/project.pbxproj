@@ -21,6 +21,8 @@
 		BC409A6127493F9B0096CD12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6027493F9B0096CD12 /* Assets.xcassets */; };
 		BC409A6427493F9B0096CD12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */; };
 		BC525F4727AA995F0032B99F /* EditAthleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC525F4627AA995F0032B99F /* EditAthleteView.swift */; };
+		BC59E15729255A5B00EE56C3 /* DistributionPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC59E15629255A5B00EE56C3 /* DistributionPanel.swift */; };
+		BC59E1592928E15300EE56C3 /* DetailDataVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC59E1582928E15300EE56C3 /* DetailDataVM.swift */; };
 		BC6F246628C62EEA00679360 /* AddSessionVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F246528C62EEA00679360 /* AddSessionVM.swift */; };
 		BC6F246C28C639E800679360 /* SessionHomeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC6F246B28C639E800679360 /* SessionHomeVM.swift */; };
 		BC78F345289C78BA00F6BC34 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC78F344289C78B800F6BC34 /* TabBarView.swift */; };
@@ -79,6 +81,8 @@
 		BC409A6327493F9B0096CD12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BC409A6527493F9B0096CD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC525F4627AA995F0032B99F /* EditAthleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteView.swift; sourceTree = "<group>"; };
+		BC59E15629255A5B00EE56C3 /* DistributionPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistributionPanel.swift; sourceTree = "<group>"; };
+		BC59E1582928E15300EE56C3 /* DetailDataVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDataVM.swift; sourceTree = "<group>"; };
 		BC6F246528C62EEA00679360 /* AddSessionVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSessionVM.swift; sourceTree = "<group>"; };
 		BC6F246B28C639E800679360 /* SessionHomeVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHomeVM.swift; sourceTree = "<group>"; };
 		BC78F344289C78B800F6BC34 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 				BC8E24042916CC17001F2D7D /* Components */,
 				BC36CD2827A7E4F40031AD5E /* AthleteDetailView.swift */,
 				BCD2CABE28C9D0B70017CCFB /* AthleteDetailVM.swift */,
+				BC59E1582928E15300EE56C3 /* DetailDataVM.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -321,6 +326,7 @@
 			children = (
 				BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */,
 				BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */,
+				BC59E15629255A5B00EE56C3 /* DistributionPanel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -455,9 +461,11 @@
 				BCEF2DF528EDB4BE00CEDDED /* DuplicateSessionVM.swift in Sources */,
 				BC78F347289C7AFE00F6BC34 /* TabModel.swift in Sources */,
 				BC35BFC028E25C4B005555BE /* EditSessionVM.swift in Sources */,
+				BC59E15729255A5B00EE56C3 /* DistributionPanel.swift in Sources */,
 				BCEF2DF328EDB15D00CEDDED /* DuplicateSessionView.swift in Sources */,
 				BC88920427B14F6200A00047 /* MediumButton.swift in Sources */,
 				BC8E23FD2912CC1D001F2D7D /* DateSelectionButton.swift in Sources */,
+				BC59E1592928E15300EE56C3 /* DetailDataVM.swift in Sources */,
 				BC35BFBD28DFBB2E005555BE /* Date.swift in Sources */,
 				BC78F34A289C814300F6BC34 /* ContentView.swift in Sources */,
 				BC6F246628C62EEA00679360 /* AddSessionVM.swift in Sources */,

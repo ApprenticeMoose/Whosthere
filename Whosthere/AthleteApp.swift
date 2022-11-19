@@ -26,6 +26,7 @@ struct AthleteApp: App {
             ContentView()
                     .environmentObject(AppState())
                     .environmentObject(TabDetailVM())
+                    .environmentObject(Station())
             
         }
         .onChange(of: scenePhase) { phase in

@@ -15,7 +15,7 @@ final class AthleteDetailVM: ObservableObject {
     
     //Need to pull it from the titles array from the datamanger as a array[whateverid]
     @Published private var dataManager: DataManager
-    @ObservedObject var station: Station = Station()
+    @Published var arrayOfSessions = [Session]()
     
     var index: Int = 0
     var detailedAthlete: Athlete = Athlete()
@@ -25,9 +25,9 @@ final class AthleteDetailVM: ObservableObject {
     init?(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
         self.detailedAthlete = athlete
         self.dataManager = dataManager
-        
         fetchAthlete()
-
+        createArrayOfAllSessions()
+        //print(sessionBarHeights)
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
         }
@@ -36,14 +36,13 @@ final class AthleteDetailVM: ObservableObject {
     init(athlete2: Athlete, dataManager2: DataManager = DataManager.shared) {
         self.detailedAthlete = athlete2
         self.dataManager = dataManager2
-
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
             self?.objectWillChange.send()
         }
         print("DetailVM initialized")
         
     }
-
+    
     
     func fetchAthlete() {
         dataManager.fetchAthletes()
@@ -68,48 +67,13 @@ final class AthleteDetailVM: ObservableObject {
         return dataManager.getSession(with: id)
     }
     
-
-    var modifiedArrayOfSessions: [Session] {
-        var sessionsArray: [Session] {
-            var arrayOfSessions: [Session] = []
-            for sessionID in detailedAthlete.sessionIDs {
-                    if let session = getSessions(with: sessionID) {
-                        arrayOfSessions.append(session)
-                    }
-                }
-            return arrayOfSessions
-        }
-        
-        let allSessions = sessionsArray
-        let filteredSessions1 = allSessions.filter({ (session) -> Bool in
-            return session.date >= station.dateFilterAttendance.date1
-        })
-        let filteredSessions2 = filteredSessions1.filter({ (session) -> Bool in
-            return session.date <= station.dateFilterAttendance.date2
-        })
-        return filteredSessions2
-    }
-    
-    var selectedSessionAttendance: Float{
-        //necessary so average is not diluated by a selection that is in the future, where attendance is impossible
-        var endDate: Date {
-            if station.dateFilterAttendance.date2 > Date().endOfWeek() {
-                return Date().endOfWeek()
-            } else {
-                return station.dateFilterAttendance.date2
+    func createArrayOfAllSessions() {
+        var sessions: [Session] = []
+        for sessionID in detailedAthlete.sessionIDs {
+            if let session = getSessions(with: sessionID) {
+                sessions.append(session)
             }
         }
-        switch station.perXAttendance {
-        case .total:
-             return Float(modifiedArrayOfSessions.count)
-        case .perMonth:
-            let perMonthNumber = Float(modifiedArrayOfSessions.count) / (Float(Calendar.current.numberOfDaysBetween(station.dateFilterAttendance.date1, and: endDate)) / 30.436875)
-             return round(perMonthNumber * 10) / 10.0
-        case .perWeek:
-            let perWeekNumber = Float(modifiedArrayOfSessions.count) / Float(Calendar.current.numberOfDaysBetween(station.dateFilterAttendance.date1, and: endDate) / 7)
-            return round(perWeekNumber * 10) / 10.0
-        }
+        arrayOfSessions = sessions
     }
-    
-    
 }

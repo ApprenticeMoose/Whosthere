@@ -22,55 +22,61 @@ struct AthleteDetailView: View {
     @EnvironmentObject var tabDetail: TabDetailVM
     
     @State private var birthToggle: Bool = false                          //Variable to switch between displaying birthdate and birthyear
-    @State var showKWPicker1: Bool = false
-    @State var showKWPicker2: Bool = false
     
+    @State var showKWPicker2: Bool = false
+    @State var showKWPicker1: Bool = false
     @ObservedObject var detailVM: AthleteDetailVM
     
     @State var refresh: Bool = false
-
-    @ObservedObject var station: Station = Station()
+    
+    @EnvironmentObject var station: Station
+    @StateObject var dataDetailVM: DetailDataVM = DetailDataVM()
+    //@StateObject var station: Station = Station() //necessary so KWSelectionUpdates
     
     init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
         self.detailVM = AthleteDetailVM(athlete: athlete) ?? AthleteDetailVM(athlete2: athlete)
-        print("Initializing Detail View for: \(String(describing: detailVM.detailedAthlete.firstName))")
+        //print("Initializing Detail View for: \(String(describing: detailVM.detailedAthlete.firstName))")
+
         }
 
     //MARK: -Body
     
     var body: some View {
-        ZStack{
-            VStack{
-//Header
-                VStack{
+            ZStack{
+                VStack(spacing: 0){
+                    //Header
+                    VStack{
+                        
+                        AthleteDetailHeaderButtons
+                            .padding(.bottom, -10)
+                        
+                        profilePicture
+                            .padding(.top, -20)
+                            .padding(.bottom, -15)
+                        
+                        nameAndBirthday
+                    }
+                    //Body
+                    attendancePanel
                     
-                    AthleteDetailHeaderButtons
-                        .padding(.bottom, -10)
-
-                    profilePicture
-                        .padding(.top, -20)
-                        .padding(.bottom, -15)
-                
-                    nameAndBirthday
+                    DistributionPanel(dataDetailVM: dataDetailVM,showPickerPerX: $showKWPicker2, showPickerSelectKW: $showKWPicker1, refresh: $refresh)
+                    
+                    Spacer()
+                    
                 }
-//Body
-                attendancePanel
+                .onAppear(perform: {
+                    detailVM.fetchAthlete()
+                    self.tabDetail.showDetail = true })
+                .background(Color.appBackground)
+                .navigationBarHidden(true)
                 
-                Spacer()
+                implementSelectKWSheet
                 
-                }
-            .onAppear(perform: {
-                detailVM.fetchAthlete()
-                self.tabDetail.showDetail = true })
-            .background(Color.appBackground)
-            .navigationBarHidden(true)
-            
-            implementSelectKWSheet
-            
-            implemetPerXSheet
-            
-           
+                implemetPerXSheet
+                
+                
             }//ZStack
+        
         }//end of Body
     
             
@@ -197,15 +203,54 @@ struct AthleteDetailView: View {
     
     var attendancePanel: some View {
         HStack{
-            Text(detailVM.selectedSessionAttendance.clean)
+            Text(dataDetailVM.selectedSessionAttendance.clean)
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.header)
                 .padding()
                 .padding(.leading)
-                .onChange(of: detailVM.selectedSessionAttendance) { v in
+               /* .onChange(of: detailVM.selectedSessionAttendance) { v in
+                    print("Attendance changed")
+                }*/
+                .onChange(of: dataDetailVM.selectedSessionAttendance) { v in
                     print("Attendance changed")
                 }
+                .onAppear{
+                    getModifiedSession()
+                    getAttendanceCount()
+                    fillDistributedSessions()
+                    fillBarHeights()
+                }
+                .onReceive(station.$dateFilterAttendance, perform: {
+                    print("filter changed \($0)")
+                    getModifiedSession()
+                    getAttendanceCount()
+                    fillDistributedSessions()
+                    fillBarHeights()
+                })
+                .onReceive(station.$perXAttendance, perform: {
+                    print("filter changed \($0)")
+                    getModifiedSession()
+                    getAttendanceCount()
+                    fillDistributedSessions()
+                    fillBarHeights()
+                })
+                .onReceive(dataDetailVM.$sessionBarHeights, perform: {
+                    print("bar height changed \($0)")
+                    if dataDetailVM.sessionBarHeights.contains(1.0) {
+                        print("it contains it")
+                    } else {
+                        print("doesn't contain it")
+                    }
+                    print(dataDetailVM.sessionBarHeights)
+                }
+                )
+                .onReceive(dataDetailVM.$modifiedArrayOfSessions, perform: {
+                    print("modified sessions changed \($0)")}
+                )
+                .onReceive(dataDetailVM.$selectedSessionAttendance, perform: {
+                    print("selected sessios changed \($0)")}
+                )
             
             
             
@@ -215,9 +260,9 @@ struct AthleteDetailView: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.header)
                 HStack(spacing: 4){
-                    if detailVM.station.perXAttendance == .total { Text("total") }
-                    else if detailVM.station.perXAttendance == .perMonth { Text("per Month") }
-                    else if detailVM.station.perXAttendance == .perWeek { Text("per Week") }
+                    if station.perXAttendance == .total { Text("total") }
+                    else if station.perXAttendance == .perMonth { Text("per Month") }
+                    else if station.perXAttendance == .perWeek { Text("per Week") }
                     Image(systemName: "chevron.down")
                         .font(.system(size: 9))
                 }
@@ -234,56 +279,19 @@ struct AthleteDetailView: View {
             
             Spacer()
             
-            ZStack{
-                RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
-                
-                HStack(alignment: .lastTextBaseline){
-                        Text("KW " + "50" + " - " + "50")
-                            .font(.caption2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.clear)
-                   
-                        //Arrow down
-                        Image(systemName: "chevron.down")
-                            .font(.caption2)
-                            .foregroundColor(.header)
-                    }
-                
-                HStack(alignment: .lastTextBaseline){
-                    if detailVM.station.dateFilterAttendance.date1.extractWeek() == detailVM.station.dateFilterAttendance.date2.extractWeek() {
-                        Text("    KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())    ")
-                            .font(.caption2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.header)
-                            
-                    } else {
-                        Text("KW " + "\(detailVM.station.dateFilterAttendance.date1.extractWeek())" + " - " + "\(detailVM.station.dateFilterAttendance.date2.extractWeek())")
-                            .font(.caption2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.header)
-                    }
-                        //Arrow down
-                        Image(systemName: "chevron.down")
-                            .font(.caption2)
-                            .foregroundColor(.clear)
-                    }
-            }
-            .onTapGesture {
-                withAnimation {
-                    showKWPicker1.toggle()
-                }
-            }
-            .padding(.horizontal, 6)
+            KWButton(station: station, showKWPicker1: $showKWPicker1)
+            //put kw button here
         }
         .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
-        .padding()
+        .padding(.horizontal)
+        .padding(.top, 10)
     }
     
     var implementSelectKWSheet: some View {
         VStack{
             Spacer()
             
-            ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, refresh: $refresh, datesVM: DatesVM(), kw1: detailVM.station.dateFilterAttendance.date1, kw2: detailVM.station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
+            ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, refresh: $refresh, datesVM: DatesVM(), detailVM: detailVM, kw1: station.dateFilterAttendance.date1, kw2: station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
 
         }.background((showKWPicker1 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
             withAnimation {
@@ -306,5 +314,149 @@ struct AthleteDetailView: View {
         }))
         .edgesIgnoringSafeArea(.bottom)
     }
+    
+    func getModifiedSession() {
+        
+        let allSessions = detailVM.arrayOfSessions
+        let filteredSessions1 = allSessions.filter({ (session) -> Bool in
+            return session.date >= UserDefaults.standard.dateFilterAttendance?.date1 ?? Date()
+        })
+        let filteredSessions2 = filteredSessions1.filter({ (session) -> Bool in
+            return session.date <= UserDefaults.standard.dateFilterAttendance?.date2 ?? Date()
+        })
+        dataDetailVM.modifiedArrayOfSessions = filteredSessions2
+        print("got modified sessions")
+    }
+    
+   
+    
+    func getAttendanceCount() {
+        //necessary so average is not diluated by a selection that is in the future, where attendance is impossible
+        var endDate: Date {
+            if UserDefaults.standard.dateFilterAttendance?.date2 ?? Date() > Date().endOfWeek() {
+                return Date().endOfWeek()
+            } else {
+                return UserDefaults.standard.dateFilterAttendance?.date2 ?? Date()
+            }
+        }
+        switch UserDefaults.standard.perXAttendance {
+        case .total:
+            dataDetailVM.selectedSessionAttendance = Float(dataDetailVM.modifiedArrayOfSessions.count)
+        case .perMonth:
+            let perMonthNumber = Float(dataDetailVM.modifiedArrayOfSessions.count) / (Float(Calendar.current.numberOfDaysBetween(UserDefaults.standard.dateFilterAttendance?.date1 ?? Date(), and: endDate)) / 30.436875)
+            dataDetailVM.selectedSessionAttendance = round(perMonthNumber * 10) / 10.0
+        case .perWeek:
+            let perWeekNumber = Float(dataDetailVM.modifiedArrayOfSessions.count) / Float(Calendar.current.numberOfDaysBetween(UserDefaults.standard.dateFilterAttendance?.date1 ?? Date(), and: endDate) / 7)
+            dataDetailVM.selectedSessionAttendance = round(perWeekNumber * 10) / 10.0
+        case .none:
+            dataDetailVM.selectedSessionAttendance = Float(dataDetailVM.modifiedArrayOfSessions.count)
+        }
+    }
+    
+  
+    
+    func fillDistributedSessions() {
+        //print(modifiedArrayOfSessions)
+        
+        var sessionsForWeekdays: [Session] = []
+        var distributedSessions = [[Session]]()
+        //distributionSessions.removeAll()
+        (1...7).forEach { day in
+            (dataDetailVM.modifiedArrayOfSessions).forEach { session in
+                
+                if Calendar.current.dateComponents([.weekday], from: session.date).weekday == day {
+                    sessionsForWeekdays.append(session)
+                    //print(sessionsForWeekdays)
+                }
+            }
+            
+            distributedSessions.append(sessionsForWeekdays)
+            sessionsForWeekdays.removeAll()
+        }
+        dataDetailVM.distributionSessions = distributedSessions
+      //print(distributionSessions)
+    }
+    
+    
+    
+    
+    func fillBarHeights() {
+        
+        var sessionsCount: [Int] = []
+       // print(distributionSessions)
+        (dataDetailVM.distributionSessions).forEach { sessions in
+            let count = sessions.count
+            sessionsCount.append(count)
+        }
+        //print(sessionsCount)
+        //find highest count -> make it 100
+        guard let largestCount = sessionsCount.max() else {
+            return print("no largest count")
+        }
+        //print(largestCount)
+        var barHeightsProviso = [Float]()
+        
+        (sessionsCount).forEach { sessionCount in
+            
+            /*if sessionCount == largestCount {
+                height = 100
+            } else {*/
+            var height: Float = (Float(sessionCount) / Float(largestCount)) * 100
+            //}
+            
+            if height == 0 {
+                height += 1
+            }
+            barHeightsProviso.append(height)
+        }
+        dataDetailVM.sessionBarHeights = barHeightsProviso
+    }
 }
 
+struct KWButton: View {
+    @ObservedObject var station: Station
+    @Binding var showKWPicker1: Bool
+    
+    var body: some View {
+        ZStack{
+            RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
+            
+            HStack(alignment: .lastTextBaseline){
+                    Text("KW " + "50" + " - " + "50")
+                        .font(.caption2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.clear)
+               
+                    //Arrow down
+                    Image(systemName: "chevron.down")
+                        .font(.caption2)
+                        .foregroundColor(.header)
+                }
+            
+            HStack(alignment: .lastTextBaseline){
+                if station.dateFilterAttendance.date1.extractWeek() == station.dateFilterAttendance.date2.extractWeek() {
+                    Text("    KW " + "\(station.dateFilterAttendance.date1.extractWeek())    ")
+                        .font(.caption2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.header)
+                        
+                } else {
+                    Text("KW " + "\(station.dateFilterAttendance.date1.extractWeek())" + " - " + "\(station.dateFilterAttendance.date2.extractWeek())")
+                        .font(.caption2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.header)
+                }
+                    //Arrow down
+                    Image(systemName: "chevron.down")
+                        .font(.caption2)
+                        .foregroundColor(.clear)
+                }
+        }
+        .onTapGesture {
+            withAnimation {
+                showKWPicker1.toggle()
+            }
+        }
+        .padding(.horizontal, 6)
+    }
+}
