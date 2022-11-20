@@ -21,7 +21,7 @@ struct ActionSheetSelectKWDetail: View {
     @Binding var showActionSheet: Bool
     @Binding var refresh: Bool
     @ObservedObject var datesVM: DatesVM
-    @ObservedObject var detailVM: AthleteDetailVM
+    @ObservedObject var dataDetailVM: DetailDataVM
     @State var kw1: Date
     @State var kw2: Date
     
@@ -55,9 +55,7 @@ struct ActionSheetSelectKWDetail: View {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(301), execute: {
                             UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
-                            withAnimation {
-                                refresh.toggle()
-                            }
+                                dataDetailVM.animate.toggle()
                         })
                         
                         withAnimation {

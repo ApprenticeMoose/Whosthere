@@ -209,18 +209,13 @@ struct AthleteDetailView: View {
                 .foregroundColor(.header)
                 .padding()
                 .padding(.leading)
-               /* .onChange(of: detailVM.selectedSessionAttendance) { v in
-                    print("Attendance changed")
-                }*/
-                .onChange(of: dataDetailVM.selectedSessionAttendance) { v in
-                    print("Attendance changed")
-                }
-                .onAppear{
+                .animation(.easeInOut, value: dataDetailVM.animate)
+               /* .onAppear{
                     getModifiedSession()
                     getAttendanceCount()
                     fillDistributedSessions()
                     fillBarHeights()
-                }
+                }*/
                 .onReceive(station.$dateFilterAttendance, perform: {
                     print("filter changed \($0)")
                     getModifiedSession()
@@ -294,7 +289,7 @@ struct AthleteDetailView: View {
         VStack{
             Spacer()
             
-            ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, refresh: $refresh, datesVM: DatesVM(), detailVM: detailVM, kw1: station.dateFilterAttendance.date1, kw2: station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
+            ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, refresh: $refresh, datesVM: DatesVM(), dataDetailVM: dataDetailVM, kw1: station.dateFilterAttendance.date1, kw2: station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
 
         }.background((showKWPicker1 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
             withAnimation {

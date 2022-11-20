@@ -156,7 +156,7 @@ struct DistributionPanel: View {
                                     .foregroundColor(.cardGrey2)
                                     .padding(.bottom)
                             }
-                        .animation(.easeInOut, value: dataDetailVM.sessionBarHeights)
+                        .animation(.easeInOut, value: dataDetailVM.animate)
                             
                             Spacer()
                         }
