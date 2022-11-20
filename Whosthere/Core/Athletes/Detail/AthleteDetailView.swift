@@ -226,7 +226,10 @@ struct AthleteDetailView: View {
                     getModifiedSession()
                     getAttendanceCount()
                     fillDistributedSessions()
-                    fillBarHeights()
+                    //withAnimation {
+                        fillBarHeights()
+                    //}
+                    
                 })
                 .onReceive(station.$perXAttendance, perform: {
                     print("filter changed \($0)")

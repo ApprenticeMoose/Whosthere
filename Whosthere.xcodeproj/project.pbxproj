@@ -640,7 +640,7 @@
 				DEVELOPMENT_TEAM = P93T2Q3CH5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Whosthere/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -662,7 +662,7 @@
 				DEVELOPMENT_TEAM = P93T2Q3CH5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Whosthere/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

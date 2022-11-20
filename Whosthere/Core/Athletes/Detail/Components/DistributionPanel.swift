@@ -116,10 +116,16 @@ struct DistributionPanel: View {
                                 
                                 
                                 ZStack(alignment: .bottom){
+                                    VStack{
+                                    Text("0")
+                                        .font(.caption2)
+                                        .foregroundColor(.clear)
+                                    
                                     RoundedRectangle(cornerRadius: 5)
                                         .frame(width: 34, height: 100)
                                         .foregroundColor(.clear)
                                         .padding(.bottom, 6)
+                                }
                                     VStack{
                                         Text("0")
                                             .font(.caption2)
@@ -132,21 +138,25 @@ struct DistributionPanel: View {
                                 }
                                 
                             } else {
+                                VStack{
                                     Text("\(dataDetailVM.distributionSessions[index].count)")
                                         .font(.caption2)
                                         .foregroundColor(.header)
+                                    //.animation(.easeInOut, value: dataDetailVM.sessionBarHeights)
                                     
                                     RoundedRectangle(cornerRadius: 5)
                                         .frame(width: 34, height: CGFloat(dataDetailVM.sessionBarHeights[index]))
                                         .foregroundColor(.appBackground)
                                         .padding(.bottom, 6)
-                                    
+                                }
+                                        
                                 }
                                 Text(day)
                                     .font(.footnote)
                                     .foregroundColor(.cardGrey2)
                                     .padding(.bottom)
                             }
+                        .animation(.easeInOut, value: dataDetailVM.sessionBarHeights)
                             
                             Spacer()
                         }

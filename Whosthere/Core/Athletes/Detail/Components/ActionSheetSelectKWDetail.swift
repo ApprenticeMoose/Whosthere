@@ -52,14 +52,15 @@ struct ActionSheetSelectKWDetail: View {
                 
                 //Apply button
                     Button {
-                        refresh.toggle()
                         
-                        UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(301), execute: {
+                            UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
+                            withAnimation {
+                                refresh.toggle()
+                            }
+                        })
+                        
                         withAnimation {
-                            /*detailVM.getModifiedSession()
-                            detailVM.getAttendanceCount()
-                            detailVM.fillDistributedSessions()
-                            detailVM.fillBarHeights()*/
                             showActionSheet.toggle()
                         }
                         
