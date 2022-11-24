@@ -43,7 +43,7 @@ struct ActionSheetSelectKWDetail: View {
                     
                 Spacer()
                 
-                Text("Sort")
+                Text("Select")
                 .fontWeight(.semibold)
                 .font(.title3)
                 .foregroundColor(.midTitle)

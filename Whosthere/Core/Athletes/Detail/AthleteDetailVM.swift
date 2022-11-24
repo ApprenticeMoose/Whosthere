@@ -16,6 +16,7 @@ final class AthleteDetailVM: ObservableObject {
     //Need to pull it from the titles array from the datamanger as a array[whateverid]
     @Published private var dataManager: DataManager
     @Published var arrayOfSessions = [Session]()
+    @Published var allSessions = [Session]()
     
     var index: Int = 0
     var detailedAthlete: Athlete = Athlete()
@@ -26,6 +27,7 @@ final class AthleteDetailVM: ObservableObject {
         self.detailedAthlete = athlete
         self.dataManager = dataManager
         fetchAthlete()
+        getAllSessions()
         createArrayOfAllSessions()
         //print(sessionBarHeights)
         anyCancellable = dataManager.objectWillChange.sink { [weak self] (_) in
@@ -42,7 +44,11 @@ final class AthleteDetailVM: ObservableObject {
         print("DetailVM initialized")
         
     }
+
     
+    func getAllSessions(){
+       allSessions = dataManager.sessionsArray
+    }
     
     func fetchAthlete() {
         dataManager.fetchAthletes()

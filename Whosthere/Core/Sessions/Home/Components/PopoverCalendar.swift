@@ -20,7 +20,7 @@ struct PopoverCalendar: View {
     }
     
     var body: some View {
-        ZStack {
+        ZStack{
             RoundedRectangle(cornerRadius: 15)
                 .foregroundColor(colorScheme == .light ? .appBackground : .accentMidGround)
                 .frame(maxWidth: .infinity)
@@ -29,14 +29,14 @@ struct PopoverCalendar: View {
             
             VStack(alignment: .leading ,spacing: 10) {
                 
-                
                 DatePicker("", selection: $selectedDate, displayedComponents: .date)
                     .datePickerStyle(.graphical)
                     .colorScheme(colorScheme == .light ? .light : .dark)
                     .accentColor(.accentSmallButton)
                     .labelsHidden()
                     .padding(.horizontal, 30)
-                    .padding(.top, 20)
+                    .padding(.top, 15)
+                    .padding(.bottom, 10)
                     .frame(height: 300)
             }
         }

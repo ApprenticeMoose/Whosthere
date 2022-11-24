@@ -49,6 +49,8 @@ extension Color {
     static let cardGrey3 = Color("CardGrey3")
     static let cardText = Color("CardText")
     static let cardProfileLetter = Color("CardProfileLetter")
+    static let cardBar = Color("CardBar")
+    static let cardBarText = Color("CardBarText")
     
     static let header = Color("Header")
     static let midTitle = Color("MidTitle")

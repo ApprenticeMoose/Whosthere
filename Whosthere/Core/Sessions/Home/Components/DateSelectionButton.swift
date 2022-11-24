@@ -27,7 +27,6 @@ struct DateSelectionButton: View {
     var body: some View {
         VStack{
         ZStack{
-            
                         
             if checkIfSelected {
                 ZStack{
@@ -65,8 +64,7 @@ struct DateSelectionButton: View {
                 }
             }
             .foregroundColor(
-                //dateIsToday && !checkIfSelected ? colorText.opacity(0.8) :
-                                checkIfSelected ? colorText : colorText.opacity(0.3) )
+                checkIfSelected ? colorText : colorText.opacity(0.3) )
             
         }
                 Capsule()

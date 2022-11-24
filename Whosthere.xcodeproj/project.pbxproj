@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC1E8C0F292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1E8C0E292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift */; };
 		BC3212F62750EFA7001A689E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3212F52750EFA6001A689E /* Color.swift */; };
 		BC35BFB728DE5F99005555BE /* AddAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */; };
 		BC35BFB928DE63C6005555BE /* EditAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */; };
@@ -65,6 +66,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC1E8C0E292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAttendedDistributionActionSheet.swift; sourceTree = "<group>"; };
 		BC3212F52750EFA6001A689E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAthleteVM.swift; sourceTree = "<group>"; };
 		BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteVM.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 			children = (
 				BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */,
 				BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */,
+				BC1E8C0E292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift */,
 				BC59E15629255A5B00EE56C3 /* DistributionPanel.swift */,
 			);
 			path = Components;
@@ -506,6 +509,7 @@
 				BCD2CAB228C76FDD0017CCFB /* DataManager.swift in Sources */,
 				BC854DF9291837B200A87B52 /* Float.swift in Sources */,
 				BC8E23F92912CB98001F2D7D /* SessionsTopButtonRow.swift in Sources */,
+				BC1E8C0F292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift in Sources */,
 				BC35BFB928DE63C6005555BE /* EditAthleteVM.swift in Sources */,
 				BC9D00CF2889B3B90024B4AC /* WhosThere.xcdatamodeld in Sources */,
 			);

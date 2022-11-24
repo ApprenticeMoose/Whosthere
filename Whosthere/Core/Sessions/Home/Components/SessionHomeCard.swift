@@ -85,25 +85,41 @@ struct SessionHomeCard: View {
                             
                             HStack(spacing: 15){
                                 if session.athleteIDs.isEmpty {
-                                    VStack(spacing: 2){
-                                        ZStack{
-                                            Circle()
-                                                .frame(width: 26, height: 26)
-                                                .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey1)
-                                            Image(systemName: "plus")
-                                            //.resizable()
-                                            //.frame(width: 12, height: 12)
-                                                .font(.system(size: 12))
-                                            //.font(.caption2)
-                                                .foregroundColor(.cardProfileLetter)
-                                            //.offset(x: 1)
+                                    HStack{
+                                        VStack(spacing: 2){
+                                            ZStack{
+                                                Circle()
+                                                    .frame(width: 26, height: 26)
+                                                    .foregroundColor(colorScheme == .light ? .cardGrey3 : .cardGrey1)
+                                                Image(systemName: "plus")
+                                                    .font(.system(size: 12))
+                                                    .foregroundColor(.cardProfileLetter)
+                                            }
+                                            
+                                            Text("Add")
+                                                .font(.caption2)
+                                                .foregroundColor(.cardText)
                                         }
-                                        
-                                        Text("Add")
-                                            .font(.caption2)
-                                            .foregroundColor(.cardText)
-                                    }
-                                } else {
+                                        //Placeholder for the alignment to be identical to the ones with athletes
+                                        ForEach(1...3, id: \.self) {athleteID in
+                                           
+                                                VStack(spacing: 2){
+                                                    ZStack{
+                                                        Circle()
+                                                            .frame(width: 26, height: 26)
+                                                            .foregroundColor(.clear)
+                                                        Text(getInitials(firstName: "he", lastName: "lo"))
+                                                            .font(.caption2)
+                                                            .fontWeight(.semibold)
+                                                            .foregroundColor(.clear)
+                                                    }
+                                                    Text("helo")
+                                                        .font(.caption2)
+                                                        .foregroundColor(.clear)
+                                                }
+                                            
+                                        }
+                                    } } else {
                                     if session.athleteIDs.count < 6 {
                                         ForEach(session.athleteIDs, id: \.self) {athleteID in
                                             if let athlete = sessionVM.getAthletes(with: athleteID){

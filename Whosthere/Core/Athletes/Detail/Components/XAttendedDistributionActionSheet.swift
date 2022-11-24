@@ -1,36 +1,32 @@
 //
-//  ActionSheetPerXAttendanceDetail.swift
+//  XAttendedDistributionActionSheet.swift
 //  Whosthere
 //
-//  Created by Moose on 06.11.22.
+//  Created by Moose on 24.11.22.
 //
-import Foundation
+
 import SwiftUI
 
-struct PerXAttendanceDetailActionSheet: View {
-    
-
+struct XAttendedDistributionActionSheet: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var showActionSheet: Bool
     
-    @State var perWeekIsSelected: Bool = false
-    @State var perMonthIsSelected: Bool = false
-    @State var totalIsSelected: Bool = false
+    @State var attendedNumber: Bool = false
+    @State var attendedPercantage: Bool = false
     
     @ObservedObject var station = Station()
     @ObservedObject var dataDetailVM: DetailDataVM
+
    // @EnvironmentObject var station: Station
 
     
     init(showActionSheet: Binding<Bool>, dataDetailVM: DetailDataVM){
         self._showActionSheet = showActionSheet
         self.dataDetailVM = dataDetailVM
-        if station.perXAttendance == .perWeek {
-            self._perWeekIsSelected = State(wrappedValue: true)
-        } else if station.perXAttendance == .perMonth {
-            self._perMonthIsSelected = State(wrappedValue: true)
-        }else if station.perXAttendance == .total {
-            self._totalIsSelected = State(wrappedValue: true)
+        if station.xAttendedDistribution == .attendedNumber {
+            self._attendedNumber = State(wrappedValue: true)
+        } else if station.xAttendedDistribution == .attendedPercent {
+            self._attendedPercantage = State(wrappedValue: true)
         }
     }
     
@@ -51,7 +47,7 @@ struct PerXAttendanceDetailActionSheet: View {
                 
                 Spacer()
                 
-                Text("Sort")
+                Text("Show")
                     .fontWeight(.semibold)
                     .font(.title3)
                     .foregroundColor(.midTitle)
@@ -62,12 +58,10 @@ struct PerXAttendanceDetailActionSheet: View {
                 Button {
                     showActionSheet.toggle()
                     //do all the UserDefaults stuff
-                    if perWeekIsSelected == true {
-                        UserDefaults.standard.perXAttendance = PerX.perWeek
-                    } else if perMonthIsSelected == true {
-                        UserDefaults.standard.perXAttendance = PerX.perMonth
-                    } else if totalIsSelected == true {
-                        UserDefaults.standard.perXAttendance = PerX.total
+                    if attendedNumber == true {
+                        UserDefaults.standard.xAttendedDistibution = ShowAttended.attendedNumber
+                    } else if attendedPercantage == true {
+                        UserDefaults.standard.xAttendedDistibution = ShowAttended.attendedPercent
                     }
                     dataDetailVM.animate.toggle()
                 } label: {
@@ -89,41 +83,27 @@ struct PerXAttendanceDetailActionSheet: View {
             HStack{
             VStack(alignment: .leading){
                 Button {
-                    perWeekIsSelected = true
-                    perMonthIsSelected = false
-                    totalIsSelected = false
+                    attendedNumber = true
+                    attendedPercantage = false
                 } label: {
                     
-                    Text("Avg. per Week")
+                    Text("# attended")
                         .fontWeight(.semibold)
                         .foregroundColor(.midTitle)
                         .padding(.vertical, 12)
-                        .opacity(perWeekIsSelected ? 1.0 : 0.3)
+                        .opacity(attendedNumber ? 1.0 : 0.3)
                     
                 }
                 
                 Button {
-                    perWeekIsSelected = false
-                    perMonthIsSelected = true
-                    totalIsSelected = false
+                    attendedNumber = false
+                    attendedPercantage = true
                 } label: {
-                    Text("Avg. per Month")
+                    Text("% attended")
                         .fontWeight(.semibold)
                         .foregroundColor(.midTitle)
                         .padding(.vertical, 12)
-                        .opacity(perMonthIsSelected ? 1.0 : 0.3)
-                }
-                
-                Button {
-                    perWeekIsSelected = false
-                    perMonthIsSelected = false
-                    totalIsSelected = true
-                } label: {
-                    Text("Total")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.midTitle)
-                        .padding(.vertical, 12)
-                        .opacity(totalIsSelected ? 1.0 : 0.3)
+                        .opacity(attendedPercantage ? 1.0 : 0.3)
                 }
                 
             }
@@ -142,3 +122,4 @@ struct PerXAttendanceDetailActionSheet: View {
     }
     
 }
+

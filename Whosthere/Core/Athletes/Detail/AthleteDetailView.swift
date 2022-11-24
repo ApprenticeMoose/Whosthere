@@ -25,6 +25,7 @@ struct AthleteDetailView: View {
     
     @State var showKWPicker2: Bool = false
     @State var showKWPicker1: Bool = false
+    @State var showXAttendedPicker: Bool = false
     @ObservedObject var detailVM: AthleteDetailVM
     
     @State var refresh: Bool = false
@@ -59,7 +60,7 @@ struct AthleteDetailView: View {
                     //Body
                     attendancePanel
                     
-                    DistributionPanel(dataDetailVM: dataDetailVM,showPickerPerX: $showKWPicker2, showPickerSelectKW: $showKWPicker1, refresh: $refresh)
+                    DistributionPanel(dataDetailVM: dataDetailVM,showXAttendedPicker: $showXAttendedPicker, showPickerSelectKW: $showKWPicker1, refresh: $refresh)
                     
                     Spacer()
                     
@@ -74,7 +75,7 @@ struct AthleteDetailView: View {
                 
                 implemetPerXSheet
                 
-                
+                implemetXAttendedSheet
             }//ZStack
         
         }//end of Body
@@ -219,19 +220,23 @@ struct AthleteDetailView: View {
                 .onReceive(station.$dateFilterAttendance, perform: {
                     print("filter changed \($0)")
                     getModifiedSession()
+                    getAllModifiedSessions()
                     getAttendanceCount()
                     fillDistributedSessions()
+                    fillAllSessionDistribution()
                     //withAnimation {
-                        fillBarHeights()
+                    fillAllSessionsBarHeights()
                     //}
                     
                 })
                 .onReceive(station.$perXAttendance, perform: {
                     print("filter changed \($0)")
                     getModifiedSession()
+                    getAllModifiedSessions()
                     getAttendanceCount()
                     fillDistributedSessions()
-                    fillBarHeights()
+                    fillAllSessionDistribution()
+                    fillAllSessionsBarHeights()
                 })
                 .onReceive(dataDetailVM.$sessionBarHeights, perform: {
                     print("bar height changed \($0)")
@@ -302,7 +307,7 @@ struct AthleteDetailView: View {
     var implemetPerXSheet: some View {
         VStack{
             Spacer()
-            PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2)
+            PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2, dataDetailVM: dataDetailVM)
              .offset(y: self.showKWPicker2 ? 0 : UIScreen.main.bounds.height)
 
         }.background((showKWPicker2 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
@@ -311,6 +316,31 @@ struct AthleteDetailView: View {
             }
         }))
         .edgesIgnoringSafeArea(.bottom)
+    }
+    
+    var implemetXAttendedSheet: some View {
+        VStack{
+            Spacer()
+            XAttendedDistributionActionSheet(showActionSheet: $showXAttendedPicker, dataDetailVM: dataDetailVM)
+                .offset(y: self.showXAttendedPicker ? 0 : UIScreen.main.bounds.height)
+
+        }.background((showXAttendedPicker ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
+            withAnimation {
+                showXAttendedPicker.toggle()
+            }
+        }))
+        .edgesIgnoringSafeArea(.bottom)
+    }
+    
+    func getAllModifiedSessions() {
+        let allSessions = detailVM.allSessions
+        let filteredSessions1 = allSessions.filter({ (session) -> Bool in
+            return session.date >= UserDefaults.standard.dateFilterAttendance?.date1 ?? Date()
+        })
+        let filteredSessions2 = filteredSessions1.filter({ (session) -> Bool in
+            return session.date <= UserDefaults.standard.dateFilterAttendance?.date2 ?? Date()
+        })
+        dataDetailVM.modifiedAllSessions = filteredSessions2
     }
     
     func getModifiedSession() {
@@ -323,10 +353,9 @@ struct AthleteDetailView: View {
             return session.date <= UserDefaults.standard.dateFilterAttendance?.date2 ?? Date()
         })
         dataDetailVM.modifiedArrayOfSessions = filteredSessions2
-        print("got modified sessions")
+        //print("got modified sessions")
     }
     
-   
     
     func getAttendanceCount() {
         //necessary so average is not diluated by a selection that is in the future, where attendance is impossible
@@ -352,6 +381,24 @@ struct AthleteDetailView: View {
     }
     
   
+    func fillAllSessionDistribution(){
+        var sessionsForWeekdays: [Session] = []
+        var distributedSessions = [[Session]]()
+        //distributionSessions.removeAll()
+        (1...7).forEach { day in
+            (dataDetailVM.modifiedAllSessions).forEach { session in
+                
+                if Calendar.current.dateComponents([.weekday], from: session.date).weekday == day {
+                    sessionsForWeekdays.append(session)
+                    //print(sessionsForWeekdays)
+                }
+            }
+            
+            distributedSessions.append(sessionsForWeekdays)
+            sessionsForWeekdays.removeAll()
+        }
+        dataDetailVM.distributionAllSessions = distributedSessions
+    }
     
     func fillDistributedSessions() {
         //print(modifiedArrayOfSessions)
@@ -376,13 +423,11 @@ struct AthleteDetailView: View {
     }
     
     
-    
-    
-    func fillBarHeights() {
+    func fillAllSessionsBarHeights() {
         
         var sessionsCount: [Int] = []
        // print(distributionSessions)
-        (dataDetailVM.distributionSessions).forEach { sessions in
+        (dataDetailVM.distributionAllSessions).forEach { sessions in
             let count = sessions.count
             sessionsCount.append(count)
         }
@@ -407,7 +452,38 @@ struct AthleteDetailView: View {
             }
             barHeightsProviso.append(height)
         }
-        dataDetailVM.sessionBarHeights = barHeightsProviso
+        dataDetailVM.sessionAllBarHeights = barHeightsProviso
+   // }
+    //func fillBarHeights() {
+        
+        var sessionsCount2: [Int] = []
+       // print(distributionSessions)
+        (dataDetailVM.distributionSessions).forEach { sessions in
+            let count = sessions.count
+            sessionsCount2.append(count)
+        }
+        //print(sessionsCount)
+        //find highest count -> make it 100
+        //guard let largestCount2 = sessionsCount2.max() else {
+        //    return print("no largest count")
+        //}
+        //print(largestCount)
+        var barHeightsProviso2 = [Float]()
+        
+        (sessionsCount2).forEach { sessionCount in
+            
+            /*if sessionCount == largestCount {
+                height = 100
+            } else {*/
+            var height: Float = (Float(sessionCount) / Float(largestCount)) * 100
+            //}
+            
+            if height == 0 {
+                height += 1
+            }
+            barHeightsProviso2.append(height)
+        }
+        dataDetailVM.sessionBarHeights = barHeightsProviso2
     }
 }
 

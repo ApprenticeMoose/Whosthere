@@ -14,6 +14,10 @@ enum PerX: Codable {
     case perWeek, perMonth, total
 }
 
+enum ShowAttended: Codable {
+    case attendedPercent, attendedNumber
+}
+
 struct PickerDates: Codable {
     let date1: Date
     let date2: Date
@@ -29,6 +33,7 @@ extension UserDefaults {
            case attendanceFilteredDates
            case distributionFilterdDates
            case perXAttendance
+           case xAttendedDistribution
        }
     
 //Step 2
@@ -60,6 +65,12 @@ extension UserDefaults {
                 set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.perXAttendance.rawValue) }
             }
     
+    @objc dynamic private(set) var observableXAttendedDistributionData: Data? {
+                get {
+                    UserDefaults.standard.data(forKey: UserDefaultsKeys.xAttendedDistribution.rawValue)
+                }
+                set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.xAttendedDistribution.rawValue) }
+            }
 //Step 3
      var sortAthletes: Sort? {
         get {
@@ -120,6 +131,21 @@ extension UserDefaults {
            observablePerXAttendanceData = try? JSONEncoder().encode(newValue)
        }
    }
+    
+    var xAttendedDistibution: ShowAttended? {
+       get {
+           if let data = object(forKey:
+                                   UserDefaultsKeys.xAttendedDistribution.rawValue) as? Data {
+               let xAttended = try? JSONDecoder().decode(ShowAttended.self, from: data)
+               return xAttended
+           }
+           return nil
+       }
+
+       set {
+           observableXAttendedDistributionData = try? JSONEncoder().encode(newValue)
+       }
+   }
 }
 
 class Station: ObservableObject {
@@ -148,6 +174,12 @@ class Station: ObservableObject {
         }
     }
     
+    @Published var xAttendedDistribution: ShowAttended = (UserDefaults.standard.xAttendedDistibution ?? ShowAttended.attendedNumber) {
+        didSet {
+            UserDefaults.standard.xAttendedDistibution = xAttendedDistribution
+        }
+    }
+    
     var cancellables = Set<AnyCancellable>()
 //Step 5
     init() {
@@ -164,16 +196,16 @@ class Station: ObservableObject {
         UserDefaults.standard.publisher(for: \.observableDateFilterAttendanceData)
             .map{ data -> PickerDates in
                 guard let data = data else {return PickerDates(date1: Date().startOfWeek(), date2:Date().endOfWeek()) }
-                return (try? JSONDecoder().decode(PickerDates.self, from: data)) ?? PickerDates(date1: Date().startOfWeek(), date2:Date().endOfWeek())
+                return (try? JSONDecoder().decode(PickerDates.self, from: data)) ?? PickerDates(date1: Date().startOfWeek(), date2: Date().endOfWeek())
             }
             .receive(on: RunLoop.main)
             .assign(to: &$dateFilterAttendance)
         
-//dateFilterAttendance
+//dateFilterDistribution
         UserDefaults.standard.publisher(for: \.observableDateFilterDistributionData)
             .map{ data -> PickerDates in
-                guard let data = data else {return PickerDates(date1: Date().startOfWeek(), date2:Date().endOfWeek()) }
-                return (try? JSONDecoder().decode(PickerDates.self, from: data)) ?? PickerDates(date1: Date().startOfWeek(), date2:Date().endOfWeek())
+                guard let data = data else {return PickerDates(date1: Date().startOfWeek(), date2: Date().endOfWeek()) }
+                return (try? JSONDecoder().decode(PickerDates.self, from: data)) ?? PickerDates(date1: Date().startOfWeek(), date2: Date().endOfWeek())
             }
             .receive(on: RunLoop.main)
             .assign(to: &$dateFilterDistribution)
@@ -186,20 +218,16 @@ class Station: ObservableObject {
             }
             .receive(on: RunLoop.main)
             .assign(to: &$perXAttendance)
-        //updateDate2()
+        
+//XAttendedDistribution
+            UserDefaults.standard.publisher(for: \.observableXAttendedDistributionData)
+                .map{ data -> ShowAttended in
+                    guard let data = data else {return ShowAttended.attendedNumber }
+                    return (try? JSONDecoder().decode(ShowAttended.self, from: data)) ?? ShowAttended.attendedNumber
+                }
+                .receive(on: RunLoop.main)
+                .assign(to: &$xAttendedDistribution)
     }
-    @Published var date2: Date = Date()
-    
-    func updateDate2() {
-        $dateFilterAttendance
-            .map { (dates) -> Date in
-                return dates.date2
-            }
-            .sink(receiveValue: { [weak self] (date2) in
-                self?.date2 = date2
-                    })
-            .store(in: &cancellables)
-            }
 }
 
 //!!!! use UserDefault to call values and station to set values
