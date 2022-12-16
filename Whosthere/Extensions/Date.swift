@@ -38,15 +38,30 @@ extension Date {
         return week
     } //get the Int of the week from any date that is entered
     
-    var beginningOfTheWeek: Date {
-        get {
-            //findBeginningOfTheWeek(Mo/Su)
-            //make it to 00:00
-            //return
-            return Date()
-        }
+    func extractYear() -> Int {
+        let year = Calendar.current.component(.year, from: self)
+        return year
+    } //get the Int of the week from any date that is entered
+    
+    
+    func isInCurrentWeek() -> Bool {
+        return self.extractWeek() == Date().extractWeek() && self.extractYear() == Date().extractYear()
     }
     
+    func isInPastWeeks() -> Bool {
+        return self.extractWeek() < Date().extractWeek() && self.extractYear() <= Date().extractYear()
+    }
     
+    func isInUpcomingWeeks() -> Bool {
+        return self.extractWeek() > Date().extractWeek() && self.extractYear() >= Date().extractYear()
+    }
+       var year: Int? {
+           let calendar = Calendar.current
+           let currentComponents = calendar.dateComponents([.year], from: self)
+           return currentComponents.year
+       }
+    
+  
+
 }
 

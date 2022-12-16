@@ -18,4 +18,9 @@ class DetailDataVM: ObservableObject {
     @Published var modifiedAllSessions = [Session]()
     @Published var distributionAllSessions = [[Session]]()
     @Published var sessionAllBarHeights: [Float] = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    
+    @Published var courseOfAttendance = [(kw: Int, sessions: [Session])]()
+    @Published var courseOfAttendanceSimplified = [(date: Date, sessionCount: Int)]()
+   // @Published var courseTestData = [CourseChartBar(week: Date(), sessionCount: 1), CourseChartBar(week: Date(), sessionCount: 2), CourseChartBar(week: Date(), sessionCount: 0), CourseChartBar(week: Date(), sessionCount: 0)]
+
 }

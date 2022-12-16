@@ -61,33 +61,33 @@ struct DistributionPanel: View {
                 
                 
                 Spacer()
-                
-                if station.xAttendedDistribution == .attendedNumber {
-                    Text("\(dataDetailVM.modifiedArrayOfSessions.count)" + " / " + "\(dataDetailVM.modifiedAllSessions.count)")
-                        .font(.system(size: 14))
-                        .fontWeight(.semibold)
-                        .foregroundColor(.header)
-                        .padding()
-                        .animation(.easeInOut, value: dataDetailVM.animate)
-                }  else if station.xAttendedDistribution == .attendedPercent {
-                    if dataDetailVM.modifiedAllSessions.count > 0 {
-                        Text(calculateAttendedPercantage(
-                            attended: dataDetailVM.modifiedArrayOfSessions.count,
-                            all: dataDetailVM.modifiedAllSessions.count) + "%")
+                HStack{
+                    if station.xAttendedDistribution == .attendedNumber {
+                        Text("\(dataDetailVM.modifiedArrayOfSessions.count)" + " / " + "\(dataDetailVM.modifiedAllSessions.count)")
                             .font(.system(size: 14))
                             .fontWeight(.semibold)
                             .foregroundColor(.header)
                             .padding()
-                            .animation(.easeInOut, value: dataDetailVM.animate)
-                    } else {
-                        Text("-%")
+                    }  else if station.xAttendedDistribution == .attendedPercent {
+                        if dataDetailVM.modifiedAllSessions.count > 0 {
+                            Text(calculateAttendedPercantage(
+                                attended: dataDetailVM.modifiedArrayOfSessions.count,
+                                all: dataDetailVM.modifiedAllSessions.count) + "%")
                             .font(.system(size: 14))
                             .fontWeight(.semibold)
                             .foregroundColor(.header)
                             .padding()
-                            .animation(.easeInOut, value: dataDetailVM.animate)
+                        } else {
+                            Text("-%")
+                                .font(.system(size: 14))
+                                .fontWeight(.semibold)
+                                .foregroundColor(.header)
+                                .padding()
+                        }
                     }
                 }
+                .animation(.easeInOut, value: dataDetailVM.animate)
+
                /* ZStack{
                     RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
                     

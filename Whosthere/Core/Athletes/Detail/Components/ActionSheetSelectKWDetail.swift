@@ -145,16 +145,18 @@ struct ActionSheetSelectKWDetail: View {
         .padding(.vertical)
         .padding(.horizontal)
         .background(Color.appBackground.clipShape(CustomShape(corners: [.topLeft, .topRight], radius: 20)))
+        .frame(width: UIScreen.main.bounds.width)
         .edgesIgnoringSafeArea(.bottom)
        // }
     }
     
 }
 
-/*struct ActionSheetKWSelectDetail_Previews: PreviewProvider {
+struct ActionSheetKWSelectDetail_Previews: PreviewProvider {
     @State static var isShowing = false
     @State static var refresh = false
+    
     static var previews: some View {
-        ActionSheetSelectKWDetail(showActionSheet: $isShowing, refresh: $refresh, datesVM: DatesVM(), detailVM: AthleteDetailVM(athlete2: Athlete()), kw1: Date().startOfWeek(), kw2: Date().endOfWeek())
+        ActionSheetSelectKWDetail(showActionSheet: $isShowing, refresh: $refresh, datesVM: DatesVM(), dataDetailVM: DetailDataVM(), kw1: Date().startOfWeek(), kw2: Date().endOfWeek())
     }
- }*/
+ }

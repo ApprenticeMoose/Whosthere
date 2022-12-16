@@ -32,6 +32,7 @@ struct AthleteDetailView: View {
     
     @EnvironmentObject var station: Station
     @StateObject var dataDetailVM: DetailDataVM = DetailDataVM()
+    @StateObject var datesVM = DatesVM()
     //@StateObject var station: Station = Station() //necessary so KWSelectionUpdates
     
     init(athlete: Athlete, dataManager: DataManager = DataManager.shared) {
@@ -43,41 +44,49 @@ struct AthleteDetailView: View {
     //MARK: -Body
     
     var body: some View {
-            ZStack{
-                VStack(spacing: 0){
-                    //Header
-                    VStack{
+       
+           
+                ZStack{
+                   // GeometryReader{ p in
+                    //ScrollView{
+                    VStack(spacing: 0){
+                        //Header
+                        VStack{
+                            
+                            AthleteDetailHeaderButtons
+                                .padding(.bottom, -10)
+                            
+                            profilePicture
+                                .padding(.top, -20)
+                                .padding(.bottom, -15)
+                            
+                            nameAndBirthday
+                        }
+                        //Body
+                        attendancePanel
                         
-                        AthleteDetailHeaderButtons
-                            .padding(.bottom, -10)
+                        DistributionPanel(dataDetailVM: dataDetailVM,showXAttendedPicker: $showXAttendedPicker, showPickerSelectKW: $showKWPicker1, refresh: $refresh)
                         
-                        profilePicture
-                            .padding(.top, -20)
-                            .padding(.bottom, -15)
+                       /* CourseOfAttendancePanel(dataDetailVM: dataDetailVM)
+                            .frame(width: p.size.width, height: p.size.height/5, alignment: .center)
+                        */
+                        Spacer()
                         
-                        nameAndBirthday
                     }
-                    //Body
-                    attendancePanel
+                    .onAppear(perform: {
+                        detailVM.fetchAthlete()
+                        self.tabDetail.showDetail = true })
+                    .background(Color.appBackground)
+                    .navigationBarHidden(true)
                     
-                    DistributionPanel(dataDetailVM: dataDetailVM,showXAttendedPicker: $showXAttendedPicker, showPickerSelectKW: $showKWPicker1, refresh: $refresh)
+                    implementSelectKWSheet
                     
-                    Spacer()
+                    implemetPerXSheet
                     
-                }
-                .onAppear(perform: {
-                    detailVM.fetchAthlete()
-                    self.tabDetail.showDetail = true })
-                .background(Color.appBackground)
-                .navigationBarHidden(true)
-                
-                implementSelectKWSheet
-                
-                implemetPerXSheet
-                
-                implemetXAttendedSheet
-            }//ZStack
-        
+                    implemetXAttendedSheet
+                }//ZStack
+          //  }//scrollview
+     //  }
         }//end of Body
     
             
@@ -226,6 +235,7 @@ struct AthleteDetailView: View {
                     fillAllSessionDistribution()
                     //withAnimation {
                     fillAllSessionsBarHeights()
+                    fillCourseOfSessions()
                     //}
                     
                 })
@@ -237,8 +247,10 @@ struct AthleteDetailView: View {
                     fillDistributedSessions()
                     fillAllSessionDistribution()
                     fillAllSessionsBarHeights()
+                    fillCourseOfSessions()
+
                 })
-                .onReceive(dataDetailVM.$sessionBarHeights, perform: {
+             /*   .onReceive(dataDetailVM.$sessionBarHeights, perform: {
                     print("bar height changed \($0)")
                     if dataDetailVM.sessionBarHeights.contains(1.0) {
                         print("it contains it")
@@ -253,7 +265,7 @@ struct AthleteDetailView: View {
                 )
                 .onReceive(dataDetailVM.$selectedSessionAttendance, perform: {
                     print("selected sessios changed \($0)")}
-                )
+                )*/
             
             
             
@@ -398,6 +410,35 @@ struct AthleteDetailView: View {
             sessionsForWeekdays.removeAll()
         }
         dataDetailVM.distributionAllSessions = distributedSessions
+    }
+    
+    func fillCourseOfSessions() {
+        var weekToCollect: [Session] = []
+        var weekInt: Int = 0
+        var weekDate: Date = Date()
+        var courseOfSession = [(Int, [Session])]()
+        var courseOfSessionSimplified = [(Date, Int)]()
+        
+        let startWeek = UserDefaults.standard.dateFilterAttendance?.date1.extractWeek() ?? 1
+        let lastWeek = UserDefaults.standard.dateFilterAttendance?.date2.extractWeek() ?? 1
+        
+        (startWeek...lastWeek).forEach { week in
+            (dataDetailVM.modifiedArrayOfSessions).forEach { session in
+                weekInt = week
+                weekDate = datesVM.getWeekOfYear(from: week, year: 2022) ?? Date()
+                if Calendar.current.dateComponents([.weekOfYear], from: session.date).weekOfYear == week {
+                    weekToCollect.append(session)
+                }
+            }
+            
+            courseOfSession.append((weekInt, weekToCollect))
+            courseOfSessionSimplified.append((weekDate, weekToCollect.count))
+            weekToCollect.removeAll()
+        }
+        dataDetailVM.courseOfAttendance = courseOfSession
+        dataDetailVM.courseOfAttendanceSimplified = courseOfSessionSimplified
+        print("course of attendance: \(dataDetailVM.courseOfAttendance)")
+        print("courseSimplified: \(dataDetailVM.courseOfAttendanceSimplified)")
     }
     
     func fillDistributedSessions() {

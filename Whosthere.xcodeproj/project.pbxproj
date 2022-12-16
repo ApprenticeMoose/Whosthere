@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BC1E8C0F292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1E8C0E292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift */; };
+		BC1E8C11293004DE00D6DE73 /* CourseOfAttendancePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1E8C10293004DE00D6DE73 /* CourseOfAttendancePanel.swift */; };
 		BC3212F62750EFA7001A689E /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3212F52750EFA6001A689E /* Color.swift */; };
 		BC35BFB728DE5F99005555BE /* AddAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */; };
 		BC35BFB928DE63C6005555BE /* EditAthleteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */; };
@@ -67,6 +68,7 @@
 
 /* Begin PBXFileReference section */
 		BC1E8C0E292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XAttendedDistributionActionSheet.swift; sourceTree = "<group>"; };
+		BC1E8C10293004DE00D6DE73 /* CourseOfAttendancePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOfAttendancePanel.swift; sourceTree = "<group>"; };
 		BC3212F52750EFA6001A689E /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		BC35BFB628DE5F99005555BE /* AddAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAthleteVM.swift; sourceTree = "<group>"; };
 		BC35BFB828DE63C6005555BE /* EditAthleteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAthleteVM.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */,
 				BC1E8C0E292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift */,
 				BC59E15629255A5B00EE56C3 /* DistributionPanel.swift */,
+				BC1E8C10293004DE00D6DE73 /* CourseOfAttendancePanel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 				BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */,
 				BC8E24062916CC33001F2D7D /* ActionSheetSelectKWDetail.swift in Sources */,
 				BC8E23F72912CB17001F2D7D /* SmallCalendarButton.swift in Sources */,
+				BC1E8C11293004DE00D6DE73 /* CourseOfAttendancePanel.swift in Sources */,
 				BCD2CAAC28C766AF0017CCFB /* PersistentStore.swift in Sources */,
 				BC3F2573276C991300465551 /* BigAddButton.swift in Sources */,
 				BCD2CABF28C9D0B70017CCFB /* AthleteDetailVM.swift in Sources */,

@@ -536,7 +536,8 @@ struct DateSeläctör: View {
                     .accentColor(.accentSmallButton)
                     .labelsHidden()
                     .padding(.horizontal, 30)
-                    .padding(.top, 20)
+                    .padding(.top, 15)
+                    .padding(.bottom, 10)
                     .frame(height: 300)
                 
             }

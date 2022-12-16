@@ -115,6 +115,12 @@ class DatesVM: ObservableObject {
         return calendar.dateInterval(of: .weekOfYear, for: date)?.start ?? Date()
     }
     
+    func getWeekOfYear(from week: Int, year: Int? = Date().year, locale: Locale? = nil) -> Date? {
+            var calendar = Calendar.current
+            calendar.locale = locale
+            let dateComponents = DateComponents(calendar: calendar, year: year, weekday: 1, weekOfYear: week)
+            return calendar.date(from: dateComponents)
+        }
     
     //MARK: - DatesInAddSessionFunctions
     

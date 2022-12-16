@@ -107,71 +107,91 @@ struct SessionsHomeView: View {
                     }//scrollview
                 }
 //Sessions
-                    ScrollView(.vertical, showsIndicators: false){
-                        ScrollViewReader { proxy in
-                            LazyVStack(spacing: 20){
-                                
-                                ForEach(Array(sessionsViewModel.checkIfArrayIsUnique(array: selectedSessionsArray).sorted(by: { $0 < $1 })), id: \.self) { day in
+                    
+                    if Array(sessionsViewModel.checkIfArrayIsUnique(array: selectedSessionsArray)).isEmpty && datesVM.selectedDay.isInPastWeeks() {
+
+                        //who was there?
+                        emptySessionPastWeek
+                       
+                        
+                    } else if Array(sessionsViewModel.checkIfArrayIsUnique(array: selectedSessionsArray)).isEmpty && datesVM.selectedDay.isInCurrentWeek() {
+                        
+                        //whos there?
+                        emptySessionCurrentWeek
+                        
+                        
+                    } else if Array(sessionsViewModel.checkIfArrayIsUnique(array: selectedSessionsArray)).isEmpty && datesVM.selectedDay.isInUpcomingWeeks()  {
+                        
+                        //who will be there?
+                        emptySessionUpcomingWeek
+                        
+                    } else {
+                        
+                        ScrollView(.vertical, showsIndicators: false){
+                            ScrollViewReader { proxy in
+                                LazyVStack(spacing: 20){
                                     
-                                    VStack(spacing: 6){
-                                        SessionHomeCardHeadline(date: day)
-                                        ForEach(selectedSessionsArray, id: \.self) { session in
-                                            if day == session.date.onlyDate {
-                                                
-                                                SessionHomeCard(session: session, sessionVM: SessionHomeVM(), showActionSheet: $showActionSheet)
-                                                
+                                    ForEach(Array(sessionsViewModel.checkIfArrayIsUnique(array: selectedSessionsArray).sorted(by: { $0 < $1 })), id: \.self) { day in
+                                        
+                                        VStack(spacing: 6){
+                                            SessionHomeCardHeadline(date: day)
+                                            ForEach(selectedSessionsArray, id: \.self) { session in
+                                                if day == session.date.onlyDate {
+                                                    
+                                                    SessionHomeCard(session: session, sessionVM: SessionHomeVM(), showActionSheet: $showActionSheet)
+                                                    
+                                                }
                                             }
                                         }
+                                        .id(day)
                                     }
-                                    .id(day)
-                                }
-                                .onAppear {
-                                    print(UserDefaults.standard.bool(forKey: "launchedOnce"))
-                                    if UserDefaults.standard.bool(forKey: "launchedOnce") == true {
-                                        proxy.scrollTo(datesVM.extractDateWithoutTime(date: Date()), anchor: .center)
-                                        UserDefaults.standard.set(false, forKey: "launchedOnce")
-                                    } // is initially set in AthleteApp.swift and is used for it to only scroll to today after launch
-                                }
-                                .onChange(of: datesVM.scrollToIndexOfSessions) { value in
-                                    //print(sessionsViewModel.scrollToIndex)
-                                    withAnimation(.spring()) {
-                                        proxy.scrollTo(value, anchor: .top)
+                                    .onAppear {
+                                        print(UserDefaults.standard.bool(forKey: "launchedOnce"))
+                                        if UserDefaults.standard.bool(forKey: "launchedOnce") == true {
+                                            proxy.scrollTo(datesVM.extractDateWithoutTime(date: Date()), anchor: .center)
+                                            UserDefaults.standard.set(false, forKey: "launchedOnce")
+                                        } // is initially set in AthleteApp.swift and is used for it to only scroll to today after launch
                                     }
+                                    .onChange(of: datesVM.scrollToIndexOfSessions) { value in
+                                        //print(sessionsViewModel.scrollToIndex)
+                                        withAnimation(.spring()) {
+                                            proxy.scrollTo(value, anchor: .top)
+                                        }
+                                    }
+                                    
                                 }
+                                /*
+                                 Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
+                                 Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
+                                 Text("\(datesVM.scrollToIndex)")
+                                 */ // check the week and day selected form row of week buttons
                                 
-                            }
-                            /*
-                             Text("\(datesVM.extractWeek(date: datesVM.selectedDay))")
-                             Text("\(datesVM.extractDate(date: datesVM.selectedDay, format: "dd MMM"))")
-                             Text("\(datesVM.scrollToIndex)")
-                             */ // check the week and day selected form row of week buttons
-                            
-                            Rectangle()
-                                .frame(height: 50)
-                                .foregroundColor(.clear)
-                        }
-                    }
-                    .nbNavigationDestination(for: Route.self) { route in
-                        switch route {
-                        case let .detail(athlete):
-                            AthleteDetailView(athlete: athlete)
-                            
-                        case let .edit(athlete):
-                            EditAthleteView(athlete: athlete,
-                                            goBackToRoot: { appState.path.removeLast(appState.path.count)})
-                            
-                        case let .editSession(session):
-                            EditSessionView(session: session, selectedDay: $datesVM.selectedDay, scrollToIndexOfSessions: $datesVM.scrollToIndexOfSessions)
-                                .onDisappear {
-                                    datesVM.wholeWeeks.removeAll()
-                                    datesVM.fetchAllDays()
-                                    datesVM.scrollToIndex = 3
+                                Rectangle()
+                                    .frame(height: 50)
+                                    .foregroundColor(.clear)
                             }
                         }
+                        .nbNavigationDestination(for: Route.self) { route in
+                            switch route {
+                            case let .detail(athlete):
+                                AthleteDetailView(athlete: athlete)
+                                
+                            case let .edit(athlete):
+                                EditAthleteView(athlete: athlete,
+                                                goBackToRoot: { appState.path.removeLast(appState.path.count)})
+                                
+                            case let .editSession(session):
+                                EditSessionView(session: session, selectedDay: $datesVM.selectedDay, scrollToIndexOfSessions: $datesVM.scrollToIndexOfSessions)
+                                    .onDisappear {
+                                        datesVM.wholeWeeks.removeAll()
+                                        datesVM.fetchAllDays()
+                                        datesVM.scrollToIndex = 3
+                                    }
+                            }
+                        }
+                        
+                        Spacer()
                     }
-                    
-                    Spacer()
-                    
                 } //VStack
            // }//VStack oben und athleten
                 .background(Color.appBackground.edgesIgnoringSafeArea(.all))
@@ -204,6 +224,109 @@ struct SessionsHomeView: View {
             }//ZStack for Calendar
         }//Navigation
     }//body
+    
+    var emptySessionCurrentWeek: some View {
+    
+        VStack(spacing: 10){
+        Spacer()
+        
+        /*Image("CheckCat")
+            .resizable()
+            .frame(height: 290)
+            .frame(width: 290)
+            .padding()
+           // .padding(.bottom, 15)
+          */
+        
+        Text("Who's there?")
+            .fontWeight(.semibold)
+           // .padding(.bottom, 10)
+        
+        Button {
+            showAddSessionSheet = true
+        } label: {
+            MediumButton(icon: "plus",
+                            description: "Add Session",
+                            textColor: .middlegroundColor,
+                         backgroundColor: .textColor);
+        }
+      /*  Spacer()
+        Spacer()
+        Spacer()
+        Spacer()
+        Spacer()*/
+        Spacer()
+    }
+        
+}
+
+    
+    var emptySessionPastWeek: some View {
+    
+        VStack(spacing: 10){
+       Spacer()
+        
+       /* Image("Questions")
+            .resizable()
+            .frame(height: 250)
+            .frame(width: 250)
+            .padding()
+            .padding(.bottom, 15)
+          */
+        
+        Text("Who was there?")
+            .fontWeight(.semibold)
+           // .padding(.bottom, 10)
+        
+        Button {
+            showAddSessionSheet = true
+        } label: {
+            MediumButton(icon: "plus",
+                            description: "Add Session",
+                            textColor: .middlegroundColor,
+                         backgroundColor: .textColor);
+        }
+       /* Spacer()
+        Spacer()*/
+        Spacer()
+    }
+        
+}
+    
+    var emptySessionUpcomingWeek: some View {
+    
+        VStack(spacing: 10){
+        Spacer()
+        
+       /*Image("CheckCat")
+            .resizable()
+            .frame(height: 290)
+            .frame(width: 290)
+            .padding()
+           // .padding(.bottom, 15)
+            */
+        
+        Text("Who will be there?")
+            .fontWeight(.semibold)
+           // .padding(.bottom, 10)
+        
+        Button {
+            showAddSessionSheet = true
+        } label: {
+            MediumButton(icon: "plus",
+                            description: "Add Session",
+                            textColor: .middlegroundColor,
+                         backgroundColor: .textColor);
+        }
+       /* Spacer()
+        Spacer()
+        Spacer()
+        Spacer()
+        Spacer()*/
+        Spacer()
+    }
+        
+}
 }//StructEnd
 
 
