@@ -107,6 +107,7 @@ struct SessionsHomeView: View {
                     }//scrollview
                 }
 //Sessions
+            
                     
                     if Array(sessionsViewModel.checkIfArrayIsUnique(array: selectedSessionsArray)).isEmpty && datesVM.selectedDay.isInPastWeeks() {
 
@@ -182,11 +183,8 @@ struct SessionsHomeView: View {
                                 
                             case let .editSession(session):
                                 EditSessionView(session: session, selectedDay: $datesVM.selectedDay, scrollToIndexOfSessions: $datesVM.scrollToIndexOfSessions)
-                                    .onDisappear {
-                                        datesVM.wholeWeeks.removeAll()
-                                        datesVM.fetchAllDays()
-                                        datesVM.scrollToIndex = 3
-                                    }
+                            case .statistics:
+                                Text("statistics")
                             }
                         }
                         

@@ -18,14 +18,14 @@ struct TabItem: Identifiable {
 
 var tabItems = [
     TabItem(text: "Sessions", icon: "doc.text", tab: .sessions),
-    TabItem(text: "Statistics", icon: "chart.xyaxis.line", tab: .statistics),
+  //  TabItem(text: "Statistics", icon: "chart.xyaxis.line", tab: .statistics),
     TabItem(text: "Athletes", icon: "person.3", tab: .athletes),
     TabItem(text: "Settings", icon: "gearshape", tab: .settings)
 ]
 
 enum Tab: String {
     case sessions
-    case statistics
+   /* case statistics*/
     case athletes
     case settings
 }

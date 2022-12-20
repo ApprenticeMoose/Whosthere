@@ -21,8 +21,8 @@ struct ContentView: View {
                 switch selectedTab {
                 case .sessions:
                     SessionsHomeView(datesVM: DatesVM(), showActionSheet: $showActionSheet)
-                case .statistics:
-                    StatisticsOverview()
+             /*   case .statistics:
+                    StatisticsOverview()*/
                 case .athletes:
                     AthleteListView()
                 case .settings:

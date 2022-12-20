@@ -49,11 +49,11 @@ extension Date {
     }
     
     func isInPastWeeks() -> Bool {
-        return self.extractWeek() < Date().extractWeek() && self.extractYear() <= Date().extractYear()
+        return self.extractWeek() < Date().extractWeek() || self.extractYear() < Date().extractYear()
     }
     
     func isInUpcomingWeeks() -> Bool {
-        return self.extractWeek() > Date().extractWeek() && self.extractYear() >= Date().extractYear()
+        return self.extractWeek() > Date().extractWeek() || self.extractYear() > Date().extractYear()
     }
        var year: Int? {
            let calendar = Calendar.current
