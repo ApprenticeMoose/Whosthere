@@ -29,6 +29,7 @@ struct AthleteDetailView: View {
     @ObservedObject var detailVM: AthleteDetailVM
     
     @State var refresh: Bool = false
+    @State var animate: Bool = false
     
     @EnvironmentObject var station: Station
     @StateObject var dataDetailVM: DetailDataVM = DetailDataVM()
@@ -65,7 +66,7 @@ struct AthleteDetailView: View {
                         //Body
                         attendancePanel
                         
-                        DistributionPanel(dataDetailVM: dataDetailVM,showXAttendedPicker: $showXAttendedPicker, showPickerSelectKW: $showKWPicker1, refresh: $refresh)
+                        DistributionPanel(dataDetailVM: dataDetailVM,showXAttendedPicker: $showXAttendedPicker, showPickerSelectKW: $showKWPicker1, refresh: $refresh, animate: $animate)
                         
                        /* CourseOfAttendancePanel(dataDetailVM: dataDetailVM)
                             .frame(width: p.size.width, height: p.size.height/5, alignment: .center)
@@ -219,7 +220,7 @@ struct AthleteDetailView: View {
                 .foregroundColor(.header)
                 .padding()
                 .padding(.leading)
-                .animation(.easeInOut, value: dataDetailVM.animate)
+                .animation(.easeInOut, value: animate)
                /* .onAppear{
                     getModifiedSession()
                     getAttendanceCount()
@@ -306,7 +307,7 @@ struct AthleteDetailView: View {
         VStack{
             Spacer()
             
-            ActionSheetSelectKWDetail(showActionSheet: $showKWPicker1, refresh: $refresh, datesVM: DatesVM(), dataDetailVM: dataDetailVM, kw1: station.dateFilterAttendance.date1, kw2: station.dateFilterAttendance.date2).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
+            ActionSheetSelectKW(showActionSheet: $showKWPicker1, refresh: $refresh, animate: $animate, datesVM: DatesVM(), kw1: station.dateFilterAttendance.date1, kw2: station.dateFilterAttendance.date2, type: ActionSheetCall.detail).offset(y: self.showKWPicker1 ? 0 : UIScreen.main.bounds.height)
 
         }.background((showKWPicker1 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
             withAnimation {
@@ -319,7 +320,7 @@ struct AthleteDetailView: View {
     var implemetPerXSheet: some View {
         VStack{
             Spacer()
-            PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2, dataDetailVM: dataDetailVM)
+            PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2, animate: $animate)
              .offset(y: self.showKWPicker2 ? 0 : UIScreen.main.bounds.height)
 
         }.background((showKWPicker2 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
@@ -333,7 +334,7 @@ struct AthleteDetailView: View {
     var implemetXAttendedSheet: some View {
         VStack{
             Spacer()
-            XAttendedDistributionActionSheet(showActionSheet: $showXAttendedPicker, dataDetailVM: dataDetailVM)
+            XAttendedDistributionActionSheet(showActionSheet: $showXAttendedPicker, animate: $animate)
                 .offset(y: self.showXAttendedPicker ? 0 : UIScreen.main.bounds.height)
 
         }.background((showXAttendedPicker ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {

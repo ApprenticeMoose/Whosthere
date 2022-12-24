@@ -10,19 +10,20 @@ import SwiftUI
 struct XAttendedDistributionActionSheet: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var showActionSheet: Bool
+    @Binding var animate: Bool
     
     @State var attendedNumber: Bool = false
     @State var attendedPercantage: Bool = false
     
     @ObservedObject var station = Station()
-    @ObservedObject var dataDetailVM: DetailDataVM
+   
 
    // @EnvironmentObject var station: Station
 
     
-    init(showActionSheet: Binding<Bool>, dataDetailVM: DetailDataVM){
+    init(showActionSheet: Binding<Bool>, animate: Binding<Bool>){
         self._showActionSheet = showActionSheet
-        self.dataDetailVM = dataDetailVM
+        self._animate = animate
         if station.xAttendedDistribution == .attendedNumber {
             self._attendedNumber = State(wrappedValue: true)
         } else if station.xAttendedDistribution == .attendedPercent {
@@ -63,7 +64,7 @@ struct XAttendedDistributionActionSheet: View {
                     } else if attendedPercantage == true {
                         UserDefaults.standard.xAttendedDistibution = ShowAttended.attendedPercent
                     }
-                    dataDetailVM.animate.toggle()
+                    animate.toggle()
                 } label: {
                     HStack{
                         Image(systemName: "checkmark")

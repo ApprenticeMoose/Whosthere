@@ -8,23 +8,28 @@
 import SwiftUI
 import OrderedCollections
 
+enum ActionSheetCall: String {
+    case detail, statistics
+}
+
 extension UIPickerView {
     open override var intrinsicContentSize: CGSize {
         return CGSize(width: UIView.noIntrinsicMetric , height: 150)
     }
 }
 
-struct ActionSheetSelectKWDetail: View {
+struct ActionSheetSelectKW: View {
     
     @Environment(\.colorScheme) var colorScheme
     
     @Binding var showActionSheet: Bool
     @Binding var refresh: Bool
+    @Binding var animate: Bool
     @ObservedObject var datesVM: DatesVM
-    @ObservedObject var dataDetailVM: DetailDataVM
+ //   @ObservedObject var dataDetailVM: DetailDataVM
     @State var kw1: Date
     @State var kw2: Date
-    
+    var type: ActionSheetCall
     
     var body: some View {
         //GeometryReader { geometry in
@@ -54,8 +59,12 @@ struct ActionSheetSelectKWDetail: View {
                     Button {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(301), execute: {
-                            UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
-                                dataDetailVM.animate.toggle()
+                            if type == ActionSheetCall.detail {
+                                UserDefaults.standard.dateFilterAttendance = PickerDates(date1: kw1, date2: kw2)
+                            } else if type == ActionSheetCall.statistics {
+                                UserDefaults.standard.dateFilterStatistics = PickerDates(date1: kw1, date2: kw2)
+                            }
+                                animate.toggle()
                         })
                         
                         withAnimation {
@@ -155,8 +164,9 @@ struct ActionSheetSelectKWDetail: View {
 struct ActionSheetKWSelectDetail_Previews: PreviewProvider {
     @State static var isShowing = false
     @State static var refresh = false
+    @State static var animate = false
     
     static var previews: some View {
-        ActionSheetSelectKWDetail(showActionSheet: $isShowing, refresh: $refresh, datesVM: DatesVM(), dataDetailVM: DetailDataVM(), kw1: Date().startOfWeek(), kw2: Date().endOfWeek())
+        ActionSheetSelectKW(showActionSheet: $isShowing, refresh: $refresh, animate: $animate, datesVM: DatesVM(), kw1: Date().startOfWeek(), kw2: Date().endOfWeek(), type: ActionSheetCall.detail)
     }
  }

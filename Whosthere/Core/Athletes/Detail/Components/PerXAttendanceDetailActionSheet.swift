@@ -12,19 +12,19 @@ struct PerXAttendanceDetailActionSheet: View {
 
     @Environment(\.colorScheme) var colorScheme
     @Binding var showActionSheet: Bool
+    @Binding var animate: Bool
     
     @State var perWeekIsSelected: Bool = false
     @State var perMonthIsSelected: Bool = false
     @State var totalIsSelected: Bool = false
     
     @ObservedObject var station = Station()
-    @ObservedObject var dataDetailVM: DetailDataVM
    // @EnvironmentObject var station: Station
 
     
-    init(showActionSheet: Binding<Bool>, dataDetailVM: DetailDataVM){
+    init(showActionSheet: Binding<Bool>, animate: Binding<Bool>){
         self._showActionSheet = showActionSheet
-        self.dataDetailVM = dataDetailVM
+        self._animate = animate
         if station.perXAttendance == .perWeek {
             self._perWeekIsSelected = State(wrappedValue: true)
         } else if station.perXAttendance == .perMonth {
@@ -69,7 +69,7 @@ struct PerXAttendanceDetailActionSheet: View {
                     } else if totalIsSelected == true {
                         UserDefaults.standard.perXAttendance = PerX.total
                     }
-                    dataDetailVM.animate.toggle()
+                    animate.toggle()
                 } label: {
                     HStack{
                         Image(systemName: "checkmark")

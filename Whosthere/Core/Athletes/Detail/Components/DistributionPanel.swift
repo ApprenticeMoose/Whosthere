@@ -12,6 +12,7 @@ struct DistributionPanel: View {
     @Binding var showXAttendedPicker: Bool
     @Binding var showPickerSelectKW: Bool
     @Binding var refresh: Bool
+    @Binding var animate: Bool
     //@ObservedObject var station: Station = Station() //necessary so KWSelectionUpdates
     @EnvironmentObject var station: Station
     
@@ -86,7 +87,7 @@ struct DistributionPanel: View {
                         }
                     }
                 }
-                .animation(.easeInOut, value: dataDetailVM.animate)
+                .animation(.easeInOut, value: animate)
 
                /* ZStack{
                     RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
@@ -195,7 +196,7 @@ struct DistributionPanel: View {
                                         .foregroundColor(.cardGrey2)
                                         .padding(.bottom)
                                 }
-                            .animation(.easeInOut, value: dataDetailVM.animate)
+                            .animation(.easeInOut, value: animate)
                               
                             VStack(spacing: 2){
                                 
@@ -266,7 +267,7 @@ struct DistributionPanel: View {
                                     .foregroundColor(.cardGrey2)
                                     .padding(.bottom)
                             }
-                            .animation(.easeInOut, value: dataDetailVM.animate)
+                            .animation(.easeInOut, value: animate)
                         }
                             Spacer()
                         }

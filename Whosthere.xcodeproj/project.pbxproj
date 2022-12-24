@@ -46,7 +46,7 @@
 		BC8E23FF2912CC4D001F2D7D /* PopoverCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E23FE2912CC4D001F2D7D /* PopoverCalendar.swift */; };
 		BC8E24012912CC79001F2D7D /* SessionHomeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24002912CC79001F2D7D /* SessionHomeCard.swift */; };
 		BC8E24032912CC9F001F2D7D /* SessionHomeCardHeadline.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24022912CC9F001F2D7D /* SessionHomeCardHeadline.swift */; };
-		BC8E24062916CC33001F2D7D /* ActionSheetSelectKWDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */; };
+		BC8E24062916CC33001F2D7D /* ActionSheetSelectKW.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24052916CC33001F2D7D /* ActionSheetSelectKW.swift */; };
 		BC8E24082917D09C001F2D7D /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24072917D09B001F2D7D /* Calendar.swift */; };
 		BC8E240A2917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */; };
 		BC9D00CF2889B3B90024B4AC /* WhosThere.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC9D00CD2889B3B90024B4AC /* WhosThere.xcdatamodeld */; };
@@ -110,7 +110,7 @@
 		BC8E23FE2912CC4D001F2D7D /* PopoverCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverCalendar.swift; sourceTree = "<group>"; };
 		BC8E24002912CC79001F2D7D /* SessionHomeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHomeCard.swift; sourceTree = "<group>"; };
 		BC8E24022912CC9F001F2D7D /* SessionHomeCardHeadline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHomeCardHeadline.swift; sourceTree = "<group>"; };
-		BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetSelectKWDetail.swift; sourceTree = "<group>"; };
+		BC8E24052916CC33001F2D7D /* ActionSheetSelectKW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetSelectKW.swift; sourceTree = "<group>"; };
 		BC8E24072917D09B001F2D7D /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerXAttendanceDetailActionSheet.swift; sourceTree = "<group>"; };
 		BC9D00CE2889B3B90024B4AC /* WhosThere.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhosThere.xcdatamodel; sourceTree = "<group>"; };
@@ -333,7 +333,7 @@
 		BC8E24042916CC17001F2D7D /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				BC8E24052916CC33001F2D7D /* ActionSheetSelectKWDetail.swift */,
+				BC8E24052916CC33001F2D7D /* ActionSheetSelectKW.swift */,
 				BC8E24092917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift */,
 				BC1E8C0E292FA17200D6DE73 /* XAttendedDistributionActionSheet.swift */,
 				BC59E15629255A5B00EE56C3 /* DistributionPanel.swift */,
@@ -515,7 +515,7 @@
 				BCD2CAAE28C767EE0017CCFB /* Athlete.swift in Sources */,
 				BC8E240A2917D19A001F2D7D /* PerXAttendanceDetailActionSheet.swift in Sources */,
 				BCD8E75128BE4CA200EA9A93 /* AddSessionView.swift in Sources */,
-				BC8E24062916CC33001F2D7D /* ActionSheetSelectKWDetail.swift in Sources */,
+				BC8E24062916CC33001F2D7D /* ActionSheetSelectKW.swift in Sources */,
 				BC8E23F72912CB17001F2D7D /* SmallCalendarButton.swift in Sources */,
 				BC1E8C11293004DE00D6DE73 /* CourseOfAttendancePanel.swift in Sources */,
 				BCD2CAAC28C766AF0017CCFB /* PersistentStore.swift in Sources */,

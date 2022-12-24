@@ -18,6 +18,10 @@ enum ShowAttended: Codable {
     case attendedPercent, attendedNumber
 }
 
+enum StatisticsPerX: String {
+    case perWeek, perMonth, total
+}
+
 struct PickerDates: Codable {
     let date1: Date
     let date2: Date
@@ -31,9 +35,10 @@ extension UserDefaults {
     private enum UserDefaultsKeys: String {
            case sortAthletes
            case attendanceFilteredDates
-           case distributionFilterdDates
+           case statisticsFilterDates
            case perXAttendance
            case xAttendedDistribution
+           
        }
     
 //Step 2
@@ -51,11 +56,11 @@ extension UserDefaults {
                 set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.attendanceFilteredDates.rawValue) }
             }
     
-    @objc dynamic private(set) var observableDateFilterDistributionData: Data? {
+    @objc dynamic private(set) var observableStatisticsDateFilterData: Data? {
                 get {
-                    UserDefaults.standard.data(forKey: UserDefaultsKeys.distributionFilterdDates.rawValue)
+                    UserDefaults.standard.data(forKey: UserDefaultsKeys.statisticsFilterDates.rawValue)
                 }
-                set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.distributionFilterdDates.rawValue) }
+                set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.statisticsFilterDates.rawValue) }
             }
     
     @objc dynamic private(set) var observablePerXAttendanceData: Data? {
@@ -102,10 +107,10 @@ extension UserDefaults {
        }
    }
     
-    var dateFilterDistribution: PickerDates? {
+    var dateFilterStatistics: PickerDates? {
        get {
            if let data = object(forKey:
-                                   UserDefaultsKeys.distributionFilterdDates.rawValue) as? Data {
+                                   UserDefaultsKeys.statisticsFilterDates.rawValue) as? Data {
                let filter = try? JSONDecoder().decode(PickerDates.self, from: data)
                return filter
            }
@@ -113,7 +118,7 @@ extension UserDefaults {
        }
 
        set {
-           observableDateFilterDistributionData = try? JSONEncoder().encode(newValue)
+           observableStatisticsDateFilterData = try? JSONEncoder().encode(newValue)
        }
    }
 
@@ -162,9 +167,9 @@ class Station: ObservableObject {
         }
     }
     
-    @Published var dateFilterDistribution: PickerDates = (UserDefaults.standard.dateFilterDistribution ?? PickerDates(date1: Date().startOfWeek(), date2: Date().endOfWeek())) {
+    @Published var dateFilterStatistics: PickerDates = (UserDefaults.standard.dateFilterStatistics ?? PickerDates(date1: Date().startOfWeek(), date2: Date().endOfWeek())) {
         didSet {
-            UserDefaults.standard.dateFilterDistribution = dateFilterDistribution
+            UserDefaults.standard.dateFilterStatistics = dateFilterStatistics
         }
     }
     
@@ -202,13 +207,13 @@ class Station: ObservableObject {
             .assign(to: &$dateFilterAttendance)
         
 //dateFilterDistribution
-        UserDefaults.standard.publisher(for: \.observableDateFilterDistributionData)
+        UserDefaults.standard.publisher(for: \.observableStatisticsDateFilterData)
             .map{ data -> PickerDates in
                 guard let data = data else {return PickerDates(date1: Date().startOfWeek(), date2: Date().endOfWeek()) }
                 return (try? JSONDecoder().decode(PickerDates.self, from: data)) ?? PickerDates(date1: Date().startOfWeek(), date2: Date().endOfWeek())
             }
             .receive(on: RunLoop.main)
-            .assign(to: &$dateFilterDistribution)
+            .assign(to: &$dateFilterStatistics)
         
 //perXAttendance
         UserDefaults.standard.publisher(for: \.observablePerXAttendanceData)

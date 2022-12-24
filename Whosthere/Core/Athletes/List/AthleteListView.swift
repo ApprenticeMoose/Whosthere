@@ -67,7 +67,7 @@ struct AthleteListView: View {
                             case let .editSession(session):
                                 EditSessionView(session: session, selectedDay: $datesVM.selectedDay, scrollToIndexOfSessions: $datesVM.scrollToIndexOfSessions)
                             case .statistics:
-                                StatisticsView(viewModel: athletesListVM)
+                                StatisticsView()
                             }
                         }
 
