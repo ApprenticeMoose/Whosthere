@@ -7,7 +7,7 @@
 import Foundation
 import SwiftUI
 
-struct PerXAttendanceDetailActionSheet: View {
+struct PerXAttendanceActionSheet: View {
     
 
     @Environment(\.colorScheme) var colorScheme
@@ -18,18 +18,23 @@ struct PerXAttendanceDetailActionSheet: View {
     @State var perMonthIsSelected: Bool = false
     @State var totalIsSelected: Bool = false
     
+    var type: ActionSheetCall
+    @Binding var perX: PerRange
+    
     @ObservedObject var station = Station()
    // @EnvironmentObject var station: Station
 
     
-    init(showActionSheet: Binding<Bool>, animate: Binding<Bool>){
+    init(showActionSheet: Binding<Bool>, animate: Binding<Bool>, type: ActionSheetCall, perX: Binding<PerRange>){
         self._showActionSheet = showActionSheet
         self._animate = animate
-        if station.perXAttendance == .perWeek {
+        self.type = type
+        self._perX = perX
+        if self.perX == PerRange.perWeek {
             self._perWeekIsSelected = State(wrappedValue: true)
-        } else if station.perXAttendance == .perMonth {
+        } else if self.perX == PerRange.perMonth {
             self._perMonthIsSelected = State(wrappedValue: true)
-        }else if station.perXAttendance == .total {
+        }else if self.perX == PerRange.total {
             self._totalIsSelected = State(wrappedValue: true)
         }
     }
@@ -60,16 +65,44 @@ struct PerXAttendanceDetailActionSheet: View {
                 
                 //Apply button
                 Button {
-                    showActionSheet.toggle()
-                    //do all the UserDefaults stuff
-                    if perWeekIsSelected == true {
-                        UserDefaults.standard.perXAttendance = PerX.perWeek
-                    } else if perMonthIsSelected == true {
-                        UserDefaults.standard.perXAttendance = PerX.perMonth
-                    } else if totalIsSelected == true {
-                        UserDefaults.standard.perXAttendance = PerX.total
+                  
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(301), execute: {
+                        if perWeekIsSelected == true {
+                            //UserDefaults.standard.perXAttendance = PerX.perWeek
+                            perX = PerRange.perWeek
+                        } else if perMonthIsSelected == true {
+                            //UserDefaults.standard.perXAttendance = PerX.perMonth
+                            perX = PerRange.perMonth
+                        } else if totalIsSelected == true {
+                           // UserDefaults.standard.perXAttendance = PerX.total
+                            perX = PerRange.total
+                        }
+                        
+                       
+                    })
+                    withAnimation {
+                        animate.toggle()
+                        showActionSheet.toggle()
                     }
-                    animate.toggle()
+                    
+                    //do all the UserDefaults stuff
+                   // if type == ActionSheetCall.detail {
+                        
+                    
+                    /*
+                }
+                    else if type == ActionSheetCall.statistics {
+                            if perWeekIsSelected == true {
+                               // UserDefaults.standard.string(forKey: "statisticsPerX") = PerX.perWeek
+                                perX = PerRange.perWeek
+                            } else if perMonthIsSelected == true {
+                                UserDefaults.standard.perXAttendance = PerX.perMonth
+                                perX = PerRange.perWeek
+                            } else if totalIsSelected == true {
+                                UserDefaults.standard.perXAttendance = PerX.total
+                            }
+                        }*/
+                    
                 } label: {
                     HStack{
                         Image(systemName: "checkmark")

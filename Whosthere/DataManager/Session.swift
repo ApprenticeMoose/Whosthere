@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Session: Identifiable, Hashable {
+struct Session: Identifiable, Hashable, Comparable {
     var id: UUID
     var date: Date
     var athleteIDs = [UUID]()
@@ -16,4 +16,8 @@ struct Session: Identifiable, Hashable {
         self.id = UUID()
         self.date = date
     }
+    
+    static func <(lhs: Session, rhs: Session) -> Bool {
+        lhs.date < rhs.date
+        }
 }

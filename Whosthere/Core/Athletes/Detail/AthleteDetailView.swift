@@ -17,7 +17,8 @@ struct AthleteDetailView: View {
     @Environment(\.presentationMode) var presentationMode                   //For dismissing views
     @Environment(\.colorScheme) var colorScheme                             //DarkMode
     
-
+    @AppStorage("detailPerX") var perXDetail = PerRange.perWeek
+    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var tabDetail: TabDetailVM
     
@@ -77,6 +78,9 @@ struct AthleteDetailView: View {
                     .onAppear(perform: {
                         detailVM.fetchAthlete()
                         self.tabDetail.showDetail = true })
+                    .onChange(of: animate, perform: { newValue in
+                        print("animation is toggled")
+                    })
                     .background(Color.appBackground)
                     .navigationBarHidden(true)
                     
@@ -215,12 +219,13 @@ struct AthleteDetailView: View {
     var attendancePanel: some View {
         HStack{
             Text(dataDetailVM.selectedSessionAttendance.clean)
+                .animation(.easeInOut, value: animate)
                 .font(.title3)
                 .fontWeight(.semibold)
                 .foregroundColor(.header)
                 .padding()
                 .padding(.leading)
-                .animation(.easeInOut, value: animate)
+                
                /* .onAppear{
                     getModifiedSession()
                     getAttendanceCount()
@@ -236,11 +241,23 @@ struct AthleteDetailView: View {
                     fillAllSessionDistribution()
                     //withAnimation {
                     fillAllSessionsBarHeights()
-                    fillCourseOfSessions()
+                   // fillCourseOfSessions()
                     //}
                     
                 })
-                .onReceive(station.$perXAttendance, perform: {
+                .onChange(of: perXDetail, perform: { newValue in
+                    withAnimation {
+                        getModifiedSession()
+                        getAllModifiedSessions()
+                        getAttendanceCount()
+                        fillDistributedSessions()
+                        fillAllSessionDistribution()
+                        fillAllSessionsBarHeights()
+                    }
+                   // fillCourseOfSessions()
+
+                })
+            /*      .onReceive(station.$perXAttendance, perform: {
                     print("filter changed \($0)")
                     getModifiedSession()
                     getAllModifiedSessions()
@@ -251,7 +268,7 @@ struct AthleteDetailView: View {
                     fillCourseOfSessions()
 
                 })
-             /*   .onReceive(dataDetailVM.$sessionBarHeights, perform: {
+               .onReceive(dataDetailVM.$sessionBarHeights, perform: {
                     print("bar height changed \($0)")
                     if dataDetailVM.sessionBarHeights.contains(1.0) {
                         print("it contains it")
@@ -276,9 +293,9 @@ struct AthleteDetailView: View {
                     .fontWeight(.semibold)
                     .foregroundColor(.header)
                 HStack(spacing: 4){
-                    if station.perXAttendance == .total { Text("total") }
-                    else if station.perXAttendance == .perMonth { Text("per Month") }
-                    else if station.perXAttendance == .perWeek { Text("per Week") }
+                    if perXDetail == .total { Text("total") }
+                    else if perXDetail == .perMonth { Text("per Month") }
+                    else if perXDetail == .perWeek { Text("per Week") }
                     Image(systemName: "chevron.down")
                         .font(.system(size: 9))
                 }
@@ -301,6 +318,7 @@ struct AthleteDetailView: View {
         .background(RoundedRectangle(cornerRadius: 10).foregroundColor(Color.accentMidGround))
         .padding(.horizontal)
         .padding(.top, 10)
+      
     }
     
     var implementSelectKWSheet: some View {
@@ -320,7 +338,7 @@ struct AthleteDetailView: View {
     var implemetPerXSheet: some View {
         VStack{
             Spacer()
-            PerXAttendanceDetailActionSheet(showActionSheet: $showKWPicker2, animate: $animate)
+            PerXAttendanceActionSheet(showActionSheet: $showKWPicker2, animate: $animate, type: ActionSheetCall.detail, perX: $perXDetail)
              .offset(y: self.showKWPicker2 ? 0 : UIScreen.main.bounds.height)
 
         }.background((showKWPicker2 ? Color.black.opacity(0.3) : Color.clear).edgesIgnoringSafeArea(.all).onTapGesture(perform: {
@@ -379,7 +397,17 @@ struct AthleteDetailView: View {
                 return UserDefaults.standard.dateFilterAttendance?.date2 ?? Date()
             }
         }
-        switch UserDefaults.standard.perXAttendance {
+        if perXDetail == PerRange.total {
+            dataDetailVM.selectedSessionAttendance = Float(dataDetailVM.modifiedArrayOfSessions.count)
+        } else if perXDetail == PerRange.perMonth {
+            let perMonthNumber = Float(dataDetailVM.modifiedArrayOfSessions.count) / (Float(Calendar.current.numberOfDaysBetween(UserDefaults.standard.dateFilterAttendance?.date1 ?? Date(), and: endDate)) / 30.436875)
+            dataDetailVM.selectedSessionAttendance = round(perMonthNumber * 10) / 10.0
+        } else if perXDetail == PerRange.perWeek {
+            let perWeekNumber = Float(dataDetailVM.modifiedArrayOfSessions.count) / Float(Calendar.current.numberOfDaysBetween(UserDefaults.standard.dateFilterAttendance?.date1 ?? Date(), and: endDate) / 7)
+            dataDetailVM.selectedSessionAttendance = round(perWeekNumber * 10) / 10.0
+        }
+        
+       /* switch UserDefaults.standard.perXAttendance {
         case .total:
             dataDetailVM.selectedSessionAttendance = Float(dataDetailVM.modifiedArrayOfSessions.count)
         case .perMonth:
@@ -390,7 +418,7 @@ struct AthleteDetailView: View {
             dataDetailVM.selectedSessionAttendance = round(perWeekNumber * 10) / 10.0
         case .none:
             dataDetailVM.selectedSessionAttendance = Float(dataDetailVM.modifiedArrayOfSessions.count)
-        }
+        }*/
     }
     
   
@@ -413,7 +441,7 @@ struct AthleteDetailView: View {
         dataDetailVM.distributionAllSessions = distributedSessions
     }
     
-    func fillCourseOfSessions() {
+  /*  func fillCourseOfSessions() {
         var weekToCollect: [Session] = []
         var weekInt: Int = 0
         var weekDate: Date = Date()
@@ -438,9 +466,9 @@ struct AthleteDetailView: View {
         }
         dataDetailVM.courseOfAttendance = courseOfSession
         dataDetailVM.courseOfAttendanceSimplified = courseOfSessionSimplified
-        print("course of attendance: \(dataDetailVM.courseOfAttendance)")
-        print("courseSimplified: \(dataDetailVM.courseOfAttendanceSimplified)")
-    }
+        //print("course of attendance: \(dataDetailVM.courseOfAttendance)")
+       // print("courseSimplified: \(dataDetailVM.courseOfAttendanceSimplified)")
+    }*/
     
     func fillDistributedSessions() {
         //print(modifiedArrayOfSessions)

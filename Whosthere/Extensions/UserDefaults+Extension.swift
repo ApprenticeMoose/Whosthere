@@ -18,7 +18,7 @@ enum ShowAttended: Codable {
     case attendedPercent, attendedNumber
 }
 
-enum StatisticsPerX: String {
+enum PerRange: String {
     case perWeek, perMonth, total
 }
 

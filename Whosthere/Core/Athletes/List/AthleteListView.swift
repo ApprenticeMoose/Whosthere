@@ -93,7 +93,7 @@ struct AthleteListView: View {
                                 case let .editSession(session):
                                     EditSessionView(session: session, selectedDay: $datesVM.selectedDay, scrollToIndexOfSessions: $datesVM.scrollToIndexOfSessions)
                                 case .statistics:
-                                    Text("statistics")
+                                    StatisticsView()
                                 }
                             }
                     } else if list == false {
@@ -118,7 +118,7 @@ struct AthleteListView: View {
                                 case let .editSession(session):
                                     EditSessionView(session: session, selectedDay: $datesVM.selectedDay, scrollToIndexOfSessions: $datesVM.scrollToIndexOfSessions)
                                 case .statistics:
-                                    Text("statistics")
+                                    StatisticsView()
                                 }
                             }
                         
@@ -355,13 +355,14 @@ struct RowView: View {
 
 
 struct Seperator: View {
-    var isLast: Bool = false
+  //  var isLast: Bool = false
+    var color: Color
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
         HStack{
-            Rectangle().fill(Color.appBackground).frame(width: UIScreen.main.bounds.width, height: 1)
+            Rectangle().fill(color).frame(width: UIScreen.main.bounds.width, height: 1)
                 .padding(.horizontal, 10)
             Spacer()
         }
@@ -440,7 +441,7 @@ struct AthletesList: View {
                     NBNavigationLink(value: Route.detail(athlete), label: {RowView(athlete: athlete)})
                     
                     if index != enumerated.count - 1 {
-                        Seperator()
+                        Seperator(color: Color.appBackground)
                     }
                 }
                 //.id(refreshID)

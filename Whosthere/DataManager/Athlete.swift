@@ -12,7 +12,7 @@ import SwiftUI
  backed up by a CoreData Managed Object: `AthleteMO`. The `DataManager`
  handles keeping this in sync via `NSFetchedResultsControllerDelegate`.
  */
-struct Athlete: Identifiable, Hashable, Equatable {
+struct Athlete: Identifiable, Hashable, Equatable, Comparable {
     var id: UUID
     var firstName: String
     var lastName: String
@@ -41,4 +41,8 @@ struct Athlete: Identifiable, Hashable, Equatable {
         hasher.combine(firstName)
         hasher.combine(lastName)
     }
+    
+    static func <(lhs: Athlete, rhs: Athlete) -> Bool {
+        lhs.lastName < rhs.lastName 
+        }
 }
