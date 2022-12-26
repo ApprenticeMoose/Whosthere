@@ -22,6 +22,10 @@ enum PerRange: String {
     case perWeek, perMonth, total
 }
 
+enum ShowStatsDistribution: String {
+    case sessions, attendanceCount, attendancePercent
+}
+
 struct PickerDates: Codable {
     let date1: Date
     let date2: Date

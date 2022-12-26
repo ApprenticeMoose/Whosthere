@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DistributionPanel: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @ObservedObject var dataDetailVM: DetailDataVM
     @Binding var showXAttendedPicker: Bool
     @Binding var showPickerSelectKW: Bool
@@ -89,47 +91,7 @@ struct DistributionPanel: View {
                 }
                 .animation(.easeInOut, value: animate)
 
-               /* ZStack{
-                    RoundedRectangle(cornerRadius: 5).foregroundColor(Color.appBackground).frame(width: 94, height: 30)
-                    
-                    HStack(alignment: .lastTextBaseline){
-                        Text("KW " + "50" + " - " + "50")
-                            .font(.caption2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.clear)
-                        
-                        //Arrow down
-                        Image(systemName: "chevron.down")
-                            .font(.caption2)
-                            .foregroundColor(.header)
-                    }
-                    
-                    HStack(alignment: .lastTextBaseline){
-                        if station.dateFilterAttendance.date1.extractWeek() == station.dateFilterAttendance.date2.extractWeek() {
-                            Text("    KW " + "\(station.dateFilterAttendance.date1.extractWeek())    ")
-                                .font(.caption2)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.header)
-                            
-                        } else {
-                            Text("KW " + "\(station.dateFilterAttendance.date1.extractWeek())" + " - " + "\(station.dateFilterAttendance.date2.extractWeek())")
-                                .font(.caption2)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.header)
-                        }
-                        //Arrow down
-                        Image(systemName: "chevron.down")
-                            .font(.caption2)
-                            .foregroundColor(.clear)
-                    }
-                }
-                .onTapGesture {
-                    withAnimation {
-                        showPickerSelectKW.toggle()
-                    }
-                }
-                .padding(.horizontal, 6)
-                .padding(.bottom, 10)*/
+              
             }
             
             HStack(alignment: .bottom){
@@ -228,7 +190,7 @@ struct DistributionPanel: View {
 
                                             RoundedRectangle(cornerRadius: 5)
                                                 .frame(width: 34, height: 1)
-                                                .foregroundColor(.appBackground)
+                                                .foregroundColor(colorScheme == .light ? .accentBigButton : .appBackground)
                                                 .padding(.bottom, 6)
                                         }
                                     }
@@ -257,7 +219,7 @@ struct DistributionPanel: View {
                                         
                                         RoundedRectangle(cornerRadius: 5)
                                             .frame(width: 34, height: CGFloat(dataDetailVM.sessionBarHeights[index]))
-                                            .foregroundColor(.appBackground)
+                                            .foregroundColor(colorScheme == .light ? .accentBigButton : .appBackground)
                                             .padding(.bottom, 6)
                                     }
                                     
